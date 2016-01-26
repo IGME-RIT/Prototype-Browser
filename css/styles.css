@@ -9,7 +9,7 @@ img {
 }
 body {
 	width: 100%;
-	height: 100%;
+    height: 100%;
 	margin: 0;
 	padding: 0;
     
@@ -17,12 +17,16 @@ body {
 }
 
 canvas {
-    margin-left: 10%;
-    margin-right: 10%;
-    width: 80%;
+    margin: 0px;
+    width: 100%;
+    height: 100vh;
+    display: block;
 }
 
-#debugLine{
-    color: white;
-    text-align: center;
+#headerBar {
+    width: 100%;
+    height: 50px;
+    background-color: dodgerblue;
+    position: absolute;
+    top: 0px;
 }

@@ -7,8 +7,6 @@ app.main = {
     
     //variables
     canvas: undefined,
-    renderWidth: undefined,
-    renderHeight: undefined,
     ctx: undefined,
     app: undefined,
     utilities: undefined,
@@ -25,15 +23,13 @@ app.main = {
 	}),
     
     init : function() {
-        this.debugLine = document.querySelector('#debugLine');
+        //this.debugLine = document.querySelector('#debugLine');
         
         this.canvas = document.querySelector('canvas');
         this.ctx = this.canvas.getContext('2d');
         
-        this.renderWidth = 1920;
-        this.renderHeight = 1080;
-        this.canvas.width = this.renderWidth;
-        this.canvas.height = this.renderHeight;
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
         
         this.mousePosition = new app.Point(this.canvas.width/2, this.canvas.height/2);
         this.debugMousePosition();
@@ -87,7 +83,7 @@ app.main = {
         this.debugMousePosition();
 	},
     debugMousePosition: function(e){
-        this.debugLine.innerHTML = "mousePosition: " + this.mousePosition.x + ", " + this.mousePosition.y;
+        //this.debugLine.innerHTML = "mousePosition: " + this.mousePosition.x + ", " + this.mousePosition.y;
     },
     debugHud: function(ctx, dt) {
         ctx.save();
