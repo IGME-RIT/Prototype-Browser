@@ -4,8 +4,8 @@ var app = app || {};
 app.utilities = function(){
 	
 	// returns mouse position in local coordinate system of element
-	function getMouse(e){
-		return new app.Point(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop);
+	function getMouse(e, actualCanvasWidth, actualCanvasHeight){
+		return new app.Point((e.pageX - e.target.offsetLeft) * (app.main.renderWidth / actualCanvasWidth), (e.pageY - e.target.offsetTop) * (app.main.renderHeight / actualCanvasHeight));
 	}
 	
 	function map(value, min1, max1, min2, max2){
@@ -16,7 +16,7 @@ app.utilities = function(){
         return Math.max(min, Math.min(max, value));
     }
     
-	// the "public interface" of this module
+	//public interface
 	return{
 		getMouse : getMouse,
         clamp: clamp,

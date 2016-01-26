@@ -7,6 +7,8 @@ app.main = {
     
     //variables
     canvas: undefined,
+    renderWidth: undefined,
+    renderHeight: undefined,
     ctx: undefined,
     app: undefined,
     utilities: undefined,
@@ -27,8 +29,12 @@ app.main = {
         
         this.canvas = document.querySelector('canvas');
         this.ctx = this.canvas.getContext('2d');
-        this.canvas.width = 1336;
-        this.canvas.height = 768;
+        
+        this.renderWidth = 1920;
+        this.renderHeight = 1080;
+        this.canvas.width = this.renderWidth;
+        this.canvas.height = this.renderHeight;
+        
         this.mousePosition = new app.Point(this.canvas.width/2, this.canvas.height/2);
         this.debugMousePosition();
         
@@ -62,6 +68,7 @@ app.main = {
         else if(this.game_state == this.GAME_STATE.TITLE){
             //draw title screen
         }
+        this.debugHud(this.ctx, dt);
     },
     
     calculateDeltaTime: function(){
@@ -76,10 +83,23 @@ app.main = {
     
     //helper functions
     getMousePosition: function(e){
-		this.mousePosition = app.utilities.getMouse(e);
+		this.mousePosition = app.utilities.getMouse(e, this.canvas.offsetWidth, this.canvas.offsetHeight);
         this.debugMousePosition();
 	},
     debugMousePosition: function(e){
         this.debugLine.innerHTML = "mousePosition: " + this.mousePosition.x + ", " + this.mousePosition.y;
     },
+    debugHud: function(ctx, dt) {
+        ctx.save();
+        this.fillText(ctx, "dt: " + (dt.toFixed(3)), this.canvas.width - 150, this.canvas.height - 10, "18pt oswald", "Black");
+        ctx.restore();
+    },
+    fillText: function(ctx, string, x, y, css, color) {
+		this.ctx.save();
+		// https://developer.mozilla.org/en-US/docs/Web/CSS/font
+		this.ctx.font = css;
+		this.ctx.fillStyle = color;
+		this.ctx.fillText(string, x, y);
+		this.ctx.restore();
+	},
 };

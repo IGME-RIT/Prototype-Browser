@@ -18,6 +18,6 @@ window.onload = function(e){
     
     
     window.addEventListener("resize",function(e){
-        app.main.debugLine.innerHTML = app.main.canvas.width + ", " + app.main.canvas.height;
+        app.main.debugLine.innerHTML = "actual dimensions: x = " + app.main.canvas.offsetWidth + ", y = " + app.main.canvas.offsetHeight;
 	});
 };
