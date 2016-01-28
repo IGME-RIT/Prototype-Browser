@@ -23,7 +23,7 @@ canvas {
     display: block;
 }
 
-#headerBar {
+header {
     width: 100%;
     height: 50px;
     background-color: dodgerblue;

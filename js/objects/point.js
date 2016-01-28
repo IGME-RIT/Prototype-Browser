@@ -1,11 +1,11 @@
 "use strict";
 var app = app || {};
 
-app.Point = function(){
-    function Point(x, y){
+app.point = function(){
+    function point(x, y){
         this.x = x;
         this.y = y;
     }
     
-    return Point;
+    return point;
 }();

@@ -12,6 +12,26 @@ app.drawLib = {
 		ctx.fillRect(x, y, w, h);
 		ctx.restore();
 	},
+    
+    line : function(ctx, x1, y1, x2, y2, thickness, color) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineWidth = thickness;
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.restore();
+    },
+    
+    circle : function(ctx, x, y, radius, color){
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x,y, radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.restore();
+    },
 	
 	// a generalized gradient function would be nice
 	// write one if you want
