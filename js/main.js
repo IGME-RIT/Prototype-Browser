@@ -13,6 +13,7 @@ app.main = {
     drawLib: undefined,
     
     mousePosition: undefined,
+    lastMousePosition: undefined,
     animationID: 0,
 	lastTime: 0,
     
@@ -20,6 +21,9 @@ app.main = {
     activeHeight: undefined,
     center: undefined,
     board: undefined,
+    
+    dragging: undefined,
+    cursor: undefined,
     
     //enumeration
     GAME_STATE: Object.freeze({	
@@ -36,17 +40,29 @@ app.main = {
         this.canvas.height = this.canvas.offsetHeight;
         
         this.mousePosition = new app.point(this.canvas.width/2, this.canvas.height/2);
+        this.lastMousePosition = this.mousePosition;
         
         this.header = document.querySelector('header');
         this.activeHeight = this.canvas.height - this.header.offsetHeight;
         this.center = new app.point(this.canvas.width/2, this.activeHeight / 2 + this.header.offsetHeight);
-        this.board = new app.board(new app.point(0,0));
+        //get listv of nodes from data
+        var tempLessonNodeArray = [];
+        tempLessonNodeArray.push(new app.lessonNode(new app.point(0,0)));
+        tempLessonNodeArray.push(new app.lessonNode(new app.point(50,50)));
+        tempLessonNodeArray.push(new app.lessonNode(new app.point(-70,30)));
+        this.board = new app.board(new app.point(0,0), tempLessonNodeArray);
+        
+        this.dragging = false;
+        this.cursor = document.getElementById("myP");
         
         //denotes gameplay state
         this.game_state = this.GAME_STATE.GAME;
         
         //connecting events
         this.canvas.onmousemove = this.getMousePosition.bind(this);
+        this.canvas.onmousedown = this.doMouseDown.bind(this);
+        this.canvas.onmouseup = this.doMouseUp.bind(this);
+        this.canvas.onmousewheel = this.doWheel.bind(this);
         
         //start the loop
         this.update();
@@ -73,6 +89,8 @@ app.main = {
         else if(this.game_state == this.GAME_STATE.TITLE){
             //draw title screen
         }
+        //cursor handling
+        this.cursorHandler();
         this.debugHud(this.ctx, dt);
     },
     
@@ -86,10 +104,38 @@ app.main = {
 		return 1/fps;
 	},
     
-    //helper functions
+    //helper event functions
     getMousePosition: function(e){
-		this.mousePosition = app.utilities.getMouse(e, this.canvas.offsetWidth, this.canvas.offsetHeight);
+		this.lastMousePosition = this.mousePosition;
+        this.mousePosition = app.utilities.getMouse(e, this.canvas.offsetWidth, this.canvas.offsetHeight);
+        
+        if(this.dragging){
+            //the positional difference between last loop and this
+            this.board.move(this.lastMousePosition.x - this.mousePosition.x, this.lastMousePosition.y - this.mousePosition.y);
+        }
 	},
+    doMouseDown : function(e) {
+        this.dragging = true;
+    },
+    doMouseUp : function(e) {
+        this.dragging = false;
+    },
+    doWheel : function(e) {
+        
+    },
+    
+    cursorHandler : function(){
+        //is it hovering over the canvas?
+        //is it dragging?
+        if(this.dragging){
+            this.canvas.style.cursor = "-webkit-grabbing";
+        }
+        else{
+            this.canvas.style.cursor = "default";
+        }
+    },
+    
+    //debug
     debugHud: function(ctx, dt) {
         ctx.save();
         this.fillText(ctx, "mousePosition: " + this.mousePosition.x + ", " + this.mousePosition.y, 50, this.canvas.height - 10, "12pt oswald", "Black");
