@@ -1,7 +1,11 @@
 "use strict";
 
 var app = app || {};
- 
+
+app.IMAGES = {
+    testImage: "images/dog.png"
+ };
+
 window.onload = function(e){
 	app.main.app = app;
     
@@ -9,13 +13,14 @@ window.onload = function(e){
 	app.main.drawLib = app.drawLib;
     app.board.drawLib = app.drawLib;
     app.lessonNode.drawLib = app.drawLib;
+    app.boardButton.drawLib = app.drawLib;
     
 	app.queue = new createjs.LoadQueue(false);
 	app.queue.on("complete", function(){
 		app.main.init();
 	});
     app.queue.loadManifest([
-        {id: "exampleDog", src:"images/dog.jpg"},
+        {id: "exampleImage", src:"images/dog.jpg"},
 	]);
     
     

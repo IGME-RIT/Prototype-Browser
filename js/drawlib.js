@@ -33,8 +33,24 @@ app.drawLib = {
         ctx.restore();
     },
 	
-	// a generalized gradient function would be nice
-	// write one if you want
+    boardButton : function(ctx, position, width, height, hovered){
+        //ctx.save();
+        if(hovered){
+            ctx.fillStyle = "dodgerblue";
+        }
+        else{
+            ctx.fillStyle = "lightblue";
+        }
+        //draw rounded container
+        ctx.rect(position.x - width/2, position.y - height/2, width, height);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+        ctx.fill();
+        //ctx.restore();
+    },
+    
+	// a generalized gradient function
 	backgroundGradient: function(ctx, width, height){
 		ctx.save();
 		// Create gradient - top to bottom
