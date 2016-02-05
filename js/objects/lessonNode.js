@@ -15,7 +15,7 @@ app.lessonNode = function(){
             tempImage.src = imagePath;
             this.image = tempImage;
         }
-        catch {
+        catch (e) {
             image.src = this.app.Images['exampleImage'];
             this.image = tempImage;
         }
