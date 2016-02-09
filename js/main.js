@@ -1,18 +1,22 @@
 "use strict";
 //imports
 var Game = require('./modules/game.js');
+var Point = require('./modules/point.js');
 
 //variables
 var game;
 var canvas;
 var ctx;
+
+var header;
+var activeHeight;
+var center;
 /*app.IMAGES = {
     testImage: "images/dog.png"
  };*/
 
 window.onload = function(e){
-    initializeCanvas();
-    game = new Game();
+    initializeVariables();
     
     loop();
 	/*app.main.app = app;
@@ -32,7 +36,6 @@ window.onload = function(e){
         {id: "exampleImage", src:"images/dog.jpg"},
 	]);
     
-    
     window.addEventListener("resize",function(e){
         app.main.canvas.width = app.main.canvas.offsetWidth;
         app.main.canvas.height = app.main.canvas.offsetHeight;
@@ -41,12 +44,18 @@ window.onload = function(e){
 	});*/
 }
 
-function initializeCanvas(){
+function initializeVariables(){
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
+    
+    header = document.querySelector('header');
+    activeHeight = canvas.height - header.offsetHeight;
+    center = new Point(canvas.width/2, activeHeight / 2 + header.offsetHeight);
+    
+    game = new Game();
 }
 
 function loop(){
@@ -57,5 +66,7 @@ function loop(){
 window.addEventListener("resize", function(e){
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
+    
+    
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
 });

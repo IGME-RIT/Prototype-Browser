@@ -1,7 +1,9 @@
 "use strict";
-function point(x, y){
-    this.x = x;
-    this.y = y;
+var x;
+var y;
+function point(pX, pY){
+    x = pX;
+    y = pY;
 }
 
-module.export = point;
+module.exports = point;
