@@ -1,5 +1,3 @@
-var animationID = 0;
-
 function game(){
 }
 
@@ -13,11 +11,11 @@ p.update = function(){
 }
 
 p.act = function(){
-    
+    console.log("ACT");
 }
 
 p.draw = function(){
-    
+    console.log("DRAW");
 }
 
 module.exports = game;
