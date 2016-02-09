@@ -60,7 +60,7 @@ function initializeVariables(){
 
 function loop(){
     //window.requestAnimationFrame(loop());
-    game.update();
+    game.update(ctx, canvas, 0, center, activeHeight);
 }
 
 window.addEventListener("resize", function(e){
