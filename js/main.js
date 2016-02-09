@@ -1,4 +1,5 @@
 'use strict';
+var utilities = require('./utilities.js');
 var app = app || {};
 
 app.main = {    
@@ -22,6 +23,8 @@ app.main = {
     
     dragging: undefined,
     cursor: undefined,
+    
+    //dataObject: require('./objects/dataObject.js'),
     
     //enumeration
     GAME_STATE: Object.freeze({	
@@ -54,6 +57,8 @@ app.main = {
         
         this.dragging = false;
         this.cursor = document.getElementById("myP");
+        
+        var testetest = this.dataObject.infoArray;
         
         //denotes gameplay state
         this.game_state = this.GAME_STATE.BOARD_VIEW;
