@@ -1,16 +1,22 @@
 "use strict";
-function clear(ctx, x, y, w, h) {
+function drawLib(){
+    
+}
+
+var p = drawLib.prototype;
+
+p.clear = function(ctx, x, y, w, h) {
     ctx.clearRect(x, y, w, h);
 }
 
-function rect(ctx, x, y, w, h, col) {
+p.rect = function(ctx, x, y, w, h, col) {
     ctx.save();
     ctx.fillStyle = col;
     ctx.fillRect(x, y, w, h);
     ctx.restore();
 }
 
-function line(ctx, x1, y1, x2, y2, thickness, color) {
+p.line = function(ctx, x1, y1, x2, y2, thickness, color) {
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(x1, y1);
@@ -21,7 +27,7 @@ function line(ctx, x1, y1, x2, y2, thickness, color) {
     ctx.restore();
 }
 
-function circle(ctx, x, y, radius, color){
+p.circle = function(ctx, x, y, radius, color){
     ctx.save();
     ctx.beginPath();
     ctx.arc(x,y, radius, 0, 2 * Math.PI, false);
@@ -47,10 +53,4 @@ function boardButton(ctx, position, width, height, hovered){
     //ctx.restore();
 }
 
-module.exports = {
-    clear : clear,
-    rect: rect,
-    line: line,
-    circle: circle,
-    boardButton: boardButton
-};
+module.exports = drawLib;

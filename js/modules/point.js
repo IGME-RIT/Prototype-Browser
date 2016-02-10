@@ -1,10 +1,12 @@
 "use strict";
-var x;
-var y;
 
 function point(pX, pY){
-    x = pX;
-    y = pY;
+    this.x = pX;
+    this.y = pY;
 }
+
+var p = point.prototype;
+
+
 
 module.exports = point;

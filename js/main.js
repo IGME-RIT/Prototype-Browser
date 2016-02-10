@@ -52,21 +52,24 @@ function initializeVariables(){
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
     
     header = document.querySelector('header');
-    activeHeight = canvas.height - header.offsetHeight;
-    center = new Point(canvas.width/2, activeHeight / 2 + header.offsetHeight);
+    activeHeight = canvas.offsetHeight - header.offsetHeight;
+    center = new Point(canvas.width/2, activeHeight/2 + header.offsetHeight);
+    
+    var temp = center.x;
     
     game = new Game();
 }
 
 function loop(){
-    //window.requestAnimationFrame(loop());
+    window.requestAnimationFrame(loop.bind(this));
     game.update(ctx, canvas, 0, center, activeHeight);
 }
 
 window.addEventListener("resize", function(e){
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    
+    activeHeight = canvas.height - header.offsetHeight;
+    center = new Point(canvas.width / 2, activeHeight / 2 + header.offsetHeight)
     
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
 });
