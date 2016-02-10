@@ -1,9 +1,19 @@
+"use strict";
 var Board = require('./board.js');
+var Point = require('./point.js');
 var DrawLib = require('./drawLib.js');
+var LessonNode = require('./lessonNode.js');
+
+var boardArray;
 var painter;
 
 function game(){
     painter = new DrawLib();
+    
+    var testLessonNode = new LessonNode(new Point(0,0), "images/dog.png");
+    
+    boardArray = [];
+    boardArray.push(new Board(new Point(0,0), testLessonNode));
 }
 
 var p = game.prototype;

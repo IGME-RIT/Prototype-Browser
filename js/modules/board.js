@@ -1,17 +1,11 @@
 "use strict";
+var position;
+var lessonNodeArray;
+
 //parameter is a point that denotes starting position
 function board(startPosition, lessonNodes){
-    this.position = startPosition;
-
-    this.boundLeft = 0;
-    this.boundRight = 0;
-    this.boundTop = 0;
-    this.boundBottom = 0;
-
-    this.zoomFactor = 1;
-
-
-    this.lessonNodeArray = lessonNodes;
+    position = startPosition;
+    lessonNodeArray = lessonNodes;
 }
 
 board.drawLib = undefined;
@@ -49,35 +43,12 @@ p.move = function(pX, pY){
     this.position.y += pY;
 };
 
-
-p.zoom = function(ctx, center, delta){
-    /*
-    if(delta > 0){
-        this.zoomFactor -= .1;
-        if(this.zoomFactor < .5){
-            this.zoomFactor = .5;
-        }
-    }
-    else{
-        this.zoomFactor += .1;
-        if(this.zoomFactor > 1.5){
-            this.zoomFactor = 1.5;
-        }
-    }
-    */
-    //nudge this in the direction of the mouse
-    //this.move((center.x - mousePosition.x)/10, (center.y - mousePosition.y)/10);
-    //ctx.translate(center.x, center.y);
-    //ctx.scale(this.zoomFactor, this.zoomFactor);
-    //ctx.translate(-center.x, -center.y);
-};
-
 p.draw = function(ctx, center, activeWidth, activeHeight){
     ctx.save();
     //translate to the center of the screen
-    ctx.translate(center.x - this.position.x, center.y - this.position.y);
-    for(var i = 0; i < this.lessonNodeArray.length; i++){
-        this.lessonNodeArray[i].draw(ctx, this.zoomFactor);
+    ctx.translate(center.x - position.x, center.y - position.y);
+    for(var i = 0; i < lessonNodeArray.length; i++){
+        lessonNodeArray[i].draw(ctx);
     }
     ctx.restore();
 };

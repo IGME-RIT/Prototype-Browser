@@ -1,16 +1,21 @@
 "use strict";
+var position;
+var width;
+var height;
+var clicked;
+var hovered;
 
 //parameter is a point that denotes starting position
-function boardButton(startPosition, width, height){
-    this.position = startPosition;
+function button(startPosition, width, height){
+    this.position = position;
     this.width = width;
     this.height = height;
     this.clicked = false;
     this.hovered = false;
 }
-boardButton.drawLib = undefined;
+button.drawLib = undefined;
 
-var p = boardButton.prototype;
+var p = button.prototype;
 
 p.draw = function(ctx){
     ctx.save();
@@ -27,4 +32,4 @@ p.draw = function(ctx){
     ctx.restore();
 };
 
-module.exports = boardButton;
+module.exports = button;
