@@ -10,9 +10,12 @@ var painter;
 
 var mousePosition;
 var relativeMousePosition;
+var mouseDown;
 
 function game(){
     painter = new DrawLib();
+    
+    mouseDown = false;
     
     var testLessonNodeArray = [];
     testLessonNodeArray.push(new LessonNode(new Point(0,0), "images/dog.png"));
