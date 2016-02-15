@@ -30,3 +30,9 @@ header {
     position: absolute;
     top: 0px;
 }
+
+#debugLine{
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+}

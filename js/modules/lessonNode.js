@@ -6,6 +6,7 @@ var width;
 var height;
 var button;
 var image;
+var scaleFactor;
 
 //parameter is a point that denotes starting position
 function lessonNode(startPosition, imagePath){
@@ -24,21 +25,27 @@ function lessonNode(startPosition, imagePath){
         tempImage.src = "images/dog.png";
         image = tempImage;
     }
+    
+    scaleFactor = 2;
 }
 
 lessonNode.drawLib = undefined;
 
 var p = lessonNode.prototype;
 
-p.draw = function(ctx, scaleFactor){
+p.draw = function(ctx){
     //lessonNode.drawLib.circle(ctx, this.position.x, this.position.y, 10, "red");
     //draw the image, shadow if hovered
     ctx.save();
-    ctx.drawImage(image, position.x, position.y, width, height)
-    
     if(button.hovered){
-        
+        //ctx.shadowOffsetX = 10;
+        //ctx.shadowOffsetY = 10;
+        ctx.shadowColor = 'blue';
+        ctx.shadowBlur = 30;
     }
+    ctx.drawImage(image, position.x - (width*scaleFactor)/2, position.y - (height*scaleFactor)/2, width * scaleFactor, height * scaleFactor)
+    
+    
     ctx.restore();
 };
 

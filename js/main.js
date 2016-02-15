@@ -11,6 +11,9 @@ var ctx;
 var header;
 var activeHeight;
 var center;
+
+var mousePosition;
+var relativeMousePosition;
 /*app.IMAGES = {
     testImage: "images/dog.png"
  };*/
@@ -55,14 +58,22 @@ function initializeVariables(){
     activeHeight = canvas.offsetHeight - header.offsetHeight;
     center = new Point(canvas.width/2, activeHeight/2 + header.offsetHeight);
     
-    var temp = center.x;
+    mousePosition = new Point(0,0);
+    relativeMousePosition = new Point(0,0);
+    
+    //event listener for when the mouse moves over the canvas
+    canvas.addEventListener("mousemove", function(e){
+        var boundRect = canvas.getBoundingClientRect();
+        mousePosition = new Point(e.clientX - boundRect.left, e.clientY - boundRect.top);
+        relativeMousePosition = new Point(mousePosition.x - (canvas.offsetWidth/2.0), mousePosition.y - (header.offsetHeight + activeHeight/2.0));        
+    });
     
     game = new Game();
 }
 
 function loop(){
     window.requestAnimationFrame(loop.bind(this));
-    game.update(ctx, canvas, 0, center, activeHeight);
+    game.update(ctx, canvas, 0, center, activeHeight, mousePosition, relativeMousePosition);
 }
 
 window.addEventListener("resize", function(e){
@@ -73,3 +84,4 @@ window.addEventListener("resize", function(e){
     
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
 });
+

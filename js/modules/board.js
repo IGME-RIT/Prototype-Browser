@@ -43,7 +43,7 @@ p.move = function(pX, pY){
     this.position.y += pY;
 };
 
-p.draw = function(ctx, center, activeWidth, activeHeight){
+p.draw = function(ctx, center, activeHeight){
     ctx.save();
     //translate to the center of the screen
     ctx.translate(center.x - position.x, center.y - position.y);
