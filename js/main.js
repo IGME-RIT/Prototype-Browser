@@ -2,6 +2,7 @@
 //imports
 var Game = require('./modules/game.js');
 var Point = require('./modules/point.js');
+var MouseState = require('./modules/mouseState.js');
 
 //variables
 var game;
@@ -14,6 +15,8 @@ var center;
 
 var mousePosition;
 var relativeMousePosition;
+var mouseDown;
+var mouseIn;
 /*app.IMAGES = {
     testImage: "images/dog.png"
  };*/
@@ -67,13 +70,27 @@ function initializeVariables(){
         mousePosition = new Point(e.clientX - boundRect.left, e.clientY - boundRect.top);
         relativeMousePosition = new Point(mousePosition.x - (canvas.offsetWidth/2.0), mousePosition.y - (header.offsetHeight + activeHeight/2.0));        
     });
+    mouseDown = false;
+    canvas.addEventListener("mousedown", function(e){
+        mouseDown = true;
+    });
+    canvas.addEventListener("mouseup", function(e){
+        mouseDown = true;
+    });
+    mouseIn = false;
+    canvas.addEventListener("onmouseover", function(e){
+        mouseIn = true;
+    });
+    canvas.addEventListener("onmouseout", function(e){
+        mouseout = false;
+    });
     
     game = new Game();
 }
 
 function loop(){
     window.requestAnimationFrame(loop.bind(this));
-    game.update(ctx, canvas, 0, center, activeHeight, mousePosition, relativeMousePosition);
+    game.update(ctx, canvas, 0, center, activeHeight, new MouseState(mousePosition, relativeMousePosition, mouseDown));
 }
 
 window.addEventListener("resize", function(e){
@@ -84,4 +101,6 @@ window.addEventListener("resize", function(e){
     
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
 });
+
+
 

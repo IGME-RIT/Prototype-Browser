@@ -8,14 +8,11 @@ var Utilities = require('./utilities.js');
 var boardArray;
 var painter;
 
-var mousePosition;
-var relativeMousePosition;
-var mouseDown;
+var mouseState;
 
 function game(){
     painter = new DrawLib();
     
-    mouseDown = false;
     
     var testLessonNodeArray = [];
     testLessonNodeArray.push(new LessonNode(new Point(0,0), "images/dog.png"));
@@ -28,17 +25,16 @@ function game(){
 
 var p = game.prototype;
 
-p.update = function(ctx, canvas, dt, center, activeHeight, pMousePosition, pRelativeMousePosition){
+p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     //update stuff
-    p.act(pMousePosition, pRelativeMousePosition);
+    p.act(pMouseState);
     //draw stuff
     p.draw(ctx, canvas, center, activeHeight);
 }
 
-p.act = function(pMousePosition, pRelativeMousePosition){
-    mousePosition = pMousePosition;
-    relativeMousePosition = pRelativeMousePosition;
-    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + relativeMousePosition.x + ", y = " + relativeMousePosition.y;
+p.act = function(pMouseState){
+    mouseState = pMouseState;
+    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y;
 }
 
 p.draw = function(ctx, canvas, center, activeHeight){
