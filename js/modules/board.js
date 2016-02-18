@@ -39,8 +39,8 @@ function calculateBounds(){
 var p = board.prototype;
 
 p.move = function(pX, pY){
-    this.position.x += pX;
-    this.position.y += pY;
+    position.x += pX;
+    position.y += pY;
 };
 
 p.draw = function(ctx, center, activeHeight){
