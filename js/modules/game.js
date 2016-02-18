@@ -34,7 +34,9 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
 
 p.act = function(pMouseState){
     mouseState = pMouseState;
-    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y;
+    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
+    "<br>Clicked = " + mouseState.mouseDown + 
+    "<br>Over Canvas = " + mouseState.mouseIn;
 }
 
 p.draw = function(ctx, canvas, center, activeHeight){

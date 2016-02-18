@@ -75,14 +75,15 @@ function initializeVariables(){
         mouseDown = true;
     });
     canvas.addEventListener("mouseup", function(e){
-        mouseDown = true;
+        mouseDown = false;
     });
     mouseIn = false;
-    canvas.addEventListener("onmouseover", function(e){
+    canvas.addEventListener("mouseover", function(e){
         mouseIn = true;
     });
-    canvas.addEventListener("onmouseout", function(e){
-        mouseout = false;
+    canvas.addEventListener("mouseout", function(e){
+        mouseIn = false;
+        mouseDown = false;
     });
     
     game = new Game();
@@ -90,7 +91,7 @@ function initializeVariables(){
 
 function loop(){
     window.requestAnimationFrame(loop.bind(this));
-    game.update(ctx, canvas, 0, center, activeHeight, new MouseState(mousePosition, relativeMousePosition, mouseDown));
+    game.update(ctx, canvas, 0, center, activeHeight, new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn));
 }
 
 window.addEventListener("resize", function(e){

@@ -32,7 +32,11 @@ header {
 }
 
 #debugLine{
-    color: white;
+    color: red;
     text-align: center;
     margin-top: 10px;
+    font-size: 10pt;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
