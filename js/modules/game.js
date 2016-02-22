@@ -42,6 +42,13 @@ p.act = function(pMouseState){
     "<br>Clicked = " + mouseState.mouseDown + 
     "<br>Over Canvas = " + mouseState.mouseIn;
     
+    //collision detection, iterate through each node in the active board
+    for(var i = 0; i < boardArray[activeBoardIndex].lessonNodeArray.length; i++){
+        var targetLessonNode = boardArray[activeBoardIndex].lessonNodeArray[i];
+        mouseIntersect(targetLessonNode, boardArray[activeBoardIndex].position, targetLessonNode.scaleFactor);
+    }
+    
+    
     //moving the board
     if(mouseState.mouseDown == true){
         boardArray[activeBoardIndex].move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
@@ -63,3 +70,18 @@ p.draw = function(ctx, canvas, center, activeHeight){
 }
 
 module.exports = game;
+
+//pElement is the object on the canvas that is being checked against the mouse, pOffseter will most likely be the board so we can subtract position or whatever it needs to remain aligned
+function mouseIntersect(pElement, pOffsetter, pScale){
+    if(mouseState.relativePosition.x + pOffsetter.x > (pElement.position.x - (pScale*pElement.width)/2) && mouseState.relativePosition.x + pOffsetter.x < (pElement.position.x + (pScale*pElement.width)/2)){
+        if(mouseState.relativePosition.y + pOffsetter.y > (pElement.position.y - (pScale*pElement.height)/2) && mouseState.relativePosition.y + pOffsetter.y < (pElement.position.y + (pScale*pElement.height)/2)){
+            pElement.mouseOver = true;
+        }
+        else{
+            pElement.mouseOver = false;
+        }
+    }
+    else{
+        pElement.mouseOver = false;
+    }
+}

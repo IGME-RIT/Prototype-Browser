@@ -1,11 +1,9 @@
 "use strict";
-var position;
-var lessonNodeArray;
 
 //parameter is a point that denotes starting position
 function board(startPosition, lessonNodes){
-    position = startPosition;
-    lessonNodeArray = lessonNodes;
+    this.position = startPosition;
+    this.lessonNodeArray = lessonNodes;
 }
 
 board.drawLib = undefined;
@@ -39,16 +37,16 @@ function calculateBounds(){
 var p = board.prototype;
 
 p.move = function(pX, pY){
-    position.x += pX;
-    position.y += pY;
+    this.position.x += pX;
+    this.position.y += pY;
 };
 
 p.draw = function(ctx, center, activeHeight){
     ctx.save();
     //translate to the center of the screen
-    ctx.translate(center.x - position.x, center.y - position.y);
-    for(var i = 0; i < lessonNodeArray.length; i++){
-        lessonNodeArray[i].draw(ctx);
+    ctx.translate(center.x - this.position.x, center.y - this.position.y);
+    for(var i = 0; i < this.lessonNodeArray.length; i++){
+        this.lessonNodeArray[i].draw(ctx);
     }
     ctx.restore();
 };
