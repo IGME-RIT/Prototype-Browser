@@ -1,9 +1,4 @@
 "use strict";
-var position;
-var width;
-var height;
-var clicked;
-var hovered;
 
 //parameter is a point that denotes starting position
 function button(startPosition, width, height){

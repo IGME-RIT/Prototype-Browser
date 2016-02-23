@@ -19,6 +19,7 @@ function game(){
     
     var testLessonNodeArray = [];
     testLessonNodeArray.push(new LessonNode(new Point(0,0), "images/dog.png"));
+    testLessonNodeArray.push(new LessonNode(new Point(100,100), "images/goldDog.png"));
     
     boardArray = [];
     boardArray.push(new Board(new Point(0,0), testLessonNodeArray));

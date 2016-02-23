@@ -1,11 +1,5 @@
 "use strict";
 
-var position;
-var width;
-var height;
-var image;
-var scaleFactor;
-
 //parameter is a point that denotes starting position
 function lessonNode(startPosition, imagePath){
     this.position = startPosition;
@@ -18,11 +12,11 @@ function lessonNode(startPosition, imagePath){
     var tempImage = new Image();
     try{
         tempImage.src = imagePath;
-        image = tempImage;
+        this.image = tempImage;
     }
     catch (e) {
         tempImage.src = "images/dog.png";
-        image = tempImage;
+        this.image = tempImage;
     }
 }
 
@@ -40,7 +34,7 @@ p.draw = function(ctx){
         ctx.shadowColor = 'blue';
         ctx.shadowBlur = 30;
     }
-    ctx.drawImage(image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
+    ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
     
     ctx.restore();
 };
