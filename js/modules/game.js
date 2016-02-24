@@ -5,26 +5,22 @@ var DrawLib = require('./drawLib.js');
 var LessonNode = require('./lessonNode.js');
 var Utilities = require('./utilities.js');
 
-var boardArray;
-var activeBoardIndex;
+var board;
 var painter;
 
 var mouseState;
 var previousMouseState;
+var mouseDownOverElement;
 
 function game(){
     painter = new DrawLib();
     
-    activeBoardIndex = 0;
     
     var testLessonNodeArray = [];
     testLessonNodeArray.push(new LessonNode(new Point(0,0), "images/dog.png"));
     testLessonNodeArray.push(new LessonNode(new Point(100,100), "images/goldDog.png"));
     
-    boardArray = [];
-    boardArray.push(new Board(new Point(0,0), testLessonNodeArray));
-    
-    
+    board = new Board(new Point(0,0), testLessonNodeArray);
 }
 
 var p = game.prototype;
@@ -44,15 +40,15 @@ p.act = function(pMouseState){
     "<br>Over Canvas = " + mouseState.mouseIn;
     
     //collision detection, iterate through each node in the active board
-    for(var i = 0; i < boardArray[activeBoardIndex].lessonNodeArray.length; i++){
-        var targetLessonNode = boardArray[activeBoardIndex].lessonNodeArray[i];
-        mouseIntersect(targetLessonNode, boardArray[activeBoardIndex].position, targetLessonNode.scaleFactor);
+    for(var i = 0; i < board.lessonNodeArray.length; i++){
+        var targetLessonNode = board.lessonNodeArray[i];
+        mouseIntersect(targetLessonNode, board.position, targetLessonNode.scaleFactor);
     }
     
     
     //moving the board
     if(mouseState.mouseDown == true){
-        boardArray[activeBoardIndex].move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
+        board.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
     }
 }
 
@@ -65,7 +61,7 @@ p.draw = function(ctx, canvas, center, activeHeight){
     painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
     
     //drawing lesson nodes
-    boardArray[0].draw(ctx, center, activeHeight);
+    board.draw(ctx, center, activeHeight);
     
     ctx.restore();
 }

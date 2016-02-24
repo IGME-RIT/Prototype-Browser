@@ -31,8 +31,8 @@ p.draw = function(ctx){
     if(this.mouseOver){
         //ctx.shadowOffsetX = 10;
         //ctx.shadowOffsetY = 10;
-        ctx.shadowColor = 'blue';
-        ctx.shadowBlur = 30;
+        ctx.shadowColor = 'dodgerBlue';
+        ctx.shadowBlur = 20;
     }
     ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
     
