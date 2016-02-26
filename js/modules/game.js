@@ -10,11 +10,15 @@ var painter;
 
 var mouseState;
 var previousMouseState;
-var mouseDownOverElement;
+var draggingDisabled;
+var mouseTarget;
+var mouseSustainedDown;
 
 function game(){
     painter = new DrawLib();
     
+    draggingDisabled = false;
+    mouseSustainedDown = false;
     
     var testLessonNodeArray = [];
     testLessonNodeArray.push(new LessonNode(new Point(0,0), "images/dog.png"));
@@ -35,21 +39,59 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
 p.act = function(pMouseState){
     previousMouseState = mouseState;
     mouseState = pMouseState;
-    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
-    "<br>Clicked = " + mouseState.mouseDown + 
-    "<br>Over Canvas = " + mouseState.mouseIn;
+    mouseTarget = 0;
+    
     
     //collision detection, iterate through each node in the active board
     for(var i = 0; i < board.lessonNodeArray.length; i++){
         var targetLessonNode = board.lessonNodeArray[i];
         mouseIntersect(targetLessonNode, board.position, targetLessonNode.scaleFactor);
+        if(targetLessonNode.mouseOver == true){
+            mouseTarget = targetLessonNode;
+            break;
+        }
     }
     
+    console.log(mouseTarget);
+    if(mouseTarget != 0){
+        //if mouseDown
+        if(mouseState.mouseDown == true && previousMouseState.mouseDown == false){
+            mouseSustainedDown = true;
+            draggingDisabled = true;
+        }
+        //if mouseUp click event
+    }
+    else{
+        //if not a sustained down
+        if(mouseSustainedDown == false){
+            draggingDisabled = false;
+        }
+    }
+    if(mouseState.mouseDown == false && previousMouseState.mouseDown == true){
+        mouseSustainedDown = false;
+    }
+    
+    /*if(draggingDisabled == true){
+        if(firstFrame == false){
+            if(previousMouseState.mouseDown == true && mouseState.mouseDown == false){
+                draggingDisabled = false;
+            }
+        }
+        else{
+            draggingDisabled = false;
+        }
+    }*/
     
     //moving the board
-    if(mouseState.mouseDown == true){
+    if(mouseState.mouseDown == true && draggingDisabled == false){
         board.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
     }
+    
+    
+    
+    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
+    "<br>Clicked = " + mouseState.mouseDown + 
+    "<br>Over Canvas = " + mouseState.mouseIn;
 }
 
 p.draw = function(ctx, canvas, center, activeHeight){
