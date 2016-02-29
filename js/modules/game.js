@@ -40,6 +40,9 @@ p.act = function(pMouseState){
     previousMouseState = mouseState;
     mouseState = pMouseState;
     mouseTarget = 0;
+    if(typeof previousMouseState === 'undefined'){
+        previousMouseState = mouseState;
+    }
     
     
     //collision detection, iterate through each node in the active board
@@ -52,7 +55,7 @@ p.act = function(pMouseState){
         }
     }
     
-    console.log(mouseTarget);
+    //console.log(mouseTarget);
     if(mouseTarget != 0){
         //if mouseDown
         if(mouseState.mouseDown == true && previousMouseState.mouseDown == false){
