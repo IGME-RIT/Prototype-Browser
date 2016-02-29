@@ -7,6 +7,7 @@ function lessonNode(startPosition, imagePath){
     this.height = 100;
     this.mouseOver = false;
     this.scaleFactor = 1;
+    this.type = "lessonNode";
     
     //image loading
     var tempImage = new Image();
