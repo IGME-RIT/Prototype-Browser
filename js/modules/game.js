@@ -55,7 +55,7 @@ p.act = function(pMouseState){
         }
     }
     
-    //console.log(mouseTarget);
+    //if the element that the mouse is hovering over is NOT the canvas
     if(mouseTarget != 0){
         //if mouseDown
         if(mouseState.mouseDown == true && previousMouseState.mouseDown == false){
@@ -63,6 +63,9 @@ p.act = function(pMouseState){
             draggingDisabled = true;
         }
         //if mouseUp click event
+        else if(mouseState.mouseDown == false && previousMouseState.mouseDown == true){
+            console.log(mouseTarget.type);
+        }
     }
     else{
         //if not a sustained down
@@ -74,17 +77,6 @@ p.act = function(pMouseState){
         mouseSustainedDown = false;
     }
     
-    /*if(draggingDisabled == true){
-        if(firstFrame == false){
-            if(previousMouseState.mouseDown == true && mouseState.mouseDown == false){
-                draggingDisabled = false;
-            }
-        }
-        else{
-            draggingDisabled = false;
-        }
-    }*/
-    
     //moving the board
     if(mouseState.mouseDown == true && draggingDisabled == false){
         board.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
@@ -94,7 +86,8 @@ p.act = function(pMouseState){
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
     "<br>Clicked = " + mouseState.mouseDown + 
-    "<br>Over Canvas = " + mouseState.mouseIn;
+    "<br>Over Canvas = " + mouseState.mouseIn + 
+    "<br>Clicked = " + mouseState.mouseDown;
 }
 
 p.draw = function(ctx, canvas, center, activeHeight){
@@ -113,7 +106,7 @@ p.draw = function(ctx, canvas, center, activeHeight){
 
 module.exports = game;
 
-//pElement is the object on the canvas that is being checked against the mouse, pOffseter will most likely be the board so we can subtract position or whatever it needs to remain aligned
+//pElement is the object on the canvas that is being checked against the mouse, pOffsetter will most likely be the board so we can subtract position or whatever it needs to remain aligned
 function mouseIntersect(pElement, pOffsetter, pScale){
     if(mouseState.relativePosition.x + pOffsetter.x > (pElement.position.x - (pScale*pElement.width)/2) && mouseState.relativePosition.x + pOffsetter.x < (pElement.position.x + (pScale*pElement.width)/2)){
         if(mouseState.relativePosition.y + pOffsetter.y > (pElement.position.y - (pScale*pElement.height)/2) && mouseState.relativePosition.y + pOffsetter.y < (pElement.position.y + (pScale*pElement.height)/2)){
