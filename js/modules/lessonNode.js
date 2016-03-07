@@ -40,4 +40,8 @@ p.draw = function(ctx){
     ctx.restore();
 };
 
+p.click = function(mouseState){
+    console.log("whoopity doo");
+}
+
 module.exports = lessonNode;

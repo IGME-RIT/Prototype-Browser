@@ -65,6 +65,7 @@ p.act = function(pMouseState){
         //if mouseUp click event
         else if(mouseState.mouseDown == false && previousMouseState.mouseDown == true){
             console.log(mouseTarget.type);
+            mouseTarget.click(mouseState);
         }
     }
     else{
