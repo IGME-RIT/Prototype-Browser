@@ -3,13 +3,12 @@
 //parameter is a point that denotes starting position
 function lessonNode(startPosition, imagePath){
     this.position = startPosition;
-    this.width = 100;
-    this.height = 100;
     this.mouseOver = false;
     this.scaleFactor = 1;
     this.type = "lessonNode";
     
-    //image loading
+    
+    //image loading and resizing
     var tempImage = new Image();
     try{
         tempImage.src = imagePath;
@@ -18,6 +17,32 @@ function lessonNode(startPosition, imagePath){
     catch (e) {
         tempImage.src = "images/dog.png";
         this.image = tempImage;
+    }
+    this.width = this.image.naturalWidth;
+    this.height = this.image.naturalHeight;
+    var maxDimension = 100;
+    //too small?
+    if(this.width < maxDimension && this.height < maxDimension){
+        var x;
+        if(this.width > this.height){
+            x = maxDimension / this.width;
+        }
+        else{
+            x = maxDimension / this.height;
+        }
+        this.width = this.width * x;
+        this.height = this.height * x;
+    }
+    if(this.width > maxDimension || this.height > maxDimension){
+        var x;
+        if(this.width > this.height){
+            x = this.width / maxDimension;
+        }
+        else{
+            x = this.height / maxDimension;
+        }
+        this.width = this.width / x;
+        this.height = this.height / x;
     }
 }
 
@@ -30,8 +55,6 @@ p.draw = function(ctx){
     //draw the image, shadow if hovered
     ctx.save();
     if(this.mouseOver){
-        //ctx.shadowOffsetX = 10;
-        //ctx.shadowOffsetY = 10;
         ctx.shadowColor = 'dodgerBlue';
         ctx.shadowBlur = 20;
     }
