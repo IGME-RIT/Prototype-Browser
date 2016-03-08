@@ -31,21 +31,19 @@ function game(){
 var p = game.prototype;
 
 p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
-    //update stuff
-    p.act(pMouseState);
-    //draw stuff
-    p.draw(ctx, canvas, center, activeHeight);
-}
-
-p.act = function(pMouseState){
     previousMouseState = mouseState;
     mouseState = pMouseState;
     mouseTarget = 0;
     if(typeof previousMouseState === 'undefined'){
         previousMouseState = mouseState;
     }
-    
-    
+    //update stuff
+    p.act();
+    //draw stuff
+    p.draw(ctx, canvas, center, activeHeight);
+}
+
+p.act = function(){
     //collision detection, iterate through each node in the active board
     for(var i = 0; i < board.lessonNodeArray.length; i++){
         var targetLessonNode = board.lessonNodeArray[i];
