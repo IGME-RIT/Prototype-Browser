@@ -4,6 +4,7 @@ var Point = require('./point.js');
 var DrawLib = require('./drawLib.js');
 var LessonNode = require('./lessonNode.js');
 var Utilities = require('./utilities.js');
+var ActiveJSON = require('../../data/lessons.json');
 
 var board;
 var painter;
@@ -21,12 +22,16 @@ function game(){
     mouseSustainedDown = false;
     
     var testLessonNodeArray = [];
-    testLessonNodeArray.push(new LessonNode(new Point(0,0), "images/dog.png"));
-    testLessonNodeArray.push(new LessonNode(new Point(100,100), "images/goldDog.png"));
-    testLessonNodeArray.push(new LessonNode(new Point(100,-100), "images/smolDog.png"));
+    
+    for(var i = 0; i < ActiveJSON.length; i++){
+        testLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), "images/dog.png"));
+    }
+    
+    //testLessonNodeArray.push(new LessonNode(new Point(100,100), "images/goldDog.png"));
+    //testLessonNodeArray.push(new LessonNode(new Point(100,-100), "images/smolDog.png"));
     
     board = new Board(new Point(0,0), testLessonNodeArray);
-}
+}	
 
 var p = game.prototype;
 
