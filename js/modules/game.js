@@ -16,6 +16,8 @@ var mouseTarget;
 var mouseSustainedDown;
 
 function game(){
+    loadJSON("http://stormy-basin-72119.herokuapp.com/repos");
+    
     painter = new DrawLib();
     
     draggingDisabled = false;
@@ -32,6 +34,21 @@ function game(){
     
     board = new Board(new Point(0,0), testLessonNodeArray);
 }	
+
+function loadJSON(pFilePath){
+    var xhr = new XMLHttpRequest();
+    var tempJSONContainer;
+
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === XMLHttpRequest.DONE){
+            tempJSONContainer = JSON.parse(xhr.responseText);
+        }
+    }
+
+    xhr.open('GET', pFilePath, true);
+    xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2010 00:00:00 GM0T");
+    xhr.send();
+}
 
 var p = game.prototype;
 
