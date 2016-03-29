@@ -6,8 +6,10 @@ var LessonNode = require('./lessonNode.js');
 var Utilities = require('./utilities.js');
 var ActiveJSON = require('../../data/lessons.json');
 
+var GAME_PHASE = Object.freeze({LANDING: 0, SELECTION: 1, BOARD: 2});
+
 var board;
-var painter;
+//var painter;
 var utility;
 
 var mouseState;
@@ -18,12 +20,12 @@ var mouseSustainedDown;
 
 var tempJSONContainer;
 
-var GAME_STATE = Object.freeze({RED: 0, GREEN: 1, BLUE: 2});
+
 
 function game(){
     loadJSON("https://atlas-backend.herokuapp.com/repos");
     
-    painter = new DrawLib();
+    //painter = new DrawLib();
     utility = new Utilities();
     
     draggingDisabled = false;
@@ -57,6 +59,11 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     mouseTarget = 0;
     if(typeof previousMouseState === 'undefined'){
         previousMouseState = mouseState;
+    }
+    
+    
+    if(){
+        
     }
     //update stuff
     p.act();
