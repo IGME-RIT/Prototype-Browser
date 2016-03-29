@@ -19,4 +19,18 @@ p.clamp = function(value, min, max){
     //return Math.max(min, Math.min(max, value));
 }
 
+p.mouseIntersect = function(pMouseState, pElement, pOffsetter, pScale){
+    if(pMouseState.relativePosition.x + pOffsetter.x > (pElement.position.x - (pScale*pElement.width)/2) && pMouseState.relativePosition.x + pOffsetter.x < (pElement.position.x + (pScale*pElement.width)/2)){
+        if(pMouseState.relativePosition.y + pOffsetter.y > (pElement.position.y - (pScale*pElement.height)/2) && pMouseState.relativePosition.y + pOffsetter.y < (pElement.position.y + (pScale*pElement.height)/2)){
+            pElement.mouseOver = true;
+        }
+        else{
+            pElement.mouseOver = false;
+        }
+    }
+    else{
+        pElement.mouseOver = false;
+    }
+}
+
 module.exports = utilities;

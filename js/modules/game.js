@@ -8,6 +8,7 @@ var ActiveJSON = require('../../data/lessons.json');
 
 var board;
 var painter;
+var utility;
 
 var mouseState;
 var previousMouseState;
@@ -15,10 +16,15 @@ var draggingDisabled;
 var mouseTarget;
 var mouseSustainedDown;
 
+var tempJSONContainer;
+
+var GAME_STATE = Object.freeze({RED: 0, GREEN: 1, BLUE: 2});
+
 function game(){
-    loadJSON("http://stormy-basin-72119.herokuapp.com/repos");
+    loadJSON("https://atlas-backend.herokuapp.com/repos");
     
     painter = new DrawLib();
+    utility = new Utilities();
     
     draggingDisabled = false;
     mouseSustainedDown = false;
@@ -29,20 +35,13 @@ function game(){
         testLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), "images/dog.png"));
     }
     
-    //testLessonNodeArray.push(new LessonNode(new Point(100,100), "images/goldDog.png"));
-    //testLessonNodeArray.push(new LessonNode(new Point(100,-100), "images/smolDog.png"));
-    
     board = new Board(new Point(0,0), testLessonNodeArray);
 }	
 
 function loadJSON(pFilePath){
     var xhr = new XMLHttpRequest();
-    var tempJSONContainer;
-
-    xhr.onreadystatechange = function(){
-        if(xhr.readyState === XMLHttpRequest.DONE){
-            tempJSONContainer = JSON.parse(xhr.responseText);
-        }
+    xhr.onload = function(){
+        var tempJSONContainer = JSON.parse(xhr.responseText);
     }
 
     xhr.open('GET', pFilePath, true);
@@ -69,7 +68,7 @@ p.act = function(){
     //collision detection, iterate through each node in the active board
     for(var i = 0; i < board.lessonNodeArray.length; i++){
         var targetLessonNode = board.lessonNodeArray[i];
-        mouseIntersect(targetLessonNode, board.position, targetLessonNode.scaleFactor);
+        utility.mouseIntersect(mouseState, targetLessonNode, board.position, targetLessonNode.scaleFactor);
         if(targetLessonNode.mouseOver == true){
             mouseTarget = targetLessonNode;
             break;
@@ -108,8 +107,7 @@ p.act = function(){
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
     "<br>Clicked = " + mouseState.mouseDown + 
-    "<br>Over Canvas = " + mouseState.mouseIn + 
-    "<br>Clicked = " + mouseState.mouseDown;
+    "<br>Over Canvas = " + mouseState.mouseIn;
 }
 
 p.draw = function(ctx, canvas, center, activeHeight){
@@ -127,18 +125,3 @@ p.draw = function(ctx, canvas, center, activeHeight){
 }
 
 module.exports = game;
-
-//pElement is the object on the canvas that is being checked against the mouse, pOffsetter will most likely be the board so we can subtract position or whatever it needs to remain aligned
-function mouseIntersect(pElement, pOffsetter, pScale){
-    if(mouseState.relativePosition.x + pOffsetter.x > (pElement.position.x - (pScale*pElement.width)/2) && mouseState.relativePosition.x + pOffsetter.x < (pElement.position.x + (pScale*pElement.width)/2)){
-        if(mouseState.relativePosition.y + pOffsetter.y > (pElement.position.y - (pScale*pElement.height)/2) && mouseState.relativePosition.y + pOffsetter.y < (pElement.position.y + (pScale*pElement.height)/2)){
-            pElement.mouseOver = true;
-        }
-        else{
-            pElement.mouseOver = false;
-        }
-    }
-    else{
-        pElement.mouseOver = false;
-    }
-}
