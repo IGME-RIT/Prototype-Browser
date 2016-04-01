@@ -8,9 +8,9 @@ var ActiveJSON = require('../../data/lessons.json');
 
 var GAME_PHASE = Object.freeze({LANDING: 0, SELECTION: 1, BOARD: 2});
 
-var board;
 //var painter;
 var utility;
+var currentPhase;
 
 var mouseState;
 var previousMouseState;
@@ -27,6 +27,7 @@ function game(){
     
     //painter = new DrawLib();
     utility = new Utilities();
+    currentPhase = GAME_PHASE.BOARD;
     
     draggingDisabled = false;
     mouseSustainedDown = false;
@@ -37,7 +38,7 @@ function game(){
         testLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), "images/dog.png"));
     }
     
-    board = new Board(new Point(0,0), testLessonNodeArray);
+    //board = new Board(new Point(0,0), testLessonNodeArray);
 }	
 
 function loadJSON(pFilePath){
@@ -62,8 +63,8 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     }
     
     
-    if(){
-        
+    if(currentPhase == GAME_PHASE.BOARD){
+        //update active board object
     }
     //update stuff
     p.act();
@@ -73,14 +74,14 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
 
 p.act = function(){
     //collision detection, iterate through each node in the active board
-    for(var i = 0; i < board.lessonNodeArray.length; i++){
+    /*for(var i = 0; i < board.lessonNodeArray.length; i++){
         var targetLessonNode = board.lessonNodeArray[i];
         utility.mouseIntersect(mouseState, targetLessonNode, board.position, targetLessonNode.scaleFactor);
         if(targetLessonNode.mouseOver == true){
             mouseTarget = targetLessonNode;
             break;
         }
-    }
+    }*/
     
     //if the element that the mouse is hovering over is NOT the canvas
     if(mouseTarget != 0){
@@ -120,13 +121,13 @@ p.act = function(){
 p.draw = function(ctx, canvas, center, activeHeight){
     //draw board
     ctx.save();
-    painter.clear(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
-    painter.rect(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight, "white");
-    painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
-    painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
+    //painter.clear(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
+    //painter.rect(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight, "white");
+    //painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
+    //painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
     
     //drawing lesson nodes
-    board.draw(ctx, center, activeHeight);
+    //board.draw(ctx, center, activeHeight);
     
     ctx.restore();
 }
