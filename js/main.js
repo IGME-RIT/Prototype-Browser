@@ -4,28 +4,29 @@ var Game = require('./modules/game.js');
 var Point = require('./modules/point.js');
 var MouseState = require('./modules/mouseState.js');
 
-//variables
+//game objects
 var game;
 var canvas;
 var ctx;
 
+//responsiveness
 var header;
 var activeHeight;
 var center;
 
+//mouse handling
 var mousePosition;
 var relativeMousePosition;
 var mouseDown;
 var mouseIn;
-/*app.IMAGES = {
-    testImage: "images/dog.png"
- };*/
 
+//fires when the window loads
 window.onload = function(e){
     initializeVariables();
     loop();
 }
 
+//initialization, mouse events, and game instantiation
 function initializeVariables(){
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
@@ -40,7 +41,7 @@ function initializeVariables(){
     mousePosition = new Point(0,0);
     relativeMousePosition = new Point(0,0);
     
-    //event listener for when the mouse moves over the canvas
+    //event listeners for mouse interactions with the canvas
     canvas.addEventListener("mousemove", function(e){
         var boundRect = canvas.getBoundingClientRect();
         mousePosition = new Point(e.clientX - boundRect.left, e.clientY - boundRect.top);
@@ -65,11 +66,13 @@ function initializeVariables(){
     game = new Game();
 }
 
+//fires once per frame
 function loop(){
     window.requestAnimationFrame(loop.bind(this));
     game.update(ctx, canvas, 0, center, activeHeight, new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn));
 }
 
+//listens for changes in size of window and adjusts variables accordingly
 window.addEventListener("resize", function(e){
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
