@@ -8,7 +8,8 @@ var ActiveJSON = require('../../data/lessons.json');
 
 var GAME_PHASE = Object.freeze({LANDING: 0, SELECTION: 1, BOARD: 2});
 
-//var painter;
+var painter;
+var board;
 var utility;
 var currentPhase;
 
@@ -25,7 +26,7 @@ var tempJSONContainer;
 function game(){
     loadJSON("https://atlas-backend.herokuapp.com/repos");
     
-    //painter = new DrawLib();
+    painter = new DrawLib();
     utility = new Utilities();
     currentPhase = GAME_PHASE.BOARD;
     
@@ -38,7 +39,7 @@ function game(){
         testLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), "images/dog.png"));
     }
     
-    //board = new Board(new Point(0,0), testLessonNodeArray);
+    board = new Board(new Point(0,0), testLessonNodeArray);
 }	
 
 function loadJSON(pFilePath){
@@ -121,13 +122,13 @@ p.act = function(){
 p.draw = function(ctx, canvas, center, activeHeight){
     //draw board
     ctx.save();
-    //painter.clear(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
-    //painter.rect(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight, "white");
-    //painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
-    //painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
+    painter.clear(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
+    painter.rect(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight, "white");
+    painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
+    painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
     
     //drawing lesson nodes
-    //board.draw(ctx, center, activeHeight);
+    board.draw(ctx, center, activeHeight);
     
     ctx.restore();
 }
