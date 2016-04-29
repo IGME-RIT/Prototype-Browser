@@ -1,5 +1,6 @@
 "use strict";
-var Board = require('./board.js');
+var BoardPhase = require('./phases/boardPhase.js');
+
 var Point = require('./point.js');
 var DrawLib = require('./drawLib.js');
 var LessonNode = require('./lessonNode.js');
@@ -11,7 +12,8 @@ var GAME_PHASE = Object.freeze({LANDING: 0, SELECTION: 1, BOARD: 2});
 var painter;
 var board;
 var utility;
-var currentPhase;
+var phaseEnum;
+var activePhase;
 
 var mouseState;
 var previousMouseState;
@@ -19,13 +21,11 @@ var draggingDisabled;
 var mouseTarget;
 var mouseSustainedDown;
 
-var tempJSONContainer;
+var JSONLoad = false;
 
 
 
-function game(){
-    loadJSON("https://atlas-backend.herokuapp.com/repos");
-    
+function game(){    
     painter = new DrawLib();
     utility = new Utilities();
     currentPhase = GAME_PHASE.BOARD;
@@ -33,24 +33,7 @@ function game(){
     draggingDisabled = false;
     mouseSustainedDown = false;
     
-    var testLessonNodeArray = [];
-    
-    for(var i = 0; i < ActiveJSON.length; i++){
-        testLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), "images/dog.png"));
-    }
-    
-    board = new Board(new Point(0,0), testLessonNodeArray);
-}	
-
-function loadJSON(pFilePath){
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function(){
-        var tempJSONContainer = JSON.parse(xhr.responseText);
-    }
-
-    xhr.open('GET', pFilePath, true);
-    xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2010 00:00:00 GM0T");
-    xhr.send();
+    boardPhase("https://atlas-backend.herokuapp.com/repos");
 }
 
 var p = game.prototype;
@@ -127,8 +110,11 @@ p.draw = function(ctx, canvas, center, activeHeight){
     painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
     painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
     
+    if(JSONLoad){
+        board.draw(ctx, center, activeHeight);
+    }
     //drawing lesson nodes
-    board.draw(ctx, center, activeHeight);
+    
     
     ctx.restore();
 }
