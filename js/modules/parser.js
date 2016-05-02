@@ -9,7 +9,7 @@ function parser(pTargetURL, callback){
             callback(JSONObject);
         }
 
-        xhr.open('GET', pFilePath, true);
+        xhr.open('GET', pTargetURL, true);
         xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2010 00:00:00 GM0T");
         xhr.send();
 }

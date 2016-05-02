@@ -5,7 +5,6 @@ var Point = require('./point.js');
 var DrawLib = require('./drawLib.js');
 var LessonNode = require('./lessonNode.js');
 var Utilities = require('./utilities.js');
-var ActiveJSON = require('../../data/lessons.json');
 
 var GAME_PHASE = Object.freeze({LANDING: 0, SELECTION: 1, BOARD: 2});
 
@@ -28,12 +27,12 @@ var JSONLoad = false;
 function game(){    
     painter = new DrawLib();
     utility = new Utilities();
-    currentPhase = GAME_PHASE.BOARD;
+    phaseEnum = GAME_PHASE.BOARD;
     
     draggingDisabled = false;
     mouseSustainedDown = false;
     
-    boardPhase("https://atlas-backend.herokuapp.com/repos");
+    activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
 }
 
 var p = game.prototype;
@@ -42,12 +41,16 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     previousMouseState = mouseState;
     mouseState = pMouseState;
     mouseTarget = 0;
+    
+    activePhase.update(ctx, canvas, dt, center, activeHeight, pMouseState);
+    
     if(typeof previousMouseState === 'undefined'){
+        activePhase;
         previousMouseState = mouseState;
     }
     
     
-    if(currentPhase == GAME_PHASE.BOARD){
+    if(activePhase === GAME_PHASE.BOARD){
         //update active board object
     }
     //update stuff
@@ -70,29 +73,29 @@ p.act = function(){
     //if the element that the mouse is hovering over is NOT the canvas
     if(mouseTarget != 0){
         //if mouseDown
-        if(mouseState.mouseDown == true && previousMouseState.mouseDown == false){
+        if(mouseState.mouseDown === true && previousMouseState.mouseDown === false){
             mouseSustainedDown = true;
             draggingDisabled = true;
         }
         //if mouseUp click event
-        else if(mouseState.mouseDown == false && previousMouseState.mouseDown == true){
+        else if(mouseState.mouseDown === false && previousMouseState.mouseDown === true){
             console.log(mouseTarget.type);
             mouseTarget.click(mouseState);
         }
     }
     else{
         //if not a sustained down
-        if(mouseSustainedDown == false){
+        if(mouseSustainedDown === false){
             draggingDisabled = false;
         }
     }
-    if(mouseState.mouseDown == false && previousMouseState.mouseDown == true){
+    if(mouseState.mouseDown === false && previousMouseState.mouseDown === true){
         mouseSustainedDown = false;
     }
     
     //moving the board
-    if(mouseState.mouseDown == true && draggingDisabled == false){
-        board.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
+    if(mouseState.mouseDown === true && draggingDisabled === false){
+        activePhase.activeBoard.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
     }
     
     
@@ -109,13 +112,6 @@ p.draw = function(ctx, canvas, center, activeHeight){
     painter.rect(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight, "white");
     painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
     painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
-    
-    if(JSONLoad){
-        board.draw(ctx, center, activeHeight);
-    }
-    //drawing lesson nodes
-    
-    
     ctx.restore();
 }
 
