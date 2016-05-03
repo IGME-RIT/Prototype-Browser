@@ -69,6 +69,7 @@ function initializeVariables(){
 //fires once per frame
 function loop(){
     window.requestAnimationFrame(loop.bind(this));
+    //passing context, canvas, delta time, center point, usable height, mouse state
     game.update(ctx, canvas, 0, center, activeHeight, new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn));
 }
 

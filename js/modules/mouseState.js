@@ -10,6 +10,12 @@ function mouseState(pPosition, pRelativePosition, pMousedown, pMouseIn){
     this.relativePosition = pRelativePosition;
     this.mouseDown = pMousedown;
     this.mouseIn = pMouseIn;
+    
+    //tracking previous mouse states
+    this.lastPosition = pPosition;
+    this.lastRelativePosition = pRelativePosition;
+    this.lastMouseDown = pMousedown;
+    this.lastMouseIn = pMouseIn;
 }
 
 var p = mouseState.prototype;

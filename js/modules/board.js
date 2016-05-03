@@ -41,6 +41,7 @@ p.move = function(pX, pY){
     this.position.y += pY;
 };
 
+//context, center point, usable height
 p.draw = function(ctx, center, activeHeight){
     ctx.save();
     //translate to the center of the screen

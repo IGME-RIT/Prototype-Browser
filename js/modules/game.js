@@ -37,12 +37,13 @@ function game(){
 
 var p = game.prototype;
 
+//passing context, canvas, delta time, center point, usable height, mouse state
 p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     previousMouseState = mouseState;
     mouseState = pMouseState;
     mouseTarget = 0;
     
-    activePhase.update(ctx, canvas, dt, center, activeHeight, pMouseState);
+    
     
     if(typeof previousMouseState === 'undefined'){
         activePhase;
@@ -57,6 +58,8 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     p.act();
     //draw stuff
     p.draw(ctx, canvas, center, activeHeight);
+    
+    activePhase.update(ctx, canvas, dt, center, activeHeight, pMouseState);
 }
 
 p.act = function(){
@@ -70,6 +73,7 @@ p.act = function(){
         }
     }*/
     
+    /*
     //if the element that the mouse is hovering over is NOT the canvas
     if(mouseTarget != 0){
         //if mouseDown
@@ -97,7 +101,7 @@ p.act = function(){
     if(mouseState.mouseDown === true && draggingDisabled === false){
         activePhase.activeBoard.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
     }
-    
+    */
     
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
