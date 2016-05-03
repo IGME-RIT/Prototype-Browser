@@ -20,6 +20,8 @@ var relativeMousePosition;
 var mouseDown;
 var mouseIn;
 
+var mouseState;
+
 //fires when the window loads
 window.onload = function(e){
     initializeVariables();
@@ -63,14 +65,20 @@ function initializeVariables(){
         mouseDown = false;
     });
     
+    mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn);
+    
+    
     game = new Game();
 }
 
 //fires once per frame
 function loop(){
     window.requestAnimationFrame(loop.bind(this));
+    
+    mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn);
+    
     //passing context, canvas, delta time, center point, usable height, mouse state
-    game.update(ctx, canvas, 0, center, activeHeight, new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn));
+    game.update(ctx, canvas, 0, center, activeHeight, mouseState);
 }
 
 //listens for changes in size of window and adjusts variables accordingly

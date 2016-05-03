@@ -46,7 +46,6 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     
     
     if(typeof previousMouseState === 'undefined'){
-        activePhase;
         previousMouseState = mouseState;
     }
     
@@ -116,6 +115,10 @@ p.draw = function(ctx, canvas, center, activeHeight){
     painter.rect(ctx, 0, 0, canvas.offsetWidth, canvas.offsetHeight, "white");
     painter.line(ctx, canvas.offsetWidth/2, center.y - activeHeight/2, canvas.offsetWidth/2, canvas.offsetHeight, 2, "lightgray");
     painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
+    
+    //mouseposition
+    painter.circle(ctx, mouseState.relativePosition.x, mouseState.relativePosition.y, 5,"red");
+    painter.circle(ctx, mouseState.lastRelativePosition.x, mouseState.lastRelativePosition.y, 5,"green");
     ctx.restore();
 }
 
