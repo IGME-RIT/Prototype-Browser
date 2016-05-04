@@ -1,27 +1,40 @@
 "use strict";
 
+var imageLoaded;
+
 //parameter is a point that denotes starting position
 function lessonNode(startPosition, imagePath){
+    imageLoaded = false;
+    
     this.position = startPosition;
     this.mouseOver = false;
     this.scaleFactor = 1;
     this.type = "lessonNode";
-    
+    //this.width = 100;
+    //this.height = 100;
     
     //image loading and resizing
     var tempImage = new Image();
-    try{
-        tempImage.src = imagePath;
-        this.image = tempImage;
+    tempImage.src = imagePath;
+    
+    if(tempImage.complete){
+        p.loadAction(tempImage);
     }
-    catch (e) {
-        tempImage.src = "images/dog.png";
-        this.image = tempImage;
+    else{
+        tempImage.addEventListener('load', p.loadAction(tempImage));
+        tempImage.addEventListener('error', errorAction);
     }
-    this.width = this.image.naturalWidth;
-    this.height = this.image.naturalHeight;
+}
+
+var p = lessonNode.prototype;
+
+p.loadAction = function(pTempImage){
+    this.image = pTempImage;
+    this.width = pTempImage.naturalWidth;
+    this.height = pTempImage.naturalHeight;
+    
     var maxDimension = 100;
-    //too small?
+    
     if(this.width < maxDimension && this.height < maxDimension){
         var x;
         if(this.width > this.height){
@@ -44,29 +57,37 @@ function lessonNode(startPosition, imagePath){
         this.width = this.width / x;
         this.height = this.height / x;
     }
+    
+    imageLoaded = true;
+}
+function errorAction(){
+    //alert("There was an error loading an image. Whoops");
 }
 
 lessonNode.drawLib = undefined;
 
-var p = lessonNode.prototype;
+
 
 p.draw = function(ctx){
-    //lessonNode.drawLib.circle(ctx, this.position.x, this.position.y, 10, "red");
-    //draw the image, shadow if hovered
-    ctx.save();
-    /*
-    if(this.mouseOver){
-        ctx.shadowColor = 'dodgerBlue';
-        ctx.shadowBlur = 20;
+    if(imageLoaded === true){
+        //lessonNode.drawLib.circle(ctx, this.position.x, this.position.y, 10, "red");
+        //draw the image, shadow if hovered
+        ctx.save();
+        /*
+        if(this.mouseOver){
+            ctx.shadowColor = 'dodgerBlue';
+            ctx.shadowBlur = 20;
+        }
+        */
+        ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
+
+        ctx.restore();
     }
-    */
-    ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
     
-    ctx.restore();
 };
 
 p.click = function(mouseState){
-    console.log("whoopity doo");
+    console.log("clicked");
 }
 
 module.exports = lessonNode;

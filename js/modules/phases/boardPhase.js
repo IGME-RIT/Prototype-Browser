@@ -32,9 +32,11 @@ function boardLoadedCallback(pJSONElements){
 
 var p = boardPhase.prototype;
 
+//passing context, canvas, delta time, center point, usable height, mouse state
 p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     if(boardLoaded){
         p.act();
+        //context, center point, usable height
         p.draw(ctx, center, activeHeight);
     }
 }

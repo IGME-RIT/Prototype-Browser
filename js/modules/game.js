@@ -117,8 +117,8 @@ p.draw = function(ctx, canvas, center, activeHeight){
     painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
     
     //mouseposition
-    painter.circle(ctx, mouseState.relativePosition.x, mouseState.relativePosition.y, 5,"red");
-    painter.circle(ctx, mouseState.lastRelativePosition.x, mouseState.lastRelativePosition.y, 5,"green");
+    painter.circle(ctx, mouseState.lastRelativePosition.x + center.x, mouseState.lastRelativePosition.y + center.y, 5,"green");
+    painter.circle(ctx, mouseState.relativePosition.x + center.x, mouseState.relativePosition.y + center.y, 5,"red");
     ctx.restore();
 }
 
