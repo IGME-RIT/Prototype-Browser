@@ -95,17 +95,10 @@ p.act = function(){
     if(mouseState.mouseDown === false && previousMouseState.mouseDown === true){
         mouseSustainedDown = false;
     }
-    
-    //moving the board
-    if(mouseState.mouseDown === true && draggingDisabled === false){
-        activePhase.activeBoard.move(previousMouseState.position.x - mouseState.position.x, previousMouseState.position.y - mouseState.position.y);
-    }
     */
     
     
-    document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
-    "<br>Clicked = " + mouseState.mouseDown + 
-    "<br>Over Canvas = " + mouseState.mouseIn;
+    
 }
 
 p.draw = function(ctx, canvas, center, activeHeight){

@@ -23,7 +23,7 @@ var p = mouseState.prototype;
 p.update = function(pPosition, pRelativePosition, pMouseDown, pMouseIn){
     this.lastPosition = this.position;
     this.lastRelativePosition = this.relativePosition;
-    this.lastMouseDown = this.mousedown;
+    this.lastMouseDown = this.mouseDown;
     this.lastMouseIn = this.mouseIn;
     
     this.position = pPosition;
