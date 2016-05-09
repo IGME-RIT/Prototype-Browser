@@ -1,5 +1,6 @@
 "use strict";
 var BoardPhase = require('./phases/boardPhase.js');
+var ScenePhase = require('./phases/scenePhase.js');
 
 var Point = require('./point.js');
 var DrawLib = require('./drawLib.js');
@@ -33,6 +34,7 @@ function game(){
     mouseSustainedDown = false;
     
     activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
+    //activePhase = new ScenePhase("testScene03", 0);
 }
 
 var p = game.prototype;

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       main: {
         files: [{
           expand: true,
-          src: ['*.html', '*.md', 'data/**/*', 'css/**/*', 'images/**/*', 'lib/**/*'],
+          src: ['*.html', '*.md', 'data/**/*', 'css/**/*', 'assets/**/*', 'lib/**/*'],
           dest: 'build/',
           filter: 'isFile'
         }]

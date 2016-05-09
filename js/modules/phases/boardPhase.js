@@ -69,7 +69,7 @@ p.act = function(){
     }
     //mouse handling for clicking
     if(mouseState.mouseDown === true && mouseState.lastMouseDown === true){
-        activeBoard.move(mouseState.lastPosition.x - mouseState.position.x, mouseState.lastPosition.y - mouseState.position.y);
+        
     }
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 

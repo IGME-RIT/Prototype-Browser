@@ -7,52 +7,54 @@ var utility;
 var painter;
 
 var sceneLoaded;
+var primaryImage;
 
 var mouseState;
 var mouseTarget;
 
 
-function scenePhase(pTargetURL){
+function scenePhase(pSceneName, pSceneStep){
     sceneLoaded = false;
     mouseTarget = 0;
     
     painter = new DrawLib();
     utility = new Utilities();
+    
+    var tempImage = new Image();
+    tempImage.src = "../../../assets/scenes/" + pSceneName + ".jpg";
+    if(tempImage.complete){
+        p.loadAction(tempImage);
+    }
+    else{
+        tempImage.addEventListener('load', p.loadAction(tempImage));
+        tempImage.addEventListener('error', errorAction);
+    }
 }
 
 var p = scenePhase.prototype;
 
+p.loadAction = function(pTempImage){
+    this.image = pTempImage;
+    
+    sceneLoaded = true;
+}
+function errorAction(){
+    //alert("There was an error loading an image. Whoops");
+}
+
 //passing context, canvas, delta time, center point, usable height, mouse state
 p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     mouseState = pMouseState;
-    if(boardLoaded){
-        p.act();
+    if(sceneLoaded){
+        p.act(canvas);
         //context, center point, usable height
         p.draw(ctx, center, activeHeight);
     }
 }
 
-p.act = function(){
-    //mouse handling for target calculation
-    for(var i = 0; i < activeBoard.lessonNodeArray.length; i++){
-        var targetLessonNode = activeBoard.lessonNodeArray[i];
-        utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, targetLessonNode.scaleFactor);
-        if(targetLessonNode.mouseOver == true){
-            mouseTarget = targetLessonNode;
-            break;
-        }
-        else{
-            mouseTarget = 0;
-        }
-    }
-    //mouse handling for board movement
-    if(mouseState.mouseDown === true && mouseState.lastMouseDown === true){
-        activeBoard.move(mouseState.lastPosition.x - mouseState.position.x, mouseState.lastPosition.y - mouseState.position.y);
-    }
-    //mouse handling for clicking
-    if(mouseState.mouseDown === true && mouseState.lastMouseDown === true){
-        activeBoard.move(mouseState.lastPosition.x - mouseState.position.x, mouseState.lastPosition.y - mouseState.position.y);
-    }
+p.act = function(canvas){
+    this.width = canvas.offsetWidth;
+    this.height = this.width * .5625;
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
     "<br>Current Clicked = " + mouseState.mouseDown + 
@@ -62,6 +64,14 @@ p.act = function(){
 }
 
 p.draw = function(ctx, center, activeHeight){
+    ctx.save();
+    //centerize all drawing 
+    ctx.translate(center.x, center.y);
+    //draw background
+    ctx.drawImage(this.image, -1 * (this.width)/2, -1 * (this.height)/2, this.width, this.height)
+    //draw actors
+    
+    ctx.restore();
 }
 
 
