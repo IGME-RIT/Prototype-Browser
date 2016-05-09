@@ -3,19 +3,20 @@
 var imageLoaded;
 
 //parameter is a point that denotes starting position
-function lessonNode(startPosition, imagePath){
+function lessonNode(startPosition, JSONChunk){
     imageLoaded = false;
     
     this.position = startPosition;
     this.mouseOver = false;
     this.scaleFactor = 1;
     this.type = "lessonNode";
+    this.data = JSONChunk;
     //this.width = 100;
     //this.height = 100;
     
     //image loading and resizing
     var tempImage = new Image();
-    tempImage.src = imagePath;
+    tempImage.src = JSONChunk.image.icon;
     
     if(tempImage.complete){
         p.loadAction(tempImage);

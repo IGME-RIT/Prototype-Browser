@@ -31,7 +31,7 @@ function boardLoadedCallback(pJSONElements){
     var tempLessonNodeArray = [];
     
     for(var i = 0; i < pJSONElements.length; i++){
-        tempLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), pJSONElements[i].image.icon));
+        tempLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), pJSONElements[i]));
     }
     
     activeBoard = new Board(new Point(0,0), tempLessonNodeArray);
