@@ -87,8 +87,8 @@ p.draw = function(ctx){
     
 };
 
-p.click = function(mouseState){
-    console.log("clicked");
+p.click = function(){
+    document.getElementById("detailWindow").className = "";
 }
 
 module.exports = lessonNode;

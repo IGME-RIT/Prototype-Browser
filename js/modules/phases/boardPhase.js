@@ -68,7 +68,10 @@ p.act = function(){
         activeBoard.move(mouseState.lastPosition.x - mouseState.position.x, mouseState.lastPosition.y - mouseState.position.y);
     }
     //mouse handling for clicking
-    if(mouseState.mouseDown === true && mouseState.lastMouseDown === true){
+    if(mouseState.mouseDown === true && mouseState.lastMouseDown === false){
+        if(mouseTarget != 0){
+            mouseTarget.click();
+        }
         
     }
     
