@@ -59,30 +59,30 @@ header {
     top: 15%;
     
 }
-#detailWindowBanner{
+#dwBanner{
     background-color: gray;
     width: 100%;
     height: 30%;
 }
-#detailWindowTags{
+#dwTags{
     background-color: dimgray;
     width: 100%;
     height: 7.5%;
 }
-.detailWindowTag{
+.dwTag{
     
 }
-#detailWindowDescription{
+#dwDescription{
     background-color: gray;
     width: 100%;
     height: 35%;
 }
-#detailWindowResources{
+#dwResources{
     background-color: dimgray;
     width: 100%;
     height: 20%;
 }
-#detailWindowAuthor{
+#dwAuthor{
     background-color: gray;
     width: 100%;
     height: 7.5%;
@@ -97,8 +97,5 @@ header {
 .hiddenLayer{
     opacity: 0;
     pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
 }
 

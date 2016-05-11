@@ -88,7 +88,12 @@ p.draw = function(ctx){
 };
 
 p.click = function(){
+    //set detailWindow values here
+    
     document.getElementById("detailLayer").className = "visible";
+    
+    document.getElementById("dwBannerTitle").innerHTML = this.data.title;
+    document.getElementById("dwDescriptionText").innerHTML = this.data.description;
 }
 
 module.exports = lessonNode;
