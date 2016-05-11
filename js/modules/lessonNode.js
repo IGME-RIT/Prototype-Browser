@@ -88,7 +88,7 @@ p.draw = function(ctx){
 };
 
 p.click = function(){
-    document.getElementById("detailWindow").className = "";
+    document.getElementById("detailLayer").className = "visible";
 }
 
 module.exports = lessonNode;

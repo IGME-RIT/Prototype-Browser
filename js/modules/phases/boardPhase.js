@@ -25,6 +25,8 @@ function boardPhase(pTargetURL){
     utility = new Utilities();
     parser = new Parser(pTargetURL, boardLoadedCallback);
     
+    document.getElementById("detailBlinder").onmousedown = function() { document.getElementById("detailLayer").className = "hiddenLayer"; }
+    
 }
 
 function boardLoadedCallback(pJSONElements){
