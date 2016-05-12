@@ -27,12 +27,19 @@ p.line = function(ctx, x1, y1, x2, y2, thickness, color) {
     ctx.restore();
 }
 
-p.circle = function(ctx, x, y, radius, color){
+p.circle = function(ctx, x, y, radius, color, filled, lineWidth){
     ctx.save();
     ctx.beginPath();
     ctx.arc(x,y, radius, 0, 2 * Math.PI, false);
-    ctx.fillStyle = color;
-    ctx.fill();
+    if(filled){
+        ctx.fillStyle = color;
+        ctx.fill(); 
+    }
+    else{
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
     ctx.restore();
 }
 

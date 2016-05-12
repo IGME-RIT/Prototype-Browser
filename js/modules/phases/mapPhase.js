@@ -6,33 +6,28 @@ var Utilities = require('../utilities.js');
 var utility;
 var painter;
 
-var sceneLoaded;
+var mapLoaded;
 var primaryImage;
+var activeLocation;
 
 var mouseState;
 var mouseTarget;
 
-var highlightArray;
 
-function scenePhase(pSceneName, pSceneStep){
-    sceneLoaded = false;
+
+function mapPhase(pMapName, pMapStep, pActiveLocation){
+    mapLoaded = false;
     mouseTarget = 0;
+    
+    activeLocation = pActiveLocation;
     
     painter = new DrawLib();
     utility = new Utilities();
     
-    highlightArray = [];
-    highlightArray.push(new Point(136,-161));
-    highlightArray.push(new Point(356,123));
-    highlightArray.push(new Point(-211,-183));
-    highlightArray.push(new Point(672,375));
-    highlightArray.push(new Point(-188,110));
-    
-    
     var tempImage = new Image();
-    tempImage.src = "../../../assets/scenes/" + pSceneName + ".jpg";
+    tempImage.src = "../../../assets/maps/" + pMapName + ".jpg";
     if(tempImage.complete){
-        p.loadAction(tempImage);
+        mapPhase.prototype.loadAction(tempImage);
     }
     else{
         tempImage.addEventListener('load', p.loadAction(tempImage));
@@ -40,30 +35,26 @@ function scenePhase(pSceneName, pSceneStep){
     }
 }
 
-var p = scenePhase.prototype;
-
-p.loadAction = function(pTempImage){
+mapPhase.prototype.loadAction = function(pTempImage){
     this.image = pTempImage;
     
-    sceneLoaded = true;
+    mapLoaded = true;
 }
 function errorAction(){
     //alert("There was an error loading an image. Whoops");
 }
 
-
 //passing context, canvas, delta time, center point, usable height, mouse state
-p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
+mapPhase.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     mouseState = pMouseState;
-    if(sceneLoaded){
+    if(mapLoaded){
         p.act(canvas);
         //context, center point, usable height
         p.draw(ctx, center, activeHeight);
     }
 }
 
-var canvasWidth;
-p.act = function(canvas){
+mapPhase.prototype.act = function(canvas){
     this.width = canvas.offsetWidth;
     this.height = this.width * .5625;
     
@@ -74,20 +65,16 @@ p.act = function(canvas){
     "<br>Over Canvas = " + mouseState.mouseIn;
 }
 
-p.draw = function(ctx, center, activeHeight){
+mapPhase.prototype.draw = function(ctx, center, activeHeight){
     ctx.save();
     //centerize all drawing 
     ctx.translate(center.x, center.y);
     //draw background
     ctx.drawImage(this.image, -1 * (this.width)/2, -1 * (this.height)/2, this.width, this.height)
-    
     //draw actors
-    for(var i = 0; i < highlightArray.length; i++){
-        painter.circle(ctx, utility.map(highlightArray[i].x, 0, 960, 0, this.width / 2), utility.map(highlightArray[i].y, 0, 540, 0, this.height / 2), 25, "cyan", false, 10);
-    }
     
     ctx.restore();
 }
 
 
-module.exports = scenePhase;
+module.exports = mapPhase;

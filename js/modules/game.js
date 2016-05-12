@@ -34,7 +34,7 @@ function game(){
     mouseSustainedDown = false;
     
     //activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
-    activePhase = new ScenePhase("testScene03", 0);
+    activePhase = new ScenePhase("testScene05", 0);
 }
 
 var p = game.prototype;
@@ -112,8 +112,8 @@ p.draw = function(ctx, canvas, center, activeHeight){
     painter.line(ctx, 0, center.y, canvas.offsetWidth, center.y, 2, "lightGray");
     
     //mouseposition
-    painter.circle(ctx, mouseState.lastRelativePosition.x + center.x, mouseState.lastRelativePosition.y + center.y, 5,"green");
-    painter.circle(ctx, mouseState.relativePosition.x + center.x, mouseState.relativePosition.y + center.y, 5,"red");
+    painter.circle(ctx, mouseState.lastRelativePosition.x + center.x, mouseState.lastRelativePosition.y + center.y, 5,"green", true);
+    painter.circle(ctx, mouseState.relativePosition.x + center.x, mouseState.relativePosition.y + center.y, 5,"red", true);
     ctx.restore();
 }
 
