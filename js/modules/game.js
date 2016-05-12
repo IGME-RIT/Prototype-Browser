@@ -33,8 +33,8 @@ function game(){
     draggingDisabled = false;
     mouseSustainedDown = false;
     
-    activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
-    //activePhase = new ScenePhase("testScene03", 0);
+    //activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
+    activePhase = new ScenePhase("testScene03", 0);
 }
 
 var p = game.prototype;

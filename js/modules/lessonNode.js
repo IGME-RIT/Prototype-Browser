@@ -1,38 +1,29 @@
 "use strict";
 
-var imageLoaded;
-
 //parameter is a point that denotes starting position
 function lessonNode(startPosition, JSONChunk){
-    imageLoaded = false;
+    this.imageLoaded = false;
     
     this.position = startPosition;
     this.mouseOver = false;
     this.scaleFactor = 1;
     this.type = "lessonNode";
     this.data = JSONChunk;
-    //this.width = 100;
-    //this.height = 100;
     
     //image loading and resizing
     var tempImage = new Image();
-    tempImage.src = JSONChunk.image.icon;
     
-    if(tempImage.complete){
-        p.loadAction(tempImage);
-    }
-    else{
-        tempImage.addEventListener('load', p.loadAction(tempImage));
-        tempImage.addEventListener('error', errorAction);
-    }
+    tempImage.addEventListener('load', _loadAction.bind(this), false);
+    tempImage.addEventListener('error', _errorAction);
+    
+    tempImage.src = JSONChunk.image.icon;
 }
 
-var p = lessonNode.prototype;
 
-p.loadAction = function(pTempImage){
-    this.image = pTempImage;
-    this.width = pTempImage.naturalWidth;
-    this.height = pTempImage.naturalHeight;
+var _loadAction = function (e) {
+    this.image = e.target;
+    this.width = e.target.naturalWidth;
+    this.height = e.target.naturalHeight;
     
     var maxDimension = 100;
     
@@ -59,27 +50,20 @@ p.loadAction = function(pTempImage){
         this.height = this.height / x;
     }
     
-    imageLoaded = true;
-}
-function errorAction(){
-    //alert("There was an error loading an image. Whoops");
-}
+    this.imageLoaded = true;
+};
+var _errorAction = function(e){
+    alert("There was an error loading an image.");
+};
 
-lessonNode.drawLib = undefined;
-
-
-
-p.draw = function(ctx){
-    if(imageLoaded === true){
-        //lessonNode.drawLib.circle(ctx, this.position.x, this.position.y, 10, "red");
+lessonNode.prototype.draw = function(ctx){
+    if(this.imageLoaded){
         //draw the image, shadow if hovered
         ctx.save();
-        /*
         if(this.mouseOver){
             ctx.shadowColor = 'dodgerBlue';
             ctx.shadowBlur = 20;
         }
-        */
         ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
 
         ctx.restore();
@@ -87,13 +71,13 @@ p.draw = function(ctx){
     
 };
 
-p.click = function(){
+lessonNode.prototype.click = function(){
     //set detailWindow values here
     
     document.getElementById("detailLayer").className = "visible";
     
     document.getElementById("dwBannerTitle").innerHTML = this.data.title;
     document.getElementById("dwDescriptionText").innerHTML = this.data.description;
-}
+};
 
 module.exports = lessonNode;
