@@ -16,7 +16,7 @@ function lessonNode(startPosition, JSONChunk){
     var tempImage = new Image();
     
     tempImage.addEventListener('load', _loadAction.bind(this), false);
-    tempImage.addEventListener('error', _errorAction);
+    tempImage.addEventListener('error', _errorAction.bind(this), false);
     
     tempImage.src = JSONChunk.image.icon;
 }
@@ -55,7 +55,12 @@ var _loadAction = function (e) {
     this.imageLoaded = true;
 };
 var _errorAction = function(e){
-    alert("There was an error loading an image.");
+    //alert("There was an error loading an image.");
+    this.image = new Image();
+    this.image.src = "../assets/ui/missingThumbnail.gif";
+    this.width = 100;
+    this.height = 100;
+    this.imageLoaded = true;
 };
 
 lessonNode.prototype.draw = function(ctx){
