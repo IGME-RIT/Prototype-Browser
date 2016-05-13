@@ -10,6 +10,8 @@ function lessonNode(startPosition, JSONChunk){
     this.type = "lessonNode";
     this.data = JSONChunk;
     
+    this.placement = 1;
+    
     //image loading and resizing
     var tempImage = new Image();
     

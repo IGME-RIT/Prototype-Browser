@@ -32,9 +32,55 @@ function boardPhase(pTargetURL){
 function boardLoadedCallback(pJSONElements){
     var tempLessonNodeArray = [];
     
+    var startIncrementer = 0;
+    var midIncrementer = 0;
+    var endIncrementer = 0;
+    //what nodes are start points, what nodes are end points? Parse the list and find the max number of steps
     for(var i = 0; i < pJSONElements.length; i++){
         tempLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), pJSONElements[i]));
     }
+    
+    for(var i = 0; i < tempLessonNodeArray.length; i++){
+        if(tempLessonNodeArray[i].data.connections.length === 0){
+            tempLessonNodeArray[i].placement = 0;
+        }
+        else{
+            //temp setting the node to the value of an endpoint
+            tempLessonNodeArray[i].placement = 2;
+            //going through the entire array of lesson nodes again
+            for(var k = 0; k < tempLessonNodeArray.length; k++){
+                //checking every lessonNode excluding the one being checked against
+                if(k != i){
+                    //going through every connection in the checking lessonNode
+                    for(var j = 0; j < tempLessonNodeArray[k].data.connections.length; j++){
+                        //if there is a match, it means that the k node is not an end point, change it back to a midpoint
+                        if(tempLessonNodeArray[i].data.name === tempLessonNodeArray[k].data.connections[j]){
+                            tempLessonNodeArray[i].placement = 1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    for(var i = 0; i < tempLessonNodeArray.length; i++){
+        if(tempLessonNodeArray[i].placement == 0){
+            tempLessonNodeArray[i].position = new Point(0, startIncrementer * 200);
+            startIncrementer++;
+        }
+        else if(tempLessonNodeArray[i].placement == 1){
+            tempLessonNodeArray[i].position = new Point(200, midIncrementer * 200);
+            midIncrementer++;
+        }
+        else{
+            tempLessonNodeArray[i].position = new Point(400, endIncrementer * 200);
+            endIncrementer++;
+        }
+    }
+    
+    //configure connections
+    
     
     activeBoard = new Board(new Point(0,0), tempLessonNodeArray);
     boardLoaded = true;
