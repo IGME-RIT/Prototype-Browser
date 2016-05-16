@@ -10,21 +10,21 @@ function board(startPosition, lessonNodes){
     
     //set connections here
     //iterate through every lessonNode
-    for(var i = 0; i < this.lessonNodeArray.length; i++){
+    /*for(var i = 0; i < this.lessonNodeArray.length; i++){
         //for every connection
-        for(var j = 0; this.lessonNodeArray.data.connections.length; j++){
+        for(var j = 0; this.lessonNodeArray[i].data.connections.length; j++){
             //check against every lessonNode
             for(var k = 0; this.lessonNodeArray.length; k++){
                 //exclude the current lessonNode
                 if(i != k){
                     //check for matching name
-                    if(this. this.lessonNodeArray.data.name){
+                    //if(this. this.lessonNodeArray.data.name){
                         
-                    }
+                    //}
                 }
             }
         }
-    }
+    }*/
 }
 
 board.prototype.move = function(pX, pY){
