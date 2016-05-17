@@ -84,7 +84,17 @@ lessonNode.prototype.click = function(){
     document.getElementById("detailLayer").className = "visible";
     
     document.getElementById("dwBannerTitle").innerHTML = this.data.title;
+    document.getElementById("dwBannerImage").src = this.data.image.banner;
+    
+    var tagText = "";
+    for(var i = 0; i < this.data.tags.length; i++){
+        tagText += "<div class=\"dwTag\">" + this.data.tags[i] + "</div>";
+    }
+    
+    document.getElementById("dwTags").innerHTML = tagText;
     document.getElementById("dwDescriptionText").innerHTML = this.data.description;
+    
+    document.getElementById("dwAuthor").innerHTML = "<a href=\"https://github.com/" + this.data.author.github + "\" target=\"_blank\">" + this.data.author.name + "</a><div>" + this.data.author.email + "</div>";
 };
 
 module.exports = lessonNode;
