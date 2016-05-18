@@ -2,7 +2,7 @@
 //imports
 var Game = require('./modules/game.js');
 var Point = require('./modules/point.js');
-var MouseState = require('./modules/mouseState.js');
+var MouseState = require('./modules/MouseState.js');
 
 //game objects
 var game;

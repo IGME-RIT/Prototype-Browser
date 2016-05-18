@@ -5,7 +5,7 @@
 //relative position
 //on canvas
 "use strict";
-function mouseState(pPosition, pRelativePosition, pMouseDown, pMouseIn){
+function MouseState(pPosition, pRelativePosition, pMouseDown, pMouseIn){
     this.position = pPosition;
     this.relativePosition = pRelativePosition;
     this.mouseDown = pMouseDown;
@@ -18,9 +18,7 @@ function mouseState(pPosition, pRelativePosition, pMouseDown, pMouseIn){
     this.lastMouseIn = pMouseIn;
 }
 
-var p = mouseState.prototype;
-
-p.update = function(pPosition, pRelativePosition, pMouseDown, pMouseIn){
+MouseState.prototype.update = function(pPosition, pRelativePosition, pMouseDown, pMouseIn){
     this.lastPosition = this.position;
     this.lastRelativePosition = this.relativePosition;
     this.lastMouseDown = this.mouseDown;
@@ -32,4 +30,4 @@ p.update = function(pPosition, pRelativePosition, pMouseDown, pMouseIn){
     this.mouseIn = pMouseIn;
 }
 
-module.exports = mouseState;
+module.exports = MouseState;
