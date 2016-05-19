@@ -1,22 +1,18 @@
 "use strict";
-function CanvasState(ctx, center, activeHeight, scaleFactor){
+function CanvasState(ctx, center, activeWidth, activeHeight, scaleFactor){
     this.ctx = ctx;
-    this.relativePosition = pRelativePosition;
-    this.mouseDown = pMouseDown;
-    this.mouseIn = pMouseIn;
-    
+    this.center = center;
+    this.activeWidth = activeWidth;
+    this.activeHeight = activeHeight;
+    this.scaleFactor = scaleFactor;
 }
 
-CanvasState.prototype.update = function(pPosition, pRelativePosition, pMouseDown, pMouseIn){
-    this.lastPosition = this.position;
-    this.lastRelativePosition = this.relativePosition;
-    this.lastMouseDown = this.mouseDown;
-    this.lastMouseIn = this.mouseIn;
-    
-    this.position = pPosition;
-    this.relativePosition = pRelativePosition;
-    this.mouseDown = pMouseDown;
-    this.mouseIn = pMouseIn;
+CanvasState.prototype.update = function(ctx, center, activeWidth, activeHeight, scaleFactor){
+    this.ctx = ctx;
+    this.center = center;
+    this.activeWidth = activeWidth;
+    this.activeHeight = activeHeight;
+    this.scaleFactor = scaleFactor;
 }
 
 module.exports = CanvasState;

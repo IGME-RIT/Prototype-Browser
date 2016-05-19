@@ -3,6 +3,7 @@
 var Game = require('./modules/game.js');
 var Point = require('./modules/point.js');
 var MouseState = require('./modules/MouseState.js');
+var CanvasState = require('./modules/CanvasState.js');
 
 //game objects
 var game;
@@ -13,6 +14,7 @@ var ctx;
 var header;
 var activeHeight;
 var center;
+var scale;
 
 //mouse handling
 var mousePosition;
@@ -21,6 +23,7 @@ var mouseDown;
 var mouseIn;
 
 var mouseState;
+var canvasState;
 
 //fires when the window loads
 window.onload = function(e){
@@ -39,6 +42,7 @@ function initializeVariables(){
     header = document.querySelector('header');
     activeHeight = canvas.offsetHeight - header.offsetHeight;
     center = new Point(canvas.width/2, activeHeight/2 + header.offsetHeight);
+    scale = 1080.0/activeHeight;
     
     mousePosition = new Point(0,0);
     relativeMousePosition = new Point(0,0);
@@ -66,7 +70,7 @@ function initializeVariables(){
     });
     
     mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn);
-    
+    canvasState = new CanvasState(ctx, center, canvas.offsetWidth, activeHeight, scale);
     
     game = new Game();
 }
@@ -87,6 +91,8 @@ window.addEventListener("resize", function(e){
     canvas.height = canvas.offsetHeight;
     activeHeight = canvas.height - header.offsetHeight;
     center = new Point(canvas.width / 2, activeHeight / 2 + header.offsetHeight)
+    scale = 1080.0/activeHeight;
+    canvasState.update(ctx, center, canvas.offsetWidth, activeHeight, scale);
     
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
 });
