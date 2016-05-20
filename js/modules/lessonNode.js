@@ -78,6 +78,7 @@ lessonNode.prototype.draw = function(ctx){
     
 };
 
+//populates the detailWindow based on the sender
 lessonNode.prototype.click = function(){
     //set detailWindow values here
     
@@ -93,6 +94,14 @@ lessonNode.prototype.click = function(){
     
     document.getElementById("dwTags").innerHTML = tagText;
     document.getElementById("dwDescriptionText").innerHTML = this.data.description;
+    
+    var conglomerate = "";
+    if(this.data.connections !== null){
+        for(var i = 0; i < this.data.connections.length; i++){
+            conglomerate += "<div class=\"dwResource\"></div>";
+        }
+        document.getElementById("dwResources").innerHTML = conglomerate;
+    }
     
     document.getElementById("dwAuthor").innerHTML = "<a href=\"https://github.com/" + this.data.author.github + "\" target=\"_blank\">" + this.data.author.name + "</a><div>" + this.data.author.email + "</div>";
 };
