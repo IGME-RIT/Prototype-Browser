@@ -98,7 +98,7 @@ lessonNode.prototype.click = function(){
     var conglomerate = "";
     if(this.data.connections !== null){
         for(var i = 0; i < this.data.connections.length; i++){
-            conglomerate += "<div class=\"dwResource\"></div>";
+            conglomerate += "<div class=\"dwResource\"><div class=\"dwResourceContent\"></div></div>";
         }
         document.getElementById("dwResources").innerHTML = conglomerate;
     }
