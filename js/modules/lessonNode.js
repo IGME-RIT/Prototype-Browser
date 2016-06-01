@@ -96,9 +96,64 @@ lessonNode.prototype.click = function(){
     document.getElementById("dwDescriptionText").innerHTML = this.data.description;
     
     var conglomerate = "";
-    if(this.data.connections !== null){
-        for(var i = 0; i < this.data.connections.length; i++){
-            conglomerate += "<div class=\"dwResource\"><div class=\"dwResourceContent\"></div></div>";
+    if(this.data.extra_resources[0] !== null){
+        for(var i = 0; i < this.data.extra_resources.length; i++){
+            var snippet = this.data.extra_resources[i];
+            var headerSnippet = "";
+            var footerSnippet = "";
+            //removes / from the end since it will be used as an marker for cutting
+            if(snippet.substring(snippet.length - 1, snippet.length) === "/"){
+                snippet = snippet.substring(0, snippet.length - 1);
+            }
+            //remove the http:// or https:// header
+            if(snippet.substring(0, 8) === "https://"){
+                snippet = snippet.substring(8, snippet.length);
+            }
+            if(snippet.substring(0, 7) === "http://"){
+                snippet = snippet.substring(7, snippet.length);
+            }
+            if(snippet.substring(0, 4) === "www."){
+                snippet = snippet.substring(4, snippet.length);
+            }
+            //if the snippet contains / parse based on it
+            if(snippet.indexOf('/') !== "-1"){
+                var counter = 0;
+                for(var k = 0; k < snippet.length; k++){
+                    if(snippet[k] !== "/"){
+                        counter++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                headerSnippet += snippet.substring(0, counter);
+                headerSnippet += ":";
+                
+                counter = snippet.length;
+                for(var k = snippet.length - 1; k > 0; k--){
+                    if(snippet[k] !== "/"){
+                        counter--;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                footerSnippet += snippet.substring(counter, snippet.length);
+                var temporarySnippet = "";
+                for(var k = 0; k < footerSnippet.length; k++){
+                    if(footerSnippet[k] === '-' || footerSnippet[k] === '_' || footerSnippet[k] === '~'){
+                        temporarySnippet += ' ';
+                    }
+                    else{
+                        temporarySnippet += footerSnippet[k];
+                    }
+                }
+                footerSnippet = temporarySnippet;
+            }
+            
+            conglomerate += "<div class=\"dwResource\"><div class=\"dwResourceContent\"><p class=\"dwResourceP1\">";
+            conglomerate += headerSnippet;
+            conglomerate += "</p><p class=\"dwResourceP2\">" + footerSnippet +"</p></div></div>";
         }
         document.getElementById("dwResources").innerHTML = conglomerate;
     }
