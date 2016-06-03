@@ -151,9 +151,9 @@ lessonNode.prototype.click = function(){
                 footerSnippet = temporarySnippet;
             }
             
-            conglomerate += "<div class=\"dwResource\"><div class=\"dwResourceContent\"><p class=\"dwResourceP1\">";
+            conglomerate += "<a href=\"" + this.data.extra_resources[i] + "\" target=\"_blank\"><div class=\"dwResource\"><div class=\"dwResourceContent\"><p class=\"dwResourceP1\">";
             conglomerate += headerSnippet;
-            conglomerate += "</p><p class=\"dwResourceP2\">" + footerSnippet +"</p></div></div>";
+            conglomerate += "</p><p class=\"dwResourceP2\">" + footerSnippet +"</p></div></div></a>";
         }
         document.getElementById("dwResources").innerHTML = conglomerate;
     }
