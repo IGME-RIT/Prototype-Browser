@@ -35,49 +35,82 @@ function boardLoadedCallback(pJSONElements){
     var startIncrementer = 0;
     var midIncrementer = 0;
     var endIncrementer = 0;
-    //what nodes are start points, what nodes are end points? Parse the list and find the max number of steps
+    
+    //populate the array
     for(var i = 0; i < pJSONElements.length; i++){
         tempLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), pJSONElements[i]));
     }
     
+    //set start points to processed as well as placeholder placements
     for(var i = 0; i < tempLessonNodeArray.length; i++){
+        tempLessonNodeArray[i].processed = false;
         if(tempLessonNodeArray[i].data.connections.length === 0){
             tempLessonNodeArray[i].placement = 0;
+            tempLessonNodeArray[i].processed = true;
         }
         else{
-            //temp setting the node to the value of an endpoint
-            tempLessonNodeArray[i].placement = 2;
-            //going through the entire array of lesson nodes again
+            tempLessonNodeArray[i].placement = -1;
+        }
+    }
+    
+    //set live connections to each node that can be easily referenced
+    for(var i = 0; i < tempLessonNodeArray.length; i++){
+        tempLessonNodeArray[i].liveConnections = [];
+        for(var j = 0; j < tempLessonNodeArray[i].data.connections.length; j++){
             for(var k = 0; k < tempLessonNodeArray.length; k++){
-                //checking every lessonNode excluding the one being checked against
-                if(k != i){
-                    //going through every connection in the checking lessonNode
-                    for(var j = 0; j < tempLessonNodeArray[k].data.connections.length; j++){
-                        //if there is a match, it means that the k node is not an end point, change it back to a midpoint
-                        if(tempLessonNodeArray[i].data.name === tempLessonNodeArray[k].data.connections[j]){
-                            tempLessonNodeArray[i].placement = 1;
-                            break;
-                        }
-                    }
+                if(tempLessonNodeArray[i].data.connections[j] === tempLessonNodeArray[k].data.name){
+                    tempLessonNodeArray[i].liveConnections[j] = tempLessonNodeArray[k];
+                    break; 
                 }
             }
         }
     }
     
-    for(var i = 0; i < tempLessonNodeArray.length; i++){
-        if(tempLessonNodeArray[i].placement == 0){
-            tempLessonNodeArray[i].position = new Point(0, startIncrementer * 200);
-            startIncrementer++;
-        }
-        else if(tempLessonNodeArray[i].placement == 1){
-            tempLessonNodeArray[i].position = new Point(200, midIncrementer * 200);
-            midIncrementer++;
-        }
-        else{
-            tempLessonNodeArray[i].position = new Point(400, endIncrementer * 200);
-            endIncrementer++;
+    //determine placement of each node based on connections
+    var completenessFlag = false;
+    while(completenessFlag === false){
+        completenessFlag = true;
+        for(var i = 0; i < tempLessonNodeArray.length; i++){
+            if(tempLessonNodeArray[i].processed === false){
+                for(var k = 0; k < tempLessonNodeArray[i].liveConnections.length; k++){
+                    var tempMarker = tempLessonNodeArray[i].liveConnections[k].placement;
+                    if(tempLessonNodeArray[i].liveConnections[k].placement !== -1){
+                        tempLessonNodeArray[i].placement = tempLessonNodeArray[i].liveConnections[k].placement + 1;
+                    }
+                    else{
+                        completenessFlag = false;
+                    }
+                }
+            }    
         }
     }
+    
+    
+    //assign point values that place nodes in proper positions
+    var greatestWidth = 0;
+    for(var i = 0; i < tempLessonNodeArray.length; i++){
+        if(tempLessonNodeArray[i].placement > greatestWidth){
+            greatestWidth = tempLessonNodeArray[i].placement;
+        }
+    }
+    
+    //create and populate 2d array
+    var nodeArray = [];
+    for(var i = 0; i < greatestWidth + 1; i++){
+        var subArray = [];
+        for(var j = 0; j < tempLessonNodeArray.length; j++){
+            if(tempLessonNodeArray[j].placement === i){
+                subArray.push(tempLessonNodeArray[j]);
+                //assign position values
+                tempLessonNodeArray[j].position = new Point(i * 150, (subArray.length - 1) * 150);
+            }
+        }
+        nodeArray[i] = subArray;
+    }
+    
+    //assign point positions based on placement in the 2d array
+    
+    
     
     //configure connections
     
