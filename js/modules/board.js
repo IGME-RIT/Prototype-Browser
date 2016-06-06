@@ -3,7 +3,7 @@
 //parameter is a point that denotes starting position
 function board(startPosition, lessonNodes){
     this.position = startPosition;
-    this.lessonNodeArray = lessonNodes;
+    this.nodeArray = lessonNodes;
     this.lessonNodeConnections = [];
     
     //manage lessonNode stuff here
@@ -37,8 +37,11 @@ board.prototype.draw = function(ctx, center, activeHeight){
     ctx.save();
     //translate to the center of the screen
     ctx.translate(center.x - this.position.x, center.y - this.position.y);
-    for(var i = 0; i < this.lessonNodeArray.length; i++){
-        this.lessonNodeArray[i].draw(ctx);
+    for(var i = 0; i < this.nodeArray.length; i++){
+        var subArray = this.nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            this.nodeArray[i][j].draw(ctx);
+        }
     }
     ctx.restore();
 };

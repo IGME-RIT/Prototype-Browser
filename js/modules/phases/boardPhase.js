@@ -38,7 +38,7 @@ function boardLoadedCallback(pJSONElements){
     
     //populate the array
     for(var i = 0; i < pJSONElements.length; i++){
-        tempLessonNodeArray.push(new LessonNode(new Point(i * 100, i * 75), pJSONElements[i]));
+        tempLessonNodeArray.push(new LessonNode(new Point(0, 0), pJSONElements[i]));
     }
     
     //set start points to processed as well as placeholder placements
@@ -101,21 +101,25 @@ function boardLoadedCallback(pJSONElements){
         for(var j = 0; j < tempLessonNodeArray.length; j++){
             if(tempLessonNodeArray[j].placement === i){
                 subArray.push(tempLessonNodeArray[j]);
-                //assign position values
-                tempLessonNodeArray[j].position = new Point(i * 150, (subArray.length - 1) * 150);
             }
         }
         nodeArray[i] = subArray;
     }
     
-    //assign point positions based on placement in the 2d array
-    
+    //assign positions based on placement in the 2d array
+    for(var i = 0; i < nodeArray.length; i++){
+        var subArray = nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            //assign position values
+            nodeArray[i][j].position = new Point(i * 280, j * 280);
+        }
+    }
     
     
     //configure connections
     
     
-    activeBoard = new Board(new Point(0,0), tempLessonNodeArray);
+    activeBoard = new Board(new Point(0,0), nodeArray);
     boardLoaded = true;
 }
 
@@ -133,16 +137,20 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
 
 p.act = function(){
     //mouse handling for target calculation
-    for(var i = 0; i < activeBoard.lessonNodeArray.length; i++){
-        var targetLessonNode = activeBoard.lessonNodeArray[i];
-        utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, targetLessonNode.scaleFactor);
-        if(targetLessonNode.mouseOver == true){
-            mouseTarget = targetLessonNode;
-            break;
+    for(var i = 0; i < activeBoard.nodeArray.length; i++){
+        var subArray = activeBoard.nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            var targetLessonNode = activeBoard.nodeArray[i][j];
+            utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, targetLessonNode.scaleFactor);
+            if(targetLessonNode.mouseOver == true){
+                mouseTarget = targetLessonNode;
+                break;
+            }
+            else{
+                mouseTarget = 0;
+            } 
         }
-        else{
-            mouseTarget = 0;
-        }
+        
     }
     //mouse handling for board movement
     if(mouseState.mouseDown === true && mouseState.lastMouseDown === true){
