@@ -66,6 +66,8 @@ var _errorAction = function(e){
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
         //draw the image, shadow if hovered
+        
+        
         ctx.save();
         if(this.mouseOver){
             ctx.shadowColor = 'dodgerBlue';
@@ -160,8 +162,11 @@ lessonNode.prototype.click = function(){
             conglomerate += headerSnippet;
             conglomerate += "</p><p class=\"dwResourceP2\">" + footerSnippet +"</p></div></div></a>";
         }
-        document.getElementById("dwResources").innerHTML = conglomerate;
+        
     }
+    document.getElementById("dwResources").innerHTML = conglomerate;
+    
+    
     
     document.getElementById("dwAuthor").innerHTML = "<a href=\"https://github.com/" + this.data.author.github + "\" target=\"_blank\">" + this.data.author.name + "</a><div>" + this.data.author.email + "</div>";
 };
