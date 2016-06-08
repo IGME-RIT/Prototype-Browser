@@ -16,6 +16,8 @@ var boardLoaded;
 var mouseState;
 var mouseTarget;
 
+var nodeArray;
+
 
 function boardPhase(pTargetURL){
     boardLoaded = false;
@@ -30,96 +32,7 @@ function boardPhase(pTargetURL){
 }
 
 function boardLoadedCallback(pJSONElements){
-    var tempLessonNodeArray = [];
-    
-    var startIncrementer = 0;
-    var midIncrementer = 0;
-    var endIncrementer = 0;
-    
-    //populate the array
-    for(var i = 0; i < pJSONElements.length; i++){
-        tempLessonNodeArray.push(new LessonNode(new Point(0, 0), pJSONElements[i]));
-    }
-    
-    //set start points to processed as well as placeholder placements
-    for(var i = 0; i < tempLessonNodeArray.length; i++){
-        tempLessonNodeArray[i].processed = false;
-        if(tempLessonNodeArray[i].data.connections.length === 0){
-            tempLessonNodeArray[i].placement = 0;
-            tempLessonNodeArray[i].processed = true;
-        }
-        else{
-            tempLessonNodeArray[i].placement = -1;
-        }
-    }
-    
-    //set live connections to each node that can be easily referenced
-    for(var i = 0; i < tempLessonNodeArray.length; i++){
-        tempLessonNodeArray[i].liveConnections = [];
-        for(var j = 0; j < tempLessonNodeArray[i].data.connections.length; j++){
-            for(var k = 0; k < tempLessonNodeArray.length; k++){
-                if(tempLessonNodeArray[i].data.connections[j] === tempLessonNodeArray[k].data.name){
-                    tempLessonNodeArray[i].liveConnections[j] = tempLessonNodeArray[k];
-                    break; 
-                }
-            }
-        }
-    }
-    
-    //determine placement of each node based on connections
-    var completenessFlag = false;
-    while(completenessFlag === false){
-        completenessFlag = true;
-        for(var i = 0; i < tempLessonNodeArray.length; i++){
-            if(tempLessonNodeArray[i].processed === false){
-                for(var k = 0; k < tempLessonNodeArray[i].liveConnections.length; k++){
-                    var tempMarker = tempLessonNodeArray[i].liveConnections[k].placement;
-                    if(tempLessonNodeArray[i].liveConnections[k].placement !== -1){
-                        tempLessonNodeArray[i].placement = tempLessonNodeArray[i].liveConnections[k].placement + 1;
-                    }
-                    else{
-                        completenessFlag = false;
-                    }
-                }
-            }    
-        }
-    }
-    
-    
-    //assign point values that place nodes in proper positions
-    var greatestWidth = 0;
-    for(var i = 0; i < tempLessonNodeArray.length; i++){
-        if(tempLessonNodeArray[i].placement > greatestWidth){
-            greatestWidth = tempLessonNodeArray[i].placement;
-        }
-    }
-    
-    //create and populate 2d array
-    var nodeArray = [];
-    for(var i = 0; i < greatestWidth + 1; i++){
-        var subArray = [];
-        for(var j = 0; j < tempLessonNodeArray.length; j++){
-            if(tempLessonNodeArray[j].placement === i){
-                subArray.push(tempLessonNodeArray[j]);
-            }
-        }
-        nodeArray[i] = subArray;
-    }
-    
-    //assign positions based on placement in the 2d array
-    for(var i = 0; i < nodeArray.length; i++){
-        var subArray = nodeArray[i];
-        for(var j = 0; j < subArray.length; j++){
-            //assign position values
-            nodeArray[i][j].position = new Point(i * 280, j * 280 - (((subArray.length - 1) * 280) / 2));
-        }
-    }
-    
-    
-    //configure connections
-    
-    
-    activeBoard = new Board(new Point(0,0), nodeArray);
+    activeBoard = new Board(new Point(0,0), pJSONElements);
     boardLoaded = true;
 }
 
@@ -132,6 +45,14 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
         p.act();
         //context, center point, usable height
         p.draw(ctx, center, activeHeight);
+    }
+    else{
+        ctx.save();
+        ctx.font = "40px Arial";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText("Loading...", center.x, center.y);
+        ctx.restore();
     }
 }
 
@@ -167,7 +88,6 @@ p.act = function(){
         if(mouseTarget != 0){
             mouseTarget.click();
         }
-        
     }
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
@@ -178,6 +98,7 @@ p.act = function(){
 }
 
 p.draw = function(ctx, center, activeHeight){
+    //draw nodes
     activeBoard.draw(ctx, center, activeHeight);
 }
 
