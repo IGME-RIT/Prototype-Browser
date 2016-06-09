@@ -9,48 +9,60 @@ var painter;
 function board(pStartPosition, pJSONData){
     this.position = pStartPosition;
     
-    var tempNodeArray = [];
+    var stagingArray = [];
     
     //populate the array
     for(var i = 0; i < pJSONData.length; i++){
-        tempNodeArray.push(new LessonNode(new Point(0, 0), pJSONData[i]));
+        stagingArray.push(new LessonNode(new Point(0, 0), pJSONData[i]));
     }
     
-    //set start points to processed as well as placeholder placements
-    for(var i = 0; i < tempNodeArray.length; i++){
-        tempNodeArray[i].processed = false;
-        if(tempNodeArray[i].data.connections.length === 0){
-            tempNodeArray[i].placement = 0;
-            tempNodeArray[i].processed = true;
+    //create variables that will be used to make the 2d array
+    var nodeArray = [];
+    var firstSubArray = [];
+    
+    //find and label the start points and put them into the firstSubArray of the nodeArray
+    for(var i = 0; i < stagingArray.length; i++){
+        //if a node has no connections, it must be a starting node
+        if(stagingArray[i].data.connections.length === 0){
+            firstSubArray.push(stagingArray[i]);
+            stagingArray[i].start = true;
         }
         else{
-            tempNodeArray[i].placement = -1;
+            stagingArray[i].start = false;
         }
     }
+    nodeArray[0] = firstSubArray;
     
-    //set live connections to each node that can be easily referenced
-    for(var i = 0; i < tempNodeArray.length; i++){
-        tempNodeArray[i].liveConnections = [];
-        for(var j = 0; j < tempNodeArray[i].data.connections.length; j++){
-            for(var k = 0; k < tempNodeArray.length; k++){
-                if(tempNodeArray[i].data.connections[j] === tempNodeArray[k].data.name){
-                    tempNodeArray[i].liveConnections[j] = tempNodeArray[k];
-                    break; 
+    //set direct object "liveConnections" to the next node for referencing based on their connections
+    //parse entire list
+    for(var i = 0; i < stagingArray.length; i++){
+        stagingArray[i].liveConnections = [];
+        //compare against every other node
+        for(var j = 0; j < stagingArray.length; j++){
+            //compare against every connection
+            for(var k = 0; k < stagingArray[j].data.connections.length; k++){
+                if(stagingArray[j].data.connections[k] === stagingArray[i].data.name){
+                    stagingArray[i].liveConnections.push(stagingArray[j]);
                 }
             }
         }
     }
     
+    //working from front
+    
+    
+    
+    /*
     //determine placement of each node based on connections
     var completenessFlag = false;
     while(completenessFlag === false){
         completenessFlag = true;
-        for(var i = 0; i < tempNodeArray.length; i++){
-            if(tempNodeArray[i].processed === false){
-                for(var k = 0; k < tempNodeArray[i].liveConnections.length; k++){
-                    var tempMarker = tempNodeArray[i].liveConnections[k].placement;
-                    if(tempNodeArray[i].liveConnections[k].placement !== -1){
-                        tempNodeArray[i].placement = tempNodeArray[i].liveConnections[k].placement + 1;
+        for(var i = 0; i < stagingArray.length; i++){
+            if(stagingArray[i].processed === false){
+                for(var k = 0; k < stagingArray[i].liveConnections.length; k++){
+                    var tempMarker = stagingArray[i].liveConnections[k].placement;
+                    if(stagingArray[i].liveConnections[k].placement !== -1){
+                        stagingArray[i].placement = stagingArray[i].liveConnections[k].placement + 1;
                     }
                     else{
                         completenessFlag = false;
@@ -63,9 +75,9 @@ function board(pStartPosition, pJSONData){
     
     //assign point values that place nodes in proper positions
     var greatestWidth = 0;
-    for(var i = 0; i < tempNodeArray.length; i++){
-        if(tempNodeArray[i].placement > greatestWidth){
-            greatestWidth = tempNodeArray[i].placement;
+    for(var i = 0; i < stagingArray.length; i++){
+        if(stagingArray[i].placement > greatestWidth){
+            greatestWidth = stagingArray[i].placement;
         }
     }
     
@@ -73,13 +85,15 @@ function board(pStartPosition, pJSONData){
     this.nodeArray = [];
     for(var i = 0; i < greatestWidth + 1; i++){
         var subArray = [];
-        for(var j = 0; j < tempNodeArray.length; j++){
-            if(tempNodeArray[j].placement === i){
-                subArray.push(tempNodeArray[j]);
+        for(var j = 0; j < stagingArray.length; j++){
+            if(stagingArray[j].placement === i){
+                subArray.push(stagingArray[j]);
             }
         }
         this.nodeArray[i] = subArray;
-    }
+    }*/
+    //this.nodeArray = _generateNodeArray(stagingArray);
+    
     
     //assign positions based on placement in the 2d array
     for(var i = 0; i < this.nodeArray.length; i++){
@@ -91,9 +105,16 @@ function board(pStartPosition, pJSONData){
     }
     
     
-    
     painter = new DrawLib();
 }
+
+var _generateNodeArray = function (pInput) {
+    var nodeArrayExport;
+    
+    pTest = [];
+    return nodeArrayExport;
+};
+
 
 board.prototype.move = function(pX, pY){
     this.position.x += pX;
