@@ -13,87 +13,106 @@ function board(pStartPosition, pJSONData){
     
     //populate the array
     for(var i = 0; i < pJSONData.length; i++){
+        //!!!!! consider catching problem data here instead of further down
         stagingArray.push(new LessonNode(new Point(0, 0), pJSONData[i]));
     }
     
-    //create variables that will be used to make the 2d array
-    var nodeArray = [];
-    var firstSubArray = [];
-    
-    //find and label the start points and put them into the firstSubArray of the nodeArray
+    //find and label the start points
     for(var i = 0; i < stagingArray.length; i++){
         //if a node has no connections, it must be a starting node
         if(stagingArray[i].data.connections.length === 0){
-            firstSubArray.push(stagingArray[i]);
-            stagingArray[i].start = true;
+            stagingArray[i].placement = 0;
         }
         else{
-            stagingArray[i].start = false;
+            stagingArray[i].placement = -1;
         }
     }
-    nodeArray[0] = firstSubArray;
     
-    //set direct object "liveConnections" to the next node for referencing based on their connections
+    //set direct object connections to related nodes for referencing
     //parse entire list
     for(var i = 0; i < stagingArray.length; i++){
-        stagingArray[i].liveConnections = [];
+        stagingArray[i].connectionForward = [];
+        stagingArray[i].connectionBackward = [];
         //compare against every other node
         for(var j = 0; j < stagingArray.length; j++){
             //compare against every connection
             for(var k = 0; k < stagingArray[j].data.connections.length; k++){
                 if(stagingArray[j].data.connections[k] === stagingArray[i].data.name){
-                    stagingArray[i].liveConnections.push(stagingArray[j]);
+                    stagingArray[i].connectionForward.push(stagingArray[j]);
+                }
+            }
+            //backwards
+            for(var k = 0; k < stagingArray[i].data.connections.length; k++){
+                if(stagingArray[j].data.name === stagingArray[i].data.connections[k]){
+                    stagingArray[i].connectionBackward.push(stagingArray[j]);
                 }
             }
         }
     }
     
-    //working from front
-    
-    
-    
-    /*
-    //determine placement of each node based on connections
-    var completenessFlag = false;
-    while(completenessFlag === false){
-        completenessFlag = true;
+    //assign placements to each node based on the connections they make to one another
+    var completionFlag = false;
+    while(!completionFlag){
+        completionFlag = true;
+        //for every node
         for(var i = 0; i < stagingArray.length; i++){
-            if(stagingArray[i].processed === false){
-                for(var k = 0; k < stagingArray[i].liveConnections.length; k++){
-                    var tempMarker = stagingArray[i].liveConnections[k].placement;
-                    if(stagingArray[i].liveConnections[k].placement !== -1){
-                        stagingArray[i].placement = stagingArray[i].liveConnections[k].placement + 1;
+            //go through each node's connections
+            for(var j = 0; j < stagingArray[i].connectionForward.length; j++){
+                //node has not been assigned a placement yet
+                if(stagingArray[i].connectionForward[j].placement === -1 && stagingArray[i].placement != -1){
+                    //does this node have multiple backwards connections?
+                    if(stagingArray[i].connectionBackward.length > 1){
+                        /*/If yes, make sure that each backward connection is fulfilled before assigning values
+                        var fulfilledFlag = true;
+                        for(k = 0; k < stagingArray[i].connectionBackward.length; k++){
+                            //-1 denotes that it has not yet been assigned a placement
+                            if(stagingArray[i].connectionBackward[k].placement === -1){
+                                fulfilledFlag = false;
+                                break;
+                            }
+                        }
+                        //as long as the flag remains true, assign value
+                        if(fulfilledFlag){
+                            stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
+                        }
+                    }*/
+                    //does the node after this node have multiple backwards connections?
+                    if(stagingArray[i].connectionForward[j].connectionBackward.length > 1){
+                        //If yes, make sure that each backward connection is fulfilled before assigning values
+                        var fulfilledFlag = true;
+                        for(k = 0; k < stagingArray[i].connectionForward[j].connectionBackward.length; k++){
+                            //-1 denotes that it has not yet been assigned a placement
+                            if(stagingArray[i].connectionForward[j].connectionBackward[k].placement === -1){
+                                fulfilledFlag = false;
+                                break;
+                            }
+                        }
+                        //as long as the flag remains true, assign value
+                        if(fulfilledFlag){
+                            stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
+                        }
                     }
+                    //if there are not multiple backward connections, everything is clear
                     else{
-                        completenessFlag = false;
+                        stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
                     }
                 }
-            }    
-        }
-    }
-    
-    
-    //assign point values that place nodes in proper positions
-    var greatestWidth = 0;
-    for(var i = 0; i < stagingArray.length; i++){
-        if(stagingArray[i].placement > greatestWidth){
-            greatestWidth = stagingArray[i].placement;
-        }
-    }
-    
-    //create and populate 2d array
-    this.nodeArray = [];
-    for(var i = 0; i < greatestWidth + 1; i++){
-        var subArray = [];
-        for(var j = 0; j < stagingArray.length; j++){
-            if(stagingArray[j].placement === i){
-                subArray.push(stagingArray[j]);
+                //node already has a placement
+                else{
+                    if(stagingArray[i].placement > stagingArray[i].connectionForward[j].placement){//this is bigger than that, keep this
+                        stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
+                    }
+                }
+            }
+            //a node with a placement of -1 has not yet had an assignment
+            if(stagingArray[i].placement === -1){
+                //this is designed to catch "bad nodes" caused by improperly entered data. Doesn't count "bad" nodes against completion
+                if(stagingArray[i].connectionForward.length !== 0 && stagingArray[i].connectionBackward.length !== 0){
+                    completionFlag = false;
+                }
             }
         }
-        this.nodeArray[i] = subArray;
-    }*/
-    //this.nodeArray = _generateNodeArray(stagingArray);
-    
+    }
     
     //assign positions based on placement in the 2d array
     for(var i = 0; i < this.nodeArray.length; i++){
@@ -108,13 +127,16 @@ function board(pStartPosition, pJSONData){
     painter = new DrawLib();
 }
 
-var _generateNodeArray = function (pInput) {
+var _generateNodeArray = function (pStagingArray, pStartArray) {
     var nodeArrayExport;
     
-    pTest = [];
+    for(var i = 0; i < pStartArray.length; i++){
+        _connect(pStagingArray[i], nodeArrayExport);
+    }
+    
+    
     return nodeArrayExport;
 };
-
 
 board.prototype.move = function(pX, pY){
     this.position.x += pX;
@@ -130,8 +152,8 @@ board.prototype.draw = function(ctx, center, activeHeight){
     for(var i = 0; i < this.nodeArray.length; i++){
         var subArray = this.nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
-            for(var k = 0; k < subArray[j].liveConnections.length; k++){
-                painter.line(ctx, subArray[j].liveConnections[k].position.x, subArray[j].liveConnections[k].position.y, subArray[j].position.x, subArray[j].position.y, 3, "black");
+            for(var k = 0; k < subArray[j].connectionForward.length; k++){
+                painter.line(ctx, subArray[j].connectionForward[k].position.x, subArray[j].connectionForward[k].position.y, subArray[j].position.x, subArray[j].position.y, 3, "black");
             }
         }
     }
