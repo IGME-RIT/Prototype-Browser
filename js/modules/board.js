@@ -60,25 +60,9 @@ function board(pStartPosition, pJSONData){
             for(var j = 0; j < stagingArray[i].connectionForward.length; j++){
                 //node has not been assigned a placement yet
                 if(stagingArray[i].connectionForward[j].placement === -1 && stagingArray[i].placement != -1){
-                    //does this node have multiple backwards connections?
-                    /*if(stagingArray[i].connectionBackward.length > 1){
-                        /If yes, make sure that each backward connection is fulfilled before assigning values
-                        var fulfilledFlag = true;
-                        for(k = 0; k < stagingArray[i].connectionBackward.length; k++){
-                            //-1 denotes that it has not yet been assigned a placement
-                            if(stagingArray[i].connectionBackward[k].placement === -1){
-                                fulfilledFlag = false;
-                                break;
-                            }
-                        }
-                        //as long as the flag remains true, assign value
-                        if(fulfilledFlag){
-                            stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
-                        }
-                    }*/
                     //does the node after this node have multiple backwards connections?
                     if(stagingArray[i].connectionForward[j].connectionBackward.length > 1){
-                        //If yes, make sure that each backward connection is fulfilled before assigning values
+                        //If yes, make sure that each backward connection of the next node is fulfilled before assigning values
                         var fulfilledFlag = true;
                         for(k = 0; k < stagingArray[i].connectionForward[j].connectionBackward.length; k++){
                             //-1 denotes that it has not yet been assigned a placement
@@ -114,16 +98,49 @@ function board(pStartPosition, pJSONData){
         }
     }
     
-    //assign positions based on placement in the 2d array
-    for(var i = 0; i < this.nodeArray.length; i++){
-        var subArray = this.nodeArray[i];
-        for(var j = 0; j < subArray.length; j++){
-            //assign position values
-            this.nodeArray[i][j].position = new Point(i * 280, j * 280 - (((subArray.length - 1) * 280) / 2));
+    //determine furthest placement
+    var furthestPlacement = 0;
+    for(var i = 0; i < stagingArray.length; i++){
+        if(stagingArray[i].placement > furthestPlacement){
+            furthestPlacement = stagingArray[i].placement;
         }
     }
     
+    //create and populate 2d array based on staging array data
+    var nodeArray = [];
+    for(var i = 0; i < furthestPlacement + 1; i++){
+        var subArray = [];
+        for(var j = 0; j < stagingArray.length; j++){
+            if(stagingArray[j].placement === i){
+                subArray.push(stagingArray[j]);
+            }
+        }
+        nodeArray[i] = subArray;
+    }
     
+    //assign positions based on placement in the 2d array
+    for(var i = 0; i < nodeArray.length; i++){
+        var subArray = nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            //assign position values
+            nodeArray[i][j].position = new Point(i * 280, j * 280 - (((subArray.length - 1) * 280) / 2));
+        }
+    }
+    
+    //sort the array to increase visual efficiency, parse through each subArray
+    for(var i = 0; i < this.nodeArray.length - 1; i++){
+        var subArray = this.nodeArray[i];
+        //parse through each element vertically
+        for(var j = 0; j < subArray.length; j++){
+            //parse through each forward connection
+            for(var k = 0; k < subArray[j].connectionForward.length; k++){
+                
+                //parse through the next array
+            }
+        }
+    }
+    
+    this.nodeArray = nodeArray;
     painter = new DrawLib();
 };
 
