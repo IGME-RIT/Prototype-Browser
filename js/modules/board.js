@@ -61,8 +61,8 @@ function board(pStartPosition, pJSONData){
                 //node has not been assigned a placement yet
                 if(stagingArray[i].connectionForward[j].placement === -1 && stagingArray[i].placement != -1){
                     //does this node have multiple backwards connections?
-                    if(stagingArray[i].connectionBackward.length > 1){
-                        /*/If yes, make sure that each backward connection is fulfilled before assigning values
+                    /*if(stagingArray[i].connectionBackward.length > 1){
+                        /If yes, make sure that each backward connection is fulfilled before assigning values
                         var fulfilledFlag = true;
                         for(k = 0; k < stagingArray[i].connectionBackward.length; k++){
                             //-1 denotes that it has not yet been assigned a placement
@@ -125,7 +125,7 @@ function board(pStartPosition, pJSONData){
     
     
     painter = new DrawLib();
-}
+};
 
 var _generateNodeArray = function (pStagingArray, pStartArray) {
     var nodeArrayExport;
@@ -169,5 +169,4 @@ board.prototype.draw = function(ctx, center, activeHeight){
     ctx.restore();
 };
 
-module.exports = board;
-    
+module.exports = board; 
