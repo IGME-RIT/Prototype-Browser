@@ -12,6 +12,9 @@ function lessonNode(startPosition, JSONChunk){
     
     this.placement = 1;
     
+    //parse JSONChunk for completeness
+    
+    
     //image loading and resizing
     var tempImage = new Image();
     
