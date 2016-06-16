@@ -1,11 +1,16 @@
 "use strict";
+var DrawLib = require('./drawLib.js');
+
+var painter;
 
 //parameter is a point that denotes starting position
-function lessonNode(startPosition, JSONChunk){
+function lessonNode(startPosition, JSONChunk){    
     this.imageLoaded = false;
+    painter = new DrawLib();
     
     this.position = startPosition;
     this.mouseOver = false;
+    this.highlighted = false;
     this.scaleFactor = 1;
     this.type = "lessonNode";
     this.data = JSONChunk;
@@ -68,14 +73,20 @@ var _errorAction = function(e){
 
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
-        //draw the image, shadow if hovered
         
         
         ctx.save();
-        if(this.mouseOver){
-            ctx.shadowColor = 'dodgerBlue';
-            ctx.shadowBlur = 20;
+        if(this.highlighted){
+            ctx.shadowColor = '#0066ff';
+            ctx.shadowBlur = 7;
         }
+        
+        //draw lines as part of the lessonNode
+        for(var i = 0; i < this.connectionForward.length; i++){
+            this.connectionForward[i].highlight = true;
+            painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
+        }
+        
         ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
 
         ctx.font = "20px Arial";
@@ -84,6 +95,15 @@ lessonNode.prototype.draw = function(ctx){
         ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
         
         ctx.restore();
+        
+        
+        //draw the image, shadow if hovered
+        if(this.mouseOver){
+            this.highlighted = true;
+        }
+        else{
+            this.highlighted = false;
+        }
     }
     
 };

@@ -231,18 +231,6 @@ board.prototype.draw = function(ctx, center, activeHeight){
     ctx.save();
     //translate to the center of the screen
     ctx.translate(center.x - this.position.x, center.y - this.position.y);
-    //draw connections
-    //interate through ever node
-    for(var i = 0; i < this.nodeArray.length; i++){
-        var subArray = this.nodeArray[i];
-        for(var j = 0; j < subArray.length; j++){
-            for(var k = 0; k < subArray[j].connectionForward.length; k++){
-                painter.line(ctx, subArray[j].connectionForward[k].position.x, subArray[j].connectionForward[k].position.y, subArray[j].position.x, subArray[j].position.y, 3, "black");
-            }
-        }
-    }
-    
-    
     //draw nodes
     for(var i = 0; i < this.nodeArray.length; i++){
         var subArray = this.nodeArray[i];
