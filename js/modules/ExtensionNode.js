@@ -6,6 +6,7 @@ function ExtensionNode(pName, pConnectionForward){
     this.data.name = pName;
     this.connectionForward = [];
     this.connectionForward.push(pConnectionForward);
+    this.type = "extension";
 }
 
 ExtensionNode.prototype.draw = function(){

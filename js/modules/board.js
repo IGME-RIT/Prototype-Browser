@@ -161,7 +161,6 @@ function board(pStartPosition, pJSONData){
         }
     }
     
-    
     //alphabetize the arrays using string sorting array method
     for(var i = 0; i < nodeArray.length; i++){
         nodeArray[i].sort(function compare(a,b) {
@@ -171,29 +170,39 @@ function board(pStartPosition, pJSONData){
         });
     }
     
+    //sort the array to increase visual efficiency, parse through each subArray
+    for(var i = 0; i < nodeArray.length - 1; i++){
+        var subArray = nodeArray[i];
+        var insertIndex = 0;
+        //parse through each element vertically
+        for(var j = 0; j < subArray.length; j++){
+            var debugText1 = subArray[j].data.name;
+            //parse through next Array
+            var nextArray = nodeArray[i + 1];
+            for(var k = insertIndex; k < nextArray.length; k++){
+                var debugText2 = nextArray[k].data.name;
+                //parse through forwardConnection
+                for(var l = 0; l < subArray[j].connectionForward.length; l++){
+                    var debugText3 = subArray[j].connectionForward[l].data.name
+                    //if there's a match
+                    if(subArray[j].connectionForward[l].data.name === nextArray[k].data.name){
+                        //swap indices
+                        var swapHolder = nextArray[insertIndex];
+                        nextArray[insertIndex] = nextArray[k];
+                        nextArray[k] = swapHolder;
+                        insertIndex++;
+                    }
+                }
+            }
+        }
+    }
+    
     //assign pixel point positions based on placement in the 2d array
     for(var i = 0; i < nodeArray.length; i++){
         var subArray = nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
             //assign position values
             nodeArray[i][j].position = new Point(i * 280, j * 280 - (((subArray.length - 1) * 280) / 2));
-        }
-    }
-    
-    //sort the array to increase visual efficiency, parse through each subArray
-    for(var i = 0; i < nodeArray.length - 1; i++){
-        var subArray = nodeArray[i];
-        //parse through each element vertically
-        for(var j = 0; j < subArray.length; j++){
-            //parse through each forward connection
-            for(var k = 0; k < subArray[j].connectionForward.length; k++){
-                var nextArray = nodeArray[i + 1];
-                var extend = false;
-                //parse through the next array
-                for(var l = 0; l < nextArray.length; l++){
-                    
-                }
-            }
         }
     }
     
