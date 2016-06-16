@@ -97,12 +97,6 @@ function board(pStartPosition, pJSONData){
                         stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
                     }
                 }
-                //node already has a placement
-                //else{
-                    //if(stagingArray[i].placement > stagingArray[i].connectionForward[j].placement){//this is bigger than that, keep this
-                        //stagingArray[i].connectionForward[j].placement = stagingArray[i].placement + 1;
-                    //}
-                //}
             }
             //a node with a placement of -1 has not yet had an assignment
             if(stagingArray[i].placement === -1){
@@ -112,7 +106,7 @@ function board(pStartPosition, pJSONData){
                 }
             }
         }
-    
+        //will leave as a catch so that it will pass instead of crashing if there is a data error
         debugCounter++;
         if(debugCounter > 100000){
             completionFlag = true;
@@ -139,7 +133,18 @@ function board(pStartPosition, pJSONData){
         nodeArray[i] = subArray;
     }
     
-    //assign positions based on placement in the 2d array
+    //add extensionNodes that will be used for nodes that connect to a node not directly subsequent
+    
+    //alphabetize the arrays using string sorting array method
+    for(var i = 0; i < nodeArray.length; i++){
+        nodeArray[i].sort(function compare(a,b) {
+            if (a.data.name < b.data.name) { return -1; }
+            else if (a.data.name > b.data.name) { return 1; }
+            else {return 0;}
+        });
+    }
+    
+    //assign pixel point positions based on placement in the 2d array
     for(var i = 0; i < nodeArray.length; i++){
         var subArray = nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
