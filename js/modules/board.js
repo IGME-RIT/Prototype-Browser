@@ -2,6 +2,7 @@
 var DrawLib = require('./drawLib.js');
 var LessonNode = require('./lessonNode.js');
 var Point = require('./point.js');
+var ExtensionNode = require('./ExtensionNode.js');
 
 var painter;
 
@@ -134,6 +135,32 @@ function board(pStartPosition, pJSONData){
     }
     
     //add extensionNodes that will be used for nodes that connect to a node not directly subsequent
+    //parse through every node
+    for(var i = 0; i < nodeArray.length - 1; i++){
+        var subArray = nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            //parse through each forward connection
+            for(var k = 0; k < subArray[j].connectionForward.length; k++){
+                var nextArray = nodeArray[i + 1];
+                var extend = true;
+                //parse through the next array
+                for(var l = 0; l < nextArray.length; l++){
+                    if(subArray[j].connectionForward[k].data.name === nextArray[l].data.name){
+                        extend = false;
+                        break;
+                    }
+                }
+                //assuming that there was no match for this connection, add an extension node to the nextArray
+                if(extend){
+                    var nextExtension = new ExtensionNode(subArray[j].connectionForward[k].data.name, subArray[j].connectionForward[k]);
+                    nextArray.push(nextExtension);
+                    //change the current node's forward connection to this extension node
+                    subArray[j].connectionForward[k] = nextExtension;
+                }
+            }
+        }
+    }
+    
     
     //alphabetize the arrays using string sorting array method
     for(var i = 0; i < nodeArray.length; i++){
@@ -160,8 +187,12 @@ function board(pStartPosition, pJSONData){
         for(var j = 0; j < subArray.length; j++){
             //parse through each forward connection
             for(var k = 0; k < subArray[j].connectionForward.length; k++){
-                
+                var nextArray = nodeArray[i + 1];
+                var extend = false;
                 //parse through the next array
+                for(var l = 0; l < nextArray.length; l++){
+                    
+                }
             }
         }
     }
@@ -192,6 +223,7 @@ board.prototype.draw = function(ctx, center, activeHeight){
     //translate to the center of the screen
     ctx.translate(center.x - this.position.x, center.y - this.position.y);
     //draw connections
+    //interate through ever node
     for(var i = 0; i < this.nodeArray.length; i++){
         var subArray = this.nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
