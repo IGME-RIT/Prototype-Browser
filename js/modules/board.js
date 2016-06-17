@@ -208,6 +208,23 @@ function board(pStartPosition, pJSONData){
     
     this.nodeArray = nodeArray;
     painter = new DrawLib();
+    
+    //move this board based on saved cookie data
+    var cookieData = document.cookie;
+    var equalsIndex = cookieData.indexOf('=');
+    var nodeID =  cookieData.substring(equalsIndex + 1, cookieData.length);
+    if(nodeID !== "0"){
+        for(var i = 0; i < nodeArray.length; i++){
+            var subArray = nodeArray[i];
+            for(var j = 0; j < subArray.length; j++){
+                if(subArray[j].data._id === nodeID){
+                    this.move(subArray[j].position.x, subArray[j].position.y);
+                    break;
+                }
+            }
+        }
+    }
+    
 };
 
 var _generateNodeArray = function (pStagingArray, pStartArray) {
