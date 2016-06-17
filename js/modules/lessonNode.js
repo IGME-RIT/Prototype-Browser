@@ -100,9 +100,19 @@ lessonNode.prototype.draw = function(ctx){
         //draw the image, shadow if hovered
         if(this.mouseOver){
             this.highlighted = true;
+            if(this.connectionForward[0] !== undefined){
+                if(this.connectionForward[0].type === "extension"){
+                    this.connectionForward[0].highlighted = true;
+                }
+            }
         }
         else{
             this.highlighted = false;
+            if(this.connectionForward[0] !== undefined){
+                if(this.connectionForward[0].type === "extension"){
+                    this.connectionForward[0].highlighted = false;
+                }
+            }
         }
     }
     

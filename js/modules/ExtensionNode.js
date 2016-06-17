@@ -20,7 +20,15 @@ ExtensionNode.prototype.draw = function(ctx){
         if(this.highlighted){
             ctx.shadowColor = '#0066ff';
             ctx.shadowBlur = 7;
+            if(this.connectionForward[0].type === "extension"){
+                this.connectionForward[0].highlighted = true;
+            }
         }
+    else{
+        if(this.connectionForward[0].type === "extension"){
+            this.connectionForward[0].highlighted = false;
+        }
+    }
         //draw lines as part of the lessonNode
         for(var i = 0; i < this.connectionForward.length; i++){
             painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
