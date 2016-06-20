@@ -4,7 +4,6 @@ var Game = require('./modules/game.js');
 var Point = require('./modules/point.js');
 var MouseState = require('./modules/MouseState.js');
 var CanvasState = require('./modules/CanvasState.js');
-var User = require('./modules/User.js');
 
 //game objects
 var game;
@@ -73,10 +72,9 @@ function initializeVariables(){
     mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn);
     canvasState = new CanvasState(ctx, center, canvas.offsetWidth, activeHeight, scale);
     
-    //cookies handling, creates a cookie template if the cookie is blank
-    var cookieData = document.cookie;
-    if(cookieData === ""){
-        document.cookie = "activeNode=0";
+    //local storage handling
+    if(localStorage.activeNode === undefined){
+        localStorage.activeNode = 0;
     }
     
     game = new Game();

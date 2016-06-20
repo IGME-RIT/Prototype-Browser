@@ -204,7 +204,7 @@ lessonNode.prototype.click = function(){
     document.getElementById("dwAuthor").innerHTML = "<a href=\"https://github.com/" + this.data.author.github + "\" target=\"_blank\">" + this.data.author.name + "</a><div>" + this.data.author.email + "</div>";
     
     //set cookie data
-    document.cookie = "activeNode=" + this.data._id;
+    localStorage.activeNode = this.data._id;
 };
 
 module.exports = lessonNode;
