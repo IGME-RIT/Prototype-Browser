@@ -201,7 +201,7 @@ lessonNode.prototype.click = function(){
     
     
     
-    document.getElementById("dwAuthor").innerHTML = "<a href=\"https://github.com/" + this.data.author.github + "\" target=\"_blank\">" + this.data.author.name + "</a><div>" + this.data.author.email + "</div>";
+    document.getElementById("dwLauncher").innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\">Open Lesson</div></a><a><div id=\"dwLauncherToggle\">Mark as Complete</div></a>";
     
     //set cookie data
     localStorage.activeNode = this.data._id;

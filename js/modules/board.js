@@ -221,7 +221,6 @@ function board(pStartPosition, pJSONData){
             }
         }
     }
-    
 };
 
 var _generateNodeArray = function (pStagingArray, pStartArray) {
