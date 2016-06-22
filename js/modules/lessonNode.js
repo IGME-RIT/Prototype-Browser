@@ -129,7 +129,7 @@ lessonNode.prototype.click = function(){
     
     var tagText = "";
     for(var i = 0; i < this.data.tags.length; i++){
-        tagText += "<div class=\"dwTag\">" + this.data.tags[i] + "</div>";
+        tagText += "<div class=\"dwTag\"><p>" + this.data.tags[i] + "</p></div>";
     }
     
     document.getElementById("dwTags").innerHTML = tagText;
