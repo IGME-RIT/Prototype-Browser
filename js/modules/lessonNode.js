@@ -201,7 +201,8 @@ lessonNode.prototype.click = function(){
     
     
     
-    document.getElementById("dwLauncher").innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\">Open Lesson</div></a><a><div id=\"dwLauncherToggle\">Mark as Complete</div></a>";
+    document.getElementById("dwLauncher").innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>" + 
+    "<a><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></a>";
     
     //set cookie data
     localStorage.activeNode = this.data._id;
