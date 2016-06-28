@@ -23,6 +23,7 @@ var mouseSustainedDown;
 
 var JSONLoad = false;
 
+var progressData;
 
 
 function game(){    
@@ -34,6 +35,9 @@ function game(){
     mouseSustainedDown = false;
     
     activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
+    
+    
+    
     //activePhase = new ScenePhase("testScene05", 0);
 }
 

@@ -5,6 +5,7 @@ var Point = require('./point.js');
 var ExtensionNode = require('./ExtensionNode.js');
 
 var painter;
+var progressData;
 
 //parameter is a point that denotes starting position
 function board(pStartPosition, pJSONData){
@@ -206,8 +207,52 @@ function board(pStartPosition, pJSONData){
         }
     }
     
+    //process locaStorage data and format into an array
+    progressData = localStorage.progress.split(",");
+    var progressChunk = [];
+    //ensure that it's empty under the correct circumstances
+    if(progressData.length === 1){
+        if(progressData[0] === ""){
+            progressData = [];
+        }
+    }
+    for(var i = 0; i < progressData.length; i++){
+        var progressVar = {};
+        progressVar.id = progressData[i].substring(0, progressData[i].length - 1);
+        progressVar.status = progressData[i].substring(progressData[i].length - 1, progressData[i].length);
+        progressChunk[i] = progressVar;
+    }
+    
+    //load status from localStorage, iterate through every node
+    for(var i = 0; i < nodeArray.length; i++){
+        var subArray = nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            var progressValue = localStorage.progress["#" + subArray[j].data._id];
+            if(progressValue === undefined){
+                //is this a start node
+                if(i === 0){
+                    subArray[j].status = 1;
+                    progressChunk["#" + subArray[j].data._id] = "1";
+                }
+                else{
+                    subArray[j].status = 0;
+                    progressChunk["#" + subArray[j].data._id] = "0";
+                }
+            }
+            else
+            {
+                subArray[j].status = progressValue;
+            }
+        }
+    }
+    localStorage.progress = progressChunk;
+    
     this.nodeArray = nodeArray;
+    
+    
     painter = new DrawLib();
+    
+    
     
     //move this board based on saved cookie data
     if(localStorage.activeNode !== "0"){

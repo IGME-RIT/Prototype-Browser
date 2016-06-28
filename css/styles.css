@@ -109,7 +109,7 @@ header {
 .dwTag{
     float: left;
     height: 70%;
-    margin-top: .6vh;
+    margin-top: .8vh;
     margin-right: 1%;
     
     display: -webkit-flex;
@@ -121,6 +121,7 @@ header {
     padding-right: 1%;
     
     background-color: darkgray;
+    overflow: hidden;
 }
 
 #dwDescription{

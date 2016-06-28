@@ -76,6 +76,9 @@ function initializeVariables(){
     if(localStorage.activeNode === undefined){
         localStorage.activeNode = 0;
     }
+    if(localStorage.progress === undefined){
+        localStorage.progress = "";
+    }
     
     game = new Game();
 }

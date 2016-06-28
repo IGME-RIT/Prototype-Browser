@@ -14,6 +14,8 @@ function lessonNode(startPosition, JSONChunk){
     this.scaleFactor = 1;
     this.type = "lessonNode";
     this.data = JSONChunk;
+    //0 = hidden, 1 = visible unsolved, 2 = visible solved
+    //this.status = 0;
     
     this.placement = 1;
     
@@ -74,43 +76,50 @@ var _errorAction = function(e){
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
         
-        
-        ctx.save();
-        if(this.highlighted){
-            ctx.shadowColor = '#0066ff';
-            ctx.shadowBlur = 7;
-        }
-        
-        //draw lines as part of the lessonNode
-        for(var i = 0; i < this.connectionForward.length; i++){
-            this.connectionForward[i].highlight = true;
-            painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
-        }
-        
-        ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
+        if(this.status !== 0){
+            ctx.save();
+            if(this.highlighted){
+                ctx.shadowColor = '#0066ff';
+                ctx.shadowBlur = 7;
+            }
 
-        ctx.font = "20px Arial";
-        ctx.textBaseline = "hanging";
-        ctx.textAlign = "center";
-        ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
-        
-        ctx.restore();
-        
-        
-        //draw the image, shadow if hovered
-        if(this.mouseOver){
-            this.highlighted = true;
-            if(this.connectionForward[0] !== undefined){
-                if(this.connectionForward[0].type === "extension"){
-                    this.connectionForward[0].highlighted = true;
+            //draw lines as part of the lessonNode
+            for(var i = 0; i < this.connectionForward.length; i++){
+                this.connectionForward[i].highlight = true;
+                painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
+            }
+
+            ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
+
+            ctx.font = "20px Arial";
+            ctx.textBaseline = "hanging";
+            ctx.textAlign = "center";
+            ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
+
+            //check to place a completion flag
+            if(this.status === 2){
+                //draw the flag
+            }
+            
+            
+            ctx.restore();
+
+
+            //draw the image, shadow if hovered
+            if(this.mouseOver){
+                this.highlighted = true;
+                if(this.connectionForward[0] !== undefined){
+                    if(this.connectionForward[0].type === "extension"){
+                        this.connectionForward[0].highlighted = true;
+                    }
                 }
             }
-        }
-        else{
-            this.highlighted = false;
-            if(this.connectionForward[0] !== undefined){
-                if(this.connectionForward[0].type === "extension"){
-                    this.connectionForward[0].highlighted = false;
+            else{
+                this.highlighted = false;
+                if(this.connectionForward[0] !== undefined){
+                    if(this.connectionForward[0].type === "extension"){
+                        this.connectionForward[0].highlighted = false;
+                    }
                 }
             }
         }
