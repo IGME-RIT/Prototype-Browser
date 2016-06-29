@@ -83,22 +83,22 @@ lessonNode.prototype.draw = function(ctx){
                 ctx.shadowBlur = 7;
             }
 
-            //draw lines as part of the lessonNode
-            for(var i = 0; i < this.connectionForward.length; i++){
-                this.connectionForward[i].highlight = true;
-                painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
-            }
-
-            ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
-
-            ctx.font = "20px Arial";
-            ctx.textBaseline = "hanging";
-            ctx.textAlign = "center";
-            ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
-
-            //check to place a completion flag
             if(this.status === 2){
-                //draw the flag
+                //draw lines as part of the lessonNode
+                for(var i = 0; i < this.connectionForward.length; i++){
+                    this.connectionForward[i].highlight = true;
+                    painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
+                }
+            }
+                ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
+
+                ctx.font = "20px Arial";
+                ctx.textBaseline = "hanging";
+                ctx.textAlign = "center";
+                ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
+                
+            //draw completion flag
+            if(this.status === 2){
             }
             
             

@@ -153,7 +153,7 @@ function board(pStartPosition, pJSONData){
                 }
                 //assuming that there was no match for this connection, add an extension node to the nextArray
                 if(extend){
-                    var nextExtension = new ExtensionNode(subArray[j].connectionForward[k].data.name, subArray[j].connectionForward[k]);
+                    var nextExtension = new ExtensionNode(subArray[j].connectionForward[k].data.name, subArray[j].connectionForward[k], subArray[j]);
                     nextArray.push(nextExtension);
                     //change the current node's forward connection to this extension node
                     subArray[j].connectionForward[k] = nextExtension;

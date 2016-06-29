@@ -2,10 +2,12 @@
 var DrawLib = require('./drawLib.js');
 
 var painter;
+var sourceNode;
 
 //parameter is a point that denotes starting position
-function ExtensionNode(pName, pConnectionForward){
+function ExtensionNode(pName, pConnectionForward, pSource){
     painter = new DrawLib();
+    sourceNode = pSource;
     
     this.data = {};
     this.highlighted = false;
@@ -30,9 +32,12 @@ ExtensionNode.prototype.draw = function(ctx){
         }
     }
         //draw lines as part of the lessonNode
-        for(var i = 0; i < this.connectionForward.length; i++){
-            painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
-        }
+        //for(var i = 0; i < this.connectionForward.length; i++){
+    if(sourceNode.status === 2){
+        painter.line(ctx, this.position.x, this.position.y, this.connectionForward[0].position.x, this.connectionForward[0].position.y, 2, "black");
+    }
+            
+        //}
     ctx.restore();
 }
 
