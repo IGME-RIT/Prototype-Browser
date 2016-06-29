@@ -201,12 +201,21 @@ header {
     margin-right: .5%;
     background-color: dodgerblue;
 }
-#dwLauncherToggle{
+#dwLauncher button{
+    background:none;
+    border:none;
+    box-sizing:border-box;
+    height: 90%;
+    font-size: 1.2vw;
+    color: white;
     float: right;
     width: 23.5%;
     margin-left: .5%;
     margin-right: 1%;
     background-color: blue;
+    cursor: pointer;
+}
+#dwLauncherToggle{
 }
 
 .hiddenLayer{
@@ -231,6 +240,9 @@ header {
         font-size: 9pt;
     }
     #dwLauncher{
+        font-size: 10.1pt;
+    }
+    #dwLauncher button{
         font-size: 10.1pt;
     }
 }

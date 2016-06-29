@@ -73,6 +73,20 @@ var _errorAction = function(e){
     this.imageLoaded = true;
 };
 
+var _toggleStatus = function (e) {
+    if(this.status === 1){
+        console.log("status 1 - 2");
+        this.status = 2;
+        //if forward connection status === 0, set to 1
+        //local storage stuff
+    }
+    else if(this.status === 2){
+        console.log("status 2 - 1");
+        this.status = 1;
+    }
+    console.log(this.status);
+}
+
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
         
@@ -126,6 +140,8 @@ lessonNode.prototype.draw = function(ctx){
     }
     
 };
+
+
 
 //populates the detailWindow based on the sender
 lessonNode.prototype.click = function(){
@@ -211,10 +227,14 @@ lessonNode.prototype.click = function(){
     
     
     document.getElementById("dwLauncher").innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>" + 
-    "<a><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></a>";
+    "<button id=\"completionButton\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
     
     //set cookie data
     localStorage.activeNode = this.data._id;
+    
+    //attach click event to button
+    var dwCompletionButton = document.querySelector("#completionButton");
+    dwCompletionButton.addEventListener('click', _toggleStatus.bind(this), false);
 };
 
 module.exports = lessonNode;
