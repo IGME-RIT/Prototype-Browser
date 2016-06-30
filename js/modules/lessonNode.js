@@ -100,6 +100,21 @@ var _toggleStatus = function (e) {
     console.log(this.status);
 }
 
+var flagLoaded = false;
+var flagImage;
+var _drawFlag = function (ctx, position, width, height, scale) {
+    if(flagLoaded){
+        //draw flag in the upper right
+        ctx.drawImage(flagImage, position.x + width/2 - 3*flagImage.naturalWidth/4, position.y - height/2 - flagImage.naturalHeight/4, 30 * scale, 30 * scale)
+    }
+    else{
+        //loadImage
+        flagImage = new Image();
+        flagImage.src = "../../assets/ui/iconCheck.png";
+        flagLoaded = true;
+    }
+}
+
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
         
@@ -126,6 +141,7 @@ lessonNode.prototype.draw = function(ctx){
                 
             //draw completion flag
             if(this.status === 2){
+                _drawFlag(ctx, this.position, this.width, this.height, this.scaleFactor);
             }
             
             
