@@ -165,8 +165,8 @@ function board(pStartPosition, pJSONData){
     //alphabetize the arrays using string sorting array method
     for(var i = 0; i < nodeArray.length; i++){
         nodeArray[i].sort(function compare(a,b) {
-            if (a.data.name < b.data.name) { return -1; }
-            else if (a.data.name > b.data.name) { return 1; }
+            if (a.data.title < b.data.title) { return -1; }
+            else if (a.data.title > b.data.title) { return 1; }
             else {return 0;}
         });
     }
