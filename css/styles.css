@@ -202,7 +202,6 @@ header {
     background-color: dodgerblue;
 }
 #dwLauncher button{
-    background:none;
     border:none;
     box-sizing:border-box;
     height: 90%;
@@ -212,10 +211,13 @@ header {
     width: 23.5%;
     margin-left: .5%;
     margin-right: 1%;
-    background-color: blue;
     cursor: pointer;
 }
-#dwLauncherToggle{
+.unselected{
+    background-color: blue;
+}
+.selected{
+    background-color: gray;
 }
 
 .hiddenLayer{

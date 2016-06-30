@@ -79,10 +79,23 @@ var _toggleStatus = function (e) {
         this.status = 2;
         //if forward connection status === 0, set to 1
         //local storage stuff
+        
+        //change button appearance
+        var toggleButton = document.querySelector("#completionButton");
+        toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark Incomplete</p></div>";
+        toggleButton.className = "selected";
     }
     else if(this.status === 2){
         console.log("status 2 - 1");
         this.status = 1;
+        
+        //if forward connection status === 1, set to 0
+        //local storage stuff
+        
+        //change button appearance
+        var toggleButton = document.querySelector("#completionButton");
+        toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div>";
+        toggleButton.className = "unselected";
     }
     console.log(this.status);
 }
@@ -227,7 +240,7 @@ lessonNode.prototype.click = function(){
     
     
     document.getElementById("dwLauncher").innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>" + 
-    "<button id=\"completionButton\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
+    "<button id=\"completionButton\" class=\"unselected\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
     
     //set cookie data
     localStorage.activeNode = this.data._id;
