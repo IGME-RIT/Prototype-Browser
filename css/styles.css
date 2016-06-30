@@ -217,7 +217,7 @@ header {
     background-color: blue;
 }
 .selected{
-    background-color: gray;
+    background-color: dimgray;
 }
 
 .hiddenLayer{

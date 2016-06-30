@@ -238,9 +238,15 @@ lessonNode.prototype.click = function(){
     document.getElementById("dwResources").innerHTML = conglomerate;
     
     
+    var dwLauncherReference = document.getElementById("dwLauncher");
+    dwLauncherReference.innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>";
+    if(this.status === 1){
+        dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"unselected\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
+    }
+    else{
+        dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"selected\"><div id=\"dwLauncherToggle\"><p>Mark Incomplete</p></div></button>";
+    }
     
-    document.getElementById("dwLauncher").innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>" + 
-    "<button id=\"completionButton\" class=\"unselected\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
     
     //set cookie data
     localStorage.activeNode = this.data._id;
