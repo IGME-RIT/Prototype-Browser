@@ -73,12 +73,16 @@ var _errorAction = function(e){
     this.imageLoaded = true;
 };
 
-var _toggleStatus = function (e) {
+var _handleStatus = function (e) {
     if(this.status === 1){
         console.log("status 1 - 2");
         this.status = 2;
         //if forward connection status === 0, set to 1
-        //local storage stuff
+        for(var i = 0; i < this.connectionForward.length; i++){
+            if(this.connectionForward[i].status === 0){
+                this.connectionForward[i].status = 1;
+            }
+        }
         
         //change button appearance
         var toggleButton = document.querySelector("#completionButton");
@@ -89,14 +93,21 @@ var _toggleStatus = function (e) {
         console.log("status 2 - 1");
         this.status = 1;
         
-        //if forward connection status === 1, set to 0
-        //local storage stuff
-        
         //change button appearance
         var toggleButton = document.querySelector("#completionButton");
         toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div>";
         toggleButton.className = "unselected";
     }
+    else if(this.status === 3){
+        
+    }
+    else if(this.status === 4){
+        
+    }
+    //local storage handling
+    
+    
+    
     console.log(this.status);
 }
 
@@ -125,6 +136,7 @@ lessonNode.prototype.draw = function(ctx){
                 ctx.shadowBlur = 7;
             }
 
+            //the node is completely solved, draw connection lines
             if(this.status === 2){
                 //draw lines as part of the lessonNode
                 for(var i = 0; i < this.connectionForward.length; i++){
@@ -140,7 +152,7 @@ lessonNode.prototype.draw = function(ctx){
                 ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
                 
             //draw completion flag
-            if(this.status === 2){
+            if(this.status === 2 || this.status === 3){
                 _drawFlag(ctx, this.position, this.width, this.height, this.scaleFactor);
             }
             
@@ -269,7 +281,7 @@ lessonNode.prototype.click = function(){
     
     //attach click event to button
     var dwCompletionButton = document.querySelector("#completionButton");
-    dwCompletionButton.addEventListener('click', _toggleStatus.bind(this), false);
+    dwCompletionButton.addEventListener('click', _handleStatus.bind(this), false);
 };
 
 module.exports = lessonNode;
