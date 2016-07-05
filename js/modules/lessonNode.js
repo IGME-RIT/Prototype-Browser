@@ -74,6 +74,7 @@ var _errorAction = function(e){
 };
 
 var _handleStatus = function (e) {
+    //will never occur when 0
     if(this.status === 1){
         console.log("status 1 - 2");
         this.status = 2;
