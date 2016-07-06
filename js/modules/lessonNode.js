@@ -74,6 +74,21 @@ var _errorAction = function(e){
 };
 
 var _handleStatus = function (e) {
+    //filter through localStorage
+    var progressArray = localStorage.progress.split(",");
+    if(progressArray.length === 1){
+        if(progressArray[0] === ""){
+            progressArray = [];
+        }
+    }
+    for(var i = 0; i < progressArray.length; i++){
+        var progressVar = {};
+        progressVar.id = progressArray[i].substring(0, progressArray[i].length - 1);
+        progressVar.status = progressArray[i].substring(progressArray[i].length - 1, progressArray[i].length);
+        progressChunk[i] = progressVar;
+    }
+    
+    
     //will never occur when 0
     if(this.status === 1){
         console.log("status 1 - 2");
@@ -106,7 +121,13 @@ var _handleStatus = function (e) {
         
     }
     //local storage handling
+    progressArray["#" + this.data._id] = this.status;
     
+    //commit array back to local storage
+    var progressCompile = "";
+    for(var i = 0; i < progressArray.length; i++){
+        progressCompile += this.data._id + this.status + ",";
+    }
     
     
     console.log(this.status);

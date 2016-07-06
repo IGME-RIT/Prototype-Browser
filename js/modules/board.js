@@ -228,8 +228,9 @@ function board(pStartPosition, pJSONData){
         var subArray = nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
             var progressValue = localStorage.progress["#" + subArray[j].data._id];
+            //checks and sees whether a progress value has been defined yet
             if(progressValue === undefined){
-                //is this a start node
+                //if not, give it default value based on whether it is a starting node or not
                 if(i === 0){
                     subArray[j].status = 1;
                     progressChunk["#" + subArray[j].data._id] = "1";
@@ -239,6 +240,7 @@ function board(pStartPosition, pJSONData){
                     progressChunk["#" + subArray[j].data._id] = "0";
                 }
             }
+            //if it does have a value just assign it
             else
             {
                 subArray[j].status = progressValue;
