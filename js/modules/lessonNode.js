@@ -75,18 +75,8 @@ var _errorAction = function(e){
 
 var _handleStatus = function (e) {
     //filter through localStorage
-    var progressArray = localStorage.progress.split(",");
-    if(progressArray.length === 1){
-        if(progressArray[0] === ""){
-            progressArray = [];
-        }
-    }
-    for(var i = 0; i < progressArray.length; i++){
-        var progressVar = {};
-        progressVar.id = progressArray[i].substring(0, progressArray[i].length - 1);
-        progressVar.status = progressArray[i].substring(progressArray[i].length - 1, progressArray[i].length);
-        progressChunk[i] = progressVar;
-    }
+    var progressString = localStorage.progress;
+    
     
     
     //will never occur when 0
@@ -121,15 +111,28 @@ var _handleStatus = function (e) {
         
     }
     //local storage handling
-    progressArray["#" + this.data._id] = this.status;
     
     //commit array back to local storage
     var progressCompile = "";
-    for(var i = 0; i < progressArray.length; i++){
-        progressCompile += this.data._id + this.status + ",";
+    
+    //search the progressString for the current ID
+    var idIndex = progressString.indexOf(this.data._id);
+    
+    //if it's not add it to the end
+    if(idIndex === -1){
+        //if the string is empty don't add a comma
+        if(progressString !== ""){
+            progressString += ",";
+        }
+        progressString += this.data._id + "" + this.status;
     }
+    //otherwise modify the status value
+    else{
+        var testtemp = progressString[0];
+    }
+    localStorage.progress = progressString;
     
-    
+    console.log(localStorage.progress + "\n");
     console.log(this.status);
 }
 
