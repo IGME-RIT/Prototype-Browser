@@ -75,18 +75,17 @@ var _errorAction = function(e){
 
 var _handleStatus = function (e) {
     //filter through localStorage
-    var progressString = localStorage.progress;
+    var progressString = localStorage.progress + "";
     
     
-    
+    console.log("This is the status before change: " + this.status);
     //will never occur when 0
-    if(this.status === 1){
-        console.log("status 1 - 2");
-        this.status = 2;
+    if(this.status === "1"){
+        this.status = "2";
         //if forward connection status === 0, set to 1
         for(var i = 0; i < this.connectionForward.length; i++){
             if(this.connectionForward[i].status === 0){
-                this.connectionForward[i].status = 1;
+                this.connectionForward[i].status = "1";
             }
         }
         
@@ -95,19 +94,18 @@ var _handleStatus = function (e) {
         toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark Incomplete</p></div>";
         toggleButton.className = "selected";
     }
-    else if(this.status === 2){
-        console.log("status 2 - 1");
-        this.status = 1;
-        
+    else if(this.status === "2"){
+        this.status = "1";
+        console.log("This is the status during change: " + this.status);
         //change button appearance
         var toggleButton = document.querySelector("#completionButton");
         toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div>";
         toggleButton.className = "unselected";
     }
-    else if(this.status === 3){
+    else if(this.status === "3"){
         
     }
-    else if(this.status === 4){
+    else if(this.status === "4"){
         
     }
     //local storage handling
@@ -128,12 +126,13 @@ var _handleStatus = function (e) {
     }
     //otherwise modify the status value
     else{
-        var testtemp = progressString[0];
+        //progressString[this.data._id.length] = this.status;
+        progressString = progressString.substr(0, this.data._id.length + idIndex) + this.status + progressString.substr(this.data._id.length + 1 + idIndex, progressString.length) + "";
     }
     localStorage.progress = progressString;
     
     console.log(localStorage.progress + "\n");
-    console.log(this.status);
+    console.log("This is the status after change: " + this.status);
 }
 
 var flagLoaded = false;
@@ -154,7 +153,7 @@ var _drawFlag = function (ctx, position, width, height, scale) {
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
         
-        if(this.status !== 0){
+        if(this.status !== "0"){
             ctx.save();
             if(this.highlighted){
                 ctx.shadowColor = '#0066ff';
@@ -162,7 +161,7 @@ lessonNode.prototype.draw = function(ctx){
             }
 
             //the node is completely solved, draw connection lines
-            if(this.status === 2){
+            if(this.status === "2"){
                 //draw lines as part of the lessonNode
                 for(var i = 0; i < this.connectionForward.length; i++){
                     this.connectionForward[i].highlight = true;
@@ -177,7 +176,7 @@ lessonNode.prototype.draw = function(ctx){
                 ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
                 
             //draw completion flag
-            if(this.status === 2 || this.status === 3){
+            if(this.status === "2" || this.status === "3"){
                 _drawFlag(ctx, this.position, this.width, this.height, this.scaleFactor);
             }
             

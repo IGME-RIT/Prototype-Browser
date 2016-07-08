@@ -219,11 +219,11 @@ function board(pStartPosition, pJSONData){
             if(idIndex === -1){
                 //if it's a start node
                 if(i === 0){
-                    subArray[j].status = 1;
+                    subArray[j].status = "1";
                 }
                 //not a start node
                 else{
-                    subArray[j].status = 0;
+                    subArray[j].status = "0";
                 }
             }
             //node id exists in localStorage, get and apply the status
