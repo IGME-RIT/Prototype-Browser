@@ -168,15 +168,24 @@ lessonNode.prototype.draw = function(ctx){
                     painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
                 }
             }
-                ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor)
-
-                ctx.font = "20px Arial";
-                ctx.textBaseline = "hanging";
-                ctx.textAlign = "center";
-                ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
+            
+            //is this node's image drawn normally?
+            if(this.status === "1" || this.status === "2" || this.status === "4"){
+                ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
+            }
+            //draw locked image
+            else if(this.status === "3"){
+                //!!!!!use painter to draw lock stuff, below is placeholder
+                ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
+            }
+            
+            ctx.font = "20px Arial";
+            ctx.textBaseline = "hanging";
+            ctx.textAlign = "center";
+            ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
                 
             //draw completion flag
-            if(this.status === "2" || this.status === "3"){
+            if(this.status === "2"){
                 _drawFlag(ctx, this.position, this.width, this.height, this.scaleFactor);
             }
             
