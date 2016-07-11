@@ -202,7 +202,7 @@ function board(pStartPosition, pJSONData){
         var subArray = nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
             //assign position values
-            nodeArray[i][j].position = new Point(i * 280, j * 280 - (((subArray.length - 1) * 280) / 2));
+            nodeArray[i][j].position = new Point(i * 400, j * 280 - (((subArray.length - 1) * 280) / 2));
         }
     }
     
