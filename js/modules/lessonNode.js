@@ -98,7 +98,7 @@ var _handleStatus = function (e) {
             }
             //apply the status
             if(confirmedClear){
-                this.connectionForward[i].status = "2";
+                this.connectionForward[i].status = "1";
             }
             else{
                 this.connectionForward[i].status = "3";
