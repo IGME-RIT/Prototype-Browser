@@ -81,12 +81,29 @@ var _handleStatus = function (e) {
     console.log("This is the status before change: " + this.status);
     //will never occur when 0
     if(this.status === "1"){
+        //set solved status
         this.status = "2";
-        //if forward connection status === 0, set to 1
+        
+        
+        //iterate through each forward connection and handle accordingly
         for(var i = 0; i < this.connectionForward.length; i++){
-            if(this.connectionForward[i].status === 0){
-                this.connectionForward[i].status = "1";
+            var confirmedClear = true;
+            //if any backward connections are incomplete, set the confirmedClear flag to show that
+            for(var j = 0; j < this.connectionForward[i].connectionBackward.length; j++){
+                var targetStatus = this.connectionForward[i].connectionBackward[j].status;
+                if(targetStatus === "0" || targetStatus === "1" || targetStatus === "3"){
+                    confirmedClear = false;
+                    break;
+                }
             }
+            //apply the status
+            if(confirmedClear){
+                this.connectionForward[i].status = "2";
+            }
+            else{
+                this.connectionForward[i].status = "3";
+            }
+            
         }
         
         //change button appearance

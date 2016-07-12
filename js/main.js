@@ -27,6 +27,12 @@ var canvasState;
 
 //fires when the window loads
 window.onload = function(e){
+    //debug stuff
+    var resetButton = document.querySelector("#resetButton");
+    resetButton.addEventListener("click", function(e){
+        localStorage.progress = "";
+    });
+    
     initializeVariables();
     loop();
 }
