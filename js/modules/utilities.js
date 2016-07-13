@@ -4,6 +4,27 @@ var Point = require('./point.js');
 function utilities(){
 }
 
+//set a status value of a node in localStorage based on ID
+utilities.prototype.setProgress = function(pID, pStatus){
+    var progressString = localStorage.progress;
+    //search the progressString for the current ID
+    var idIndex = progressString.indexOf(pID);
+    
+    //if it's not add it to the end
+    if(idIndex === -1){
+        //if the string is empty don't add a comma
+        if(progressString !== ""){
+            progressString += ",";
+        }
+        progressString += pID + "" + pStatus;
+    }
+    //otherwise modify the status value
+    else{
+        progressString = progressString.substr(0, pID.length + idIndex) + pStatus + progressString.substr(pID.length + 1 + idIndex, progressString.length) + "";
+    }
+    localStorage.progress = progressString;
+}
+
 // returns mouse position in local coordinate system of element
 utilities.prototype.getMouse = function(e){
     return new Point((e.pageX - e.target.offsetLeft), (e.pageY - e.target.offsetTop));
