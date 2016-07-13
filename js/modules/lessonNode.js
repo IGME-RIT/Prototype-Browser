@@ -1,12 +1,15 @@
 "use strict";
 var DrawLib = require('./drawLib.js');
+var Utilities = require('./utilities.js');
 
 var painter;
+var utility;
 
 //parameter is a point that denotes starting position
 function lessonNode(startPosition, JSONChunk){    
     this.imageLoaded = false;
     painter = new DrawLib();
+    utility = new Utilities();
     
     this.position = startPosition;
     this.mouseOver = false;
@@ -73,17 +76,18 @@ var _errorAction = function(e){
     this.imageLoaded = true;
 };
 
+
+
 var _handleStatus = function (e) {
     //filter through localStorage
-    var progressString = localStorage.progress + "";
+    var progressString = localStorage.progress;
     
     
     console.log("This is the status before change: " + this.status);
     //will never occur when 0
     if(this.status === "1"){
-        //set solved status
+        //change to solved status
         this.status = "2";
-        
         
         //iterate through each forward connection and handle accordingly
         for(var i = 0; i < this.connectionForward.length; i++){
@@ -98,12 +102,13 @@ var _handleStatus = function (e) {
             }
             //apply the status
             if(confirmedClear){
-                this.connectionForward[i].status = "1";
+                this.connectionForward[i].setStatus("1");
             }
             else{
-                this.connectionForward[i].status = "3";
+                this.connectionForward[i].setStatus("3");
             }
-            
+            //apply connectionForward data to localStorage
+            utility.setProgress(this.connectionForward[i].data._id, this.connectionForward[i].status);
         }
         
         //change button appearance
@@ -112,8 +117,9 @@ var _handleStatus = function (e) {
         toggleButton.className = "selected";
     }
     else if(this.status === "2"){
-        this.status = "1";
-        console.log("This is the status during change: " + this.status);
+        //change to withdrawn completion status
+        this.status = "4";
+        
         //change button appearance
         var toggleButton = document.querySelector("#completionButton");
         toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div>";
@@ -123,30 +129,40 @@ var _handleStatus = function (e) {
         
     }
     else if(this.status === "4"){
+        //change to solved status
+        this.status = "2";
         
-    }
-    //local storage handling
-    
-    //commit array back to local storage
-    var progressCompile = "";
-    
-    //search the progressString for the current ID
-    var idIndex = progressString.indexOf(this.data._id);
-    
-    //if it's not add it to the end
-    if(idIndex === -1){
-        //if the string is empty don't add a comma
-        if(progressString !== ""){
-            progressString += ",";
+        //need to check completion here
+        for(var i = 0; i < this.connectionForward.length; i++){
+            if(this.connectionForward[i].status !== 2 || this.connectionForward[i].status !== 1){
+                var confirmedClear = true;
+                //if any backward connections are incomplete, set the confirmedClear flag to show that
+                for(var j = 0; j < this.connectionForward[i].connectionBackward.length; j++){
+                    var targetStatus = this.connectionForward[i].connectionBackward[j].status;
+                    if(targetStatus === "0" || targetStatus === "1" || targetStatus === "3"){
+                        confirmedClear = false;
+                        break;
+                    }
+                }
+                //apply the status
+                if(confirmedClear){
+                    this.connectionForward[i].setStatus("1");
+                }
+                else{
+                    this.connectionForward[i].setStatus("3");
+                }
+                //apply connectionForward data to localStorage
+                utility.setProgress(this.connectionForward[i].data._id, this.connectionForward[i].status);
+            }
         }
-        progressString += this.data._id + "" + this.status;
+        
+        //change button appearance
+        var toggleButton = document.querySelector("#completionButton");
+        toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div>";
+        toggleButton.className = "unselected";
     }
-    //otherwise modify the status value
-    else{
-        //progressString[this.data._id.length] = this.status;
-        progressString = progressString.substr(0, this.data._id.length + idIndex) + this.status + progressString.substr(this.data._id.length + 1 + idIndex, progressString.length) + "";
-    }
-    localStorage.progress = progressString;
+    
+    utility.setProgress(this.data._id, this.status);
     
     console.log(localStorage.progress + "\n");
     console.log("This is the status after change: " + this.status);
@@ -167,6 +183,10 @@ var _drawFlag = function (ctx, position, width, height, scale) {
     }
 }
 
+lessonNode.prototype.setStatus = function(pStatus){
+    this.status = pStatus;
+}
+
 lessonNode.prototype.draw = function(ctx){
     if(this.imageLoaded){
         
@@ -178,7 +198,7 @@ lessonNode.prototype.draw = function(ctx){
             }
 
             //the node is completely solved, draw connection lines
-            if(this.status === "2"){
+            if(this.status === "2" || this.status === "4"){
                 //draw lines as part of the lessonNode
                 for(var i = 0; i < this.connectionForward.length; i++){
                     this.connectionForward[i].highlight = true;
