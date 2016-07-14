@@ -17,6 +17,11 @@ function ExtensionNode(pName, pConnectionForward, pSource){
     this.type = "extension";
 }
 
+ExtensionNode.prototype.setStatus = function(pStatus){
+    this.status = pStatus;
+    this.connectionForward[0].setStatus(this.status)
+}
+
 ExtensionNode.prototype.draw = function(ctx){
     ctx.save();
         if(this.highlighted){
