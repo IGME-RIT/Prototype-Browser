@@ -158,8 +158,8 @@ var _handleStatus = function (e) {
         
         //change button appearance
         var toggleButton = document.querySelector("#completionButton");
-        toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div>";
-        toggleButton.className = "unselected";
+        toggleButton.innerHTML = "<div id=\"dwLauncherToggle\"><p>Mark Incomplete</p></div>";
+        toggleButton.className = "selected";
     }
     
     utility.setProgress(this.data._id, this.status);
@@ -338,7 +338,7 @@ lessonNode.prototype.click = function(){
     
     var dwLauncherReference = document.getElementById("dwLauncher");
     dwLauncherReference.innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>";
-    if(this.status === "1"){
+    if(this.status === "1" || this.status === "4"){
         dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"unselected\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
     }
     else{
