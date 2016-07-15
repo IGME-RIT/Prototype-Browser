@@ -5,10 +5,26 @@ function utilities(){
 }
 
 //set a status value of a node in localStorage based on ID
-utilities.prototype.setProgress = function(pID, pStatus){
+utilities.prototype.setProgress = function(pObject){
     var progressString = localStorage.progress;
+    
+    var targetObject = pObject;
+    //make accomodations if this is an extension node
+    var extensionflag = true;
+    while(extensionflag){
+        if(targetObject.type === "extension"){
+            targetObject = targetObject.connectionForward[0];
+        }
+        else{
+            extensionflag = false;
+        }
+    }
+    
+    var objectID = targetObject.data._id;
+    var objectStatus = targetObject.status;
+    
     //search the progressString for the current ID
-    var idIndex = progressString.indexOf(pID);
+    var idIndex = progressString.indexOf(objectID);
     
     //if it's not add it to the end
     if(idIndex === -1){
@@ -16,11 +32,11 @@ utilities.prototype.setProgress = function(pID, pStatus){
         if(progressString !== ""){
             progressString += ",";
         }
-        progressString += pID + "" + pStatus;
+        progressString += objectID + "" + objectStatus;
     }
     //otherwise modify the status value
     else{
-        progressString = progressString.substr(0, pID.length + idIndex) + pStatus + progressString.substr(pID.length + 1 + idIndex, progressString.length) + "";
+        progressString = progressString.substr(0, objectID.length + idIndex) + objectStatus + progressString.substr(objectID.length + 1 + idIndex, progressString.length) + "";
     }
     localStorage.progress = progressString;
 }

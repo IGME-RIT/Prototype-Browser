@@ -108,7 +108,7 @@ var _handleStatus = function (e) {
                 this.connectionForward[i].setStatus("3");
             }
             //apply connectionForward data to localStorage
-            utility.setProgress(this.connectionForward[i].data._id, this.connectionForward[i].status);
+            utility.setProgress(this.connectionForward[i]);
         }
         
         //change button appearance
@@ -152,7 +152,7 @@ var _handleStatus = function (e) {
                     this.connectionForward[i].setStatus("3");
                 }
                 //apply connectionForward data to localStorage
-                utility.setProgress(this.connectionForward[i].data._id, this.connectionForward[i].status);
+                utility.setProgress(this.connectionForward[i]);
             }
         }
         
@@ -162,7 +162,7 @@ var _handleStatus = function (e) {
         toggleButton.className = "selected";
     }
     
-    utility.setProgress(this.data._id, this.status);
+    utility.setProgress(this);
     
     console.log(localStorage.progress + "\n");
     console.log("This is the status after change: " + this.status);
