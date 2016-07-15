@@ -208,12 +208,23 @@ lessonNode.prototype.draw = function(ctx){
             
             //is this node's image drawn normally?
             if(this.status === "1" || this.status === "2" || this.status === "4"){
+                
+                
                 ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
             }
             //draw locked image
             else if(this.status === "3"){
                 //!!!!!use painter to draw lock stuff, below is placeholder
-                ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
+                ctx.save();
+                ctx.fillStyle = "gray";
+                ctx.strokeStyle = "gray";
+                ctx.lineWidth = 10;
+                ctx.beginPath();
+                ctx.arc(this.position.x,this.position.y - 10,20,Math.PI,0);
+                ctx.stroke();
+                ctx.fillRect(this.position.x - 30, this.position.y - 10, 60*this.scaleFactor, 40 * this.scaleFactor);
+                ctx.restore();
+                
             }
             
             ctx.font = "20px Arial";
