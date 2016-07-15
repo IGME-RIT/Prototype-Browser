@@ -153,7 +153,7 @@ header {
     position: relative;
     box-sizing: border-box;
     padding-bottom: 1vh;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 .dwResource{
     height: 4.5vh;
