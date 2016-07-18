@@ -213,25 +213,41 @@ function board(pStartPosition, pJSONData){
     for(var i = 0; i < nodeArray.length; i++){
         var subArray = nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
-            //get position of the id in localStorage
-            var idIndex = progressString.indexOf(subArray[j].data._id);
-            //if the node id cannot be found in localStorage
-            if(idIndex === -1){
-                //if it's a start node
-                if(i === 0){
-                    subArray[j].status = "1";
-                }
-                //not a start node
-                else{
-                    subArray[j].status = "0";
-                }
+            //process extensions separately
+            if(subArray[j].type === "extension"){
+                
             }
-            //node id exists in localStorage, get and apply the status
             else{
-                subArray[j].status = progressString[(idIndex + subArray[j].data._id.length)];
+                //get position of the id in localStorage
+                var idIndex = progressString.indexOf(subArray[j].data._id);
+                //if the node id cannot be found in localStorage
+                if(idIndex === -1){
+                    //if it's a start node
+                    if(i === 0){
+                        subArray[j].status = "1";
+                    }
+                    //not a start node
+                    else{
+                        subArray[j].status = "0";
+                    }
+                }
+                //node id exists in localStorage, get and apply the status
+                else{
+                    subArray[j].status = progressString[(idIndex + subArray[j].data._id.length)];
+                    //does this node have extensions? What measures should be taken to ensure that they draw correctly?
+                    //iterate though each forward connection
+                    for(var k = 0; k < subArray[j].connectionForward.length; k++){
+                        var targetNode = subArray[j].connectionForward[k];
+                        while(targetNode.type === "extension"){
+                            targetNode.status = subArray[j].status;
+                            targetNode = targetNode.connectionForward[0];
+                        }
+                    }
+                }
             }
         }
     }
+    
     
     this.nodeArray = nodeArray;
     

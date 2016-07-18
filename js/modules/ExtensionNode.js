@@ -10,7 +10,7 @@ function ExtensionNode(pName, pConnectionForward, pSource){
     sourceNode = pSource;
     
     this.data = {};
-    this.data._id = pSource.data._id;
+    //this.data._id = pSource.data._id;
     this.highlighted = false;
     //this.data.name = pName;
     this.connectionForward = [];
