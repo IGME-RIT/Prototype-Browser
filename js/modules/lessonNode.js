@@ -90,9 +90,10 @@ var _handleStatus = function (e) {
         //iterate through each forward connection and handle accordingly
         for(var i = 0; i < this.connectionForward.length; i++){
             var confirmedClear = true;
-            //if any backward connections are incomplete, set the confirmedClear flag to show that
+            //iterate through that forward connection's backwards connections and make sure that all are in a cleared state
             for(var j = 0; j < this.connectionForward[i].connectionBackward.length; j++){
                 var targetStatus = this.connectionForward[i].connectionBackward[j].status;
+                //if even a single backwards connection is hidden, unsolved, or locked, it's not ready to be revealed
                 if(targetStatus === "0" || targetStatus === "1" || targetStatus === "3"){
                     confirmedClear = false;
                     break;
@@ -183,7 +184,28 @@ var _drawFlag = function (ctx, position, width, height, scale) {
 }
 
 lessonNode.prototype.setStatus = function(pStatus){
-    this.status = pStatus;
+    //ensure that a lock is being instead of normal unveil if that's what is supposed to be there
+    if(pStatus === "1" && this.status === "0"){
+        var confirmedClear = true;
+        //check backwards connections completion
+        for(var i = 0; i < this.connectionBackward.length; i++){
+            var targetStatus = this.connectionBackward[i].status;
+            if(targetStatus === "0" || targetStatus === "1" || targetStatus === "3"){
+                confirmedClear = false;
+                break;
+            }
+        }
+        if(confirmedClear){
+            this.status = "1";
+        }
+        else{
+            this.status = "3";
+        }
+    }
+    else{
+       this.status = pStatus; 
+    }
+    
 }
 
 lessonNode.prototype.draw = function(ctx){
