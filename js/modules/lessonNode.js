@@ -17,8 +17,6 @@ function lessonNode(startPosition, JSONChunk){
     this.scaleFactor = 1;
     this.type = "lessonNode";
     this.data = JSONChunk;
-    //0 = hidden, 1 = visible unsolved, 2 = visible solved
-    //this.status = 0;
     
     this.placement = 1;
     
@@ -132,9 +130,10 @@ var _handleStatus = function (e) {
         //change to solved status
         this.status = "2";
         
-        //need to check completion here
+        //need to check completion here, loops through forward connections
         for(var i = 0; i < this.connectionForward.length; i++){
-            if(this.connectionForward[i].status !== 2 || this.connectionForward[i].status !== 1){
+            //if status is either hidden or locked, check to change status
+            if(this.connectionForward[i].status === 0 || this.connectionForward[i].status === 3){
                 var confirmedClear = true;
                 //if any backward connections are incomplete, set the confirmedClear flag to show that
                 for(var j = 0; j < this.connectionForward[i].connectionBackward.length; j++){
@@ -271,7 +270,7 @@ lessonNode.prototype.click = function(){
     
     document.getElementById("detailLayer").className = "visible";
     
-    document.getElementById("dwBannerTitle").innerHTML = this.data.title;
+    document.getElementById("dwBannerTitle").innerHTML = this.data.title + "debug status: " + this.status;
     document.getElementById("dwBannerImage").src = this.data.image.banner;
     
     var tagText = "";
