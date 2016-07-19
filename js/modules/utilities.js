@@ -56,7 +56,7 @@ utilities.prototype.clamp = function(value, min, max){
 
 utilities.prototype.mouseIntersect = function(pMouseState, pElement, pOffsetter, pScale){
     //if the x position collides
-    if(pElement.status !== 0){
+    if(pElement.status !== "0"){
         if(pMouseState.relativePosition.x + pOffsetter.x > (pElement.position.x - (pScale*pElement.width)/2) && pMouseState.relativePosition.x + pOffsetter.x < (pElement.position.x + (pScale*pElement.width)/2)){
             //if the y position collides
             if(pMouseState.relativePosition.y + pOffsetter.y > (pElement.position.y - (pScale*pElement.height)/2) && pMouseState.relativePosition.y + pOffsetter.y < (pElement.position.y + (pScale*pElement.height)/2)){

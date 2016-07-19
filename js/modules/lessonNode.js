@@ -270,7 +270,7 @@ lessonNode.prototype.click = function(){
     
     document.getElementById("detailLayer").className = "visible";
     
-    document.getElementById("dwBannerTitle").innerHTML = this.data.title + "debug status: " + this.status;
+    document.getElementById("dwBannerTitle").innerHTML = this.data.title;
     document.getElementById("dwBannerImage").src = this.data.image.banner;
     
     var tagText = "";

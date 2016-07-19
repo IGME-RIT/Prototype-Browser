@@ -60,25 +60,25 @@ p.act = function(){
     var broken = false;
     //mouse handling for target calculation
     for(var i = 0; i < activeBoard.nodeArray.length; i++){
-        if(activeBoard.nodeArray[i].status !== "0" || activeBoard.nodeArray[i].status !== undefined){
-            if(broken){
-                broken = false;
+        
+        if(broken){
+            broken = false;
+            break;
+        }
+        var subArray = activeBoard.nodeArray[i];
+        for(var j = 0; j < subArray.length; j++){
+            var targetLessonNode = activeBoard.nodeArray[i][j];
+            utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, targetLessonNode.scaleFactor);
+            if(targetLessonNode.mouseOver === true){
+                mouseTarget = targetLessonNode;
+                broken = true;
                 break;
             }
-            var subArray = activeBoard.nodeArray[i];
-            for(var j = 0; j < subArray.length; j++){
-                var targetLessonNode = activeBoard.nodeArray[i][j];
-                utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, targetLessonNode.scaleFactor);
-                if(targetLessonNode.mouseOver === true){
-                    mouseTarget = targetLessonNode;
-                    broken = true;
-                    break;
-                }
-                else{
-                    mouseTarget = 0;
-                } 
-            }
+            else{
+                mouseTarget = 0;
+            } 
         }
+        
         
         
     }
@@ -95,9 +95,8 @@ p.act = function(){
     
     document.querySelector('#debugLine').innerHTML = "mousePosition: x = " + mouseState.relativePosition.x + ", y = " + mouseState.relativePosition.y + 
     "<br>Current Clicked = " + mouseState.mouseDown + 
-    "<br>Last Clicked = " + mouseState.lastMouseDown + 
-    "<br>MouseTarget = " + mouseTarget + 
-    "<br>Over Canvas = " + mouseState.mouseIn;
+    "   Last Clicked = " + mouseState.lastMouseDown + 
+    "<br>MouseTarget = " + mouseTarget;
 }
 
 p.draw = function(ctx, center, activeHeight){
