@@ -288,102 +288,114 @@ lessonNode.prototype.draw = function(ctx){
 
 //populates the detailWindow based on the sender
 lessonNode.prototype.click = function(){
-    //set detailWindow values here
     
-    document.getElementById("detailLayer").className = "visible";
-    
-    document.getElementById("dwBannerTitle").innerHTML = this.data.title;
-    document.getElementById("dwBannerImage").src = this.data.image.banner;
-    
-    var tagText = "";
-    for(var i = 0; i < this.data.tags.length; i++){
-        tagText += "<div class=\"dwTag\"><p>" + this.data.tags[i] + "</p></div>";
-    }
-    
-    document.getElementById("dwTags").innerHTML = tagText;
-    document.getElementById("dwDescriptionText").innerHTML = this.data.description;
-    
-    var conglomerate = "";
-    if(this.data.extra_resources[0] !== null){
-        for(var i = 0; i < this.data.extra_resources.length; i++){
-            var snippet = this.data.extra_resources[i];
-            var headerSnippet = "";
-            var footerSnippet = "";
-            //removes / from the end since it will be used as an marker for cutting
-            if(snippet.substring(snippet.length - 1, snippet.length) === "/"){
-                snippet = snippet.substring(0, snippet.length - 1);
-            }
-            //remove the http:// or https:// header
-            if(snippet.substring(0, 8) === "https://"){
-                snippet = snippet.substring(8, snippet.length);
-            }
-            if(snippet.substring(0, 7) === "http://"){
-                snippet = snippet.substring(7, snippet.length);
-            }
-            if(snippet.substring(0, 4) === "www."){
-                snippet = snippet.substring(4, snippet.length);
-            }
-            //if the snippet contains / parse based on it
-            if(snippet.indexOf('/') !== "-1"){
-                var counter = 0;
-                for(var k = 0; k < snippet.length; k++){
-                    if(snippet[k] !== "/"){
-                        counter++;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                headerSnippet += snippet.substring(0, counter);
-                headerSnippet += ":";
-                
-                counter = snippet.length;
-                for(var k = snippet.length - 1; k > 0; k--){
-                    if(snippet[k] !== "/"){
-                        counter--;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                footerSnippet += snippet.substring(counter, snippet.length);
-                var temporarySnippet = "";
-                for(var k = 0; k < footerSnippet.length; k++){
-                    if(footerSnippet[k] === '-' || footerSnippet[k] === '_' || footerSnippet[k] === '~'){
-                        temporarySnippet += ' ';
-                    }
-                    else{
-                        temporarySnippet += footerSnippet[k];
-                    }
-                }
-                footerSnippet = temporarySnippet;
-            }
-            
-            conglomerate += "<a href=\"" + this.data.extra_resources[i] + "\" target=\"_blank\"><div class=\"dwResource\"><div class=\"dwResourceContent\"><p class=\"dwResourceP1\">";
-            conglomerate += headerSnippet;
-            conglomerate += "</p><p class=\"dwResourceP2\">" + footerSnippet +"</p></div></div></a>";
-        }
+    if(this.status === "3"){
+        document.getElementById("detailLayer").className = "visible";
+        document.getElementById("detailWindow").className = "hiddenWindow";
+        document.getElementById("lockWindow").className = "";
         
-    }
-    document.getElementById("dwResources").innerHTML = conglomerate;
-    
-    
-    var dwLauncherReference = document.getElementById("dwLauncher");
-    dwLauncherReference.innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>";
-    if(this.status === "1" || this.status === "4"){
-        dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"unselected\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
+        document.getElementById("lockText").innerHTML = this.data.title;
+        document.getElementById("lockList").innerHTML = "test text";
     }
     else{
-        dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"selected\"><div id=\"dwLauncherToggle\"><p>Mark Incomplete</p></div></button>";
+        //set detailWindow values here
+        document.getElementById("detailLayer").className = "visible";
+        document.getElementById("detailWindow").className = "";
+        document.getElementById("lockWindow").className = "hiddenWindow";
+        
+        document.getElementById("dwBannerTitle").innerHTML = this.data.title;
+        document.getElementById("dwBannerImage").src = this.data.image.banner;
+
+        var tagText = "";
+        for(var i = 0; i < this.data.tags.length; i++){
+            tagText += "<div class=\"dwTag\"><p>" + this.data.tags[i] + "</p></div>";
+        }
+
+        document.getElementById("dwTags").innerHTML = tagText;
+        document.getElementById("dwDescriptionText").innerHTML = this.data.description;
+
+        var conglomerate = "";
+        if(this.data.extra_resources[0] !== null){
+            for(var i = 0; i < this.data.extra_resources.length; i++){
+                var snippet = this.data.extra_resources[i];
+                var headerSnippet = "";
+                var footerSnippet = "";
+                //removes / from the end since it will be used as an marker for cutting
+                if(snippet.substring(snippet.length - 1, snippet.length) === "/"){
+                    snippet = snippet.substring(0, snippet.length - 1);
+                }
+                //remove the http:// or https:// header
+                if(snippet.substring(0, 8) === "https://"){
+                    snippet = snippet.substring(8, snippet.length);
+                }
+                if(snippet.substring(0, 7) === "http://"){
+                    snippet = snippet.substring(7, snippet.length);
+                }
+                if(snippet.substring(0, 4) === "www."){
+                    snippet = snippet.substring(4, snippet.length);
+                }
+                //if the snippet contains / parse based on it
+                if(snippet.indexOf('/') !== "-1"){
+                    var counter = 0;
+                    for(var k = 0; k < snippet.length; k++){
+                        if(snippet[k] !== "/"){
+                            counter++;
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    headerSnippet += snippet.substring(0, counter);
+                    headerSnippet += ":";
+
+                    counter = snippet.length;
+                    for(var k = snippet.length - 1; k > 0; k--){
+                        if(snippet[k] !== "/"){
+                            counter--;
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    footerSnippet += snippet.substring(counter, snippet.length);
+                    var temporarySnippet = "";
+                    for(var k = 0; k < footerSnippet.length; k++){
+                        if(footerSnippet[k] === '-' || footerSnippet[k] === '_' || footerSnippet[k] === '~'){
+                            temporarySnippet += ' ';
+                        }
+                        else{
+                            temporarySnippet += footerSnippet[k];
+                        }
+                    }
+                    footerSnippet = temporarySnippet;
+                }
+
+                conglomerate += "<a href=\"" + this.data.extra_resources[i] + "\" target=\"_blank\"><div class=\"dwResource\"><div class=\"dwResourceContent\"><p class=\"dwResourceP1\">";
+                conglomerate += headerSnippet;
+                conglomerate += "</p><p class=\"dwResourceP2\">" + footerSnippet +"</p></div></div></a>";
+            }
+
+        }
+        document.getElementById("dwResources").innerHTML = conglomerate;
+
+
+        var dwLauncherReference = document.getElementById("dwLauncher");
+        dwLauncherReference.innerHTML = "<a href=\"" + this.data.link + "\" target=\"_blank\"><div id=\"dwLauncherLaunch\"><p>Open Lesson</p></div></a>";
+        if(this.status === "1" || this.status === "4"){
+            dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"unselected\"><div id=\"dwLauncherToggle\"><p>Mark as Complete</p></div></button>";
+        }
+        else{
+            dwLauncherReference.innerHTML += "<button id=\"completionButton\" class=\"selected\"><div id=\"dwLauncherToggle\"><p>Mark Incomplete</p></div></button>";
+        }
+
+
+        //set cookie data
+        localStorage.activeNode = this.data._id;
+
+        //attach click event to button
+        var dwCompletionButton = document.querySelector("#completionButton");
+        dwCompletionButton.addEventListener('click', _handleStatus.bind(this), false);
     }
-    
-    
-    //set cookie data
-    localStorage.activeNode = this.data._id;
-    
-    //attach click event to button
-    var dwCompletionButton = document.querySelector("#completionButton");
-    dwCompletionButton.addEventListener('click', _handleStatus.bind(this), false);
 };
 
 module.exports = lessonNode;
