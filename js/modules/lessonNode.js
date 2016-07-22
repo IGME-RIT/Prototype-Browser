@@ -294,8 +294,11 @@ lessonNode.prototype.click = function(){
         document.getElementById("detailWindow").className = "hiddenWindow";
         document.getElementById("lockWindow").className = "";
         
-        document.getElementById("lockText").innerHTML = this.data.title;
-        document.getElementById("lockList").innerHTML = "test text";
+        document.getElementById("lockText").innerHTML = this.data.title + " will be unlocked when the following are completed: ";
+        for(var i = 0; i < this.connectionBackward.length + 100; i++){
+            //document.getElementById("lockList").innerHTML += "<p>• " + this.connectionBackward[i].data.title  + "</p>";
+            document.getElementById("lockList").innerHTML += "<p>• Test</p>";
+        }
     }
     else{
         //set detailWindow values here
