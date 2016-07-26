@@ -28,11 +28,7 @@ utilities.prototype.setProgress = function(pObject){
     
     //if it's not add it to the end
     if(idIndex === -1){
-        //if the string is empty don't add a comma
-        if(progressString !== ""){
-            progressString += ",";
-        }
-        progressString += objectID + "" + objectStatus;
+        progressString += objectID + "" + objectStatus + ",";
     }
     //otherwise modify the status value
     else{

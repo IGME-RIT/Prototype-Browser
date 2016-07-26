@@ -209,14 +209,14 @@ function board(pStartPosition, pJSONData){
     //process localStorage data and format into an array
     var progressString = localStorage.progress;
     
+    //keep track of which chunks are leftover 
+    var saveDataList = localStorage.progress;
     //load status from localStorage, iterate through every node
     for(var i = 0; i < nodeArray.length; i++){
         var subArray = nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
             //process extensions separately
-            if(subArray[j].type === "extension"){
-                
-            }
+            if(subArray[j].type === "extension"){}
             else{
                 //get position of the id in localStorage
                 var idIndex = progressString.indexOf(subArray[j].data._id);
@@ -243,18 +243,31 @@ function board(pStartPosition, pJSONData){
                             targetNode = targetNode.connectionForward[0];
                         }
                     }
+                    
+                    //at this point the current save data chunk is confirmed to be present, excise from the progress tring
+                    saveDataList = saveDataList.replace(subArray[j].data._id + subArray[j].status + ",", "");
                 }
             }
         }
     }
+    
+    var progressmarker = progressString;
+    //split the save data list string and parse through localStorage
+    if(saveDataList !== ""){
+        saveDataList = saveDataList.substring(0, saveDataList.length - 1);
+    }
+    var splitExtras = saveDataList.split(",");
+    for(var i = 0; i < splitExtras.length; i++){
+        progressString = progressString.replace(splitExtras[i] + ",", "");
+    }
+    
+    localStorage.progress = progressString;
     
     
     this.nodeArray = nodeArray;
     
     
     painter = new DrawLib();
-    
-    
     
     //move this board based on saved cookie data
     if(localStorage.activeNode !== "0"){
