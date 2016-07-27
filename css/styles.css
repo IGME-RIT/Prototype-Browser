@@ -29,6 +29,8 @@ header {
     background-color: dodgerblue;
     position: absolute;
     top: 0px;
+    font-size: 9pt;
+    color: white;
 }
 #resetButton{
     width: 50px;
@@ -38,13 +40,12 @@ header {
     top: 0px;
     left: 0px;
     border-width: 0;
+    color: white;
 }
 
 #debugLine{
-    color: red;
     text-align: center;
-    margin-top: 10px;
-    font-size: 10pt;
+    margin-top: 5px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
