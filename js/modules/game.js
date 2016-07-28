@@ -1,6 +1,5 @@
 "use strict";
 var BoardPhase = require('./phases/boardPhase.js');
-var ScenePhase = require('./phases/scenePhase.js');
 
 var Point = require('./point.js');
 var DrawLib = require('./drawLib.js');
