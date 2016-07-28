@@ -19,7 +19,7 @@ var mouseTarget;
 var nodeArray;
 
 
-function boardPhase(pTargetURL){
+function BoardPhase(pTargetURL){
     boardLoaded = false;
     mouseTarget = 0;
     
@@ -27,8 +27,14 @@ function boardPhase(pTargetURL){
     utility = new Utilities();
     parser = new Parser(pTargetURL, boardLoadedCallback);
     
-    document.getElementById("detailBlinder").onmousedown = function() { document.getElementById("detailLayer").className = "hiddenLayer"; }
+    populateDynamicContent();
     
+    //assign a click event to the detail blinder element that is used to darken the screen when information is being displayed
+    document.getElementById("detailBlinder").onmousedown = function() { document.getElementById("detailLayer").className = "hiddenLayer"; }
+}
+
+function populateDynamicContent(){
+    document.getElementById("dynamicContent").innerHTML = "<div id=\"detailLayer\" class=\"hiddenLayer\"><div id=\"detailBlinder\"></div><div id=\"detailWindow\" class=\"hiddenWindow\"><div id=\"dwBanner\"><img id=\"dwBannerImage\" src=\"\"><div id=\"dwBannerDarker\"></div><p id=\"dwBannerTitle\">Test</p></div><div id=\"dwTags\"></div><div id=\"dwDescription\"><p id=\"dwDescriptionText\">Test</p></div><div id=\"dwResources\"></div><div id=\"dwLauncher\"></div><p id=\"detailX\">x</p></div><div id=\"lockWindow\" class=\"hiddenWindow\"><div id=\"lockDivTop\"><h2 id=\"lockTitle\"></h2><p id=\"lockX\">x</p></div><div id=\"lockDivBottom\"><p id=\"lockList\"></p></div></div></div>";
 }
 
 function boardLoadedCallback(pJSONElements){
@@ -36,15 +42,13 @@ function boardLoadedCallback(pJSONElements){
     boardLoaded = true;
 }
 
-var p = boardPhase.prototype;
-
 //passing context, canvas, delta time, center point, usable height, mouse state
-p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
+BoardPhase.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     mouseState = pMouseState;
     if(boardLoaded){
-        p.act();
+        this.act();
         //context, center point, usable height
-        p.draw(ctx, center, activeHeight);
+        this.draw(ctx, center, activeHeight);
     }
     else{
         ctx.save();
@@ -56,7 +60,7 @@ p.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
     }
 }
 
-p.act = function(){
+BoardPhase.prototype.act = function(){
     var broken = false;
     //mouse handling for target calculation
     for(var i = 0; i < activeBoard.nodeArray.length; i++){
@@ -99,10 +103,9 @@ p.act = function(){
     "<br>MouseTarget = " + mouseTarget;
 }
 
-p.draw = function(ctx, center, activeHeight){
+BoardPhase.prototype.draw = function(ctx, center, activeHeight){
     //draw nodes
     activeBoard.draw(ctx, center, activeHeight);
 }
 
-
-module.exports = boardPhase;
+module.exports = BoardPhase;
