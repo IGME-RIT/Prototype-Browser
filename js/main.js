@@ -1,6 +1,6 @@
 "use strict";
 //imports
-var Game = require('./modules/game.js');
+var Game = require('./modules/Game.js');
 var Point = require('./modules/point.js');
 var MouseState = require('./modules/MouseState.js');
 var CanvasState = require('./modules/CanvasState.js');
@@ -22,34 +22,39 @@ var relativeMousePosition;
 var mouseDown;
 var mouseIn;
 
+//passable states
 var mouseState;
 var canvasState;
 
 //fires when the window loads
 window.onload = function(e){
-    //debug stuff
+    //debug button designed to clear progress data
     var resetButton = document.querySelector("#resetButton");
     resetButton.addEventListener("click", function(e){
         localStorage.progress = "";
     });
     
+    //variable and loop initialization
     initializeVariables();
     loop();
 }
 
-//initialization, mouse events, and game instantiation
+//initialization for variables, mouse events, and game "class"
 function initializeVariables(){
+    //camvas initialization
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
     
+    //header initialization
     header = document.querySelector('header');
     activeHeight = canvas.offsetHeight - header.offsetHeight;
     center = new Point(canvas.width/2, activeHeight/2 + header.offsetHeight);
     scale = 1080.0/activeHeight;
     
+    //mouse variable initialization
     mousePosition = new Point(0,0);
     relativeMousePosition = new Point(0,0);
     
@@ -75,10 +80,11 @@ function initializeVariables(){
         mouseDown = false;
     });
     
+    //state variable initialization
     mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn);
     canvasState = new CanvasState(ctx, center, canvas.offsetWidth, activeHeight, scale);
     
-    //local storage handling
+    //local storage handling for active node record and progress
     if(localStorage.activeNode === undefined){
         localStorage.activeNode = 0;
     }
@@ -86,17 +92,20 @@ function initializeVariables(){
         localStorage.progress = "";
     }
     
+    //creates the game object from which most interaction is managed
     game = new Game();
 }
 
 //fires once per frame
 function loop(){
+    //binds loop to frames
     window.requestAnimationFrame(loop.bind(this));
     
+    //feed current mouse variables back into mouse state
     mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn);
     
-    //passing context, canvas, delta time, center point, usable height, mouse state
-    game.update(ctx, canvas, 0, center, activeHeight, mouseState);
+    //update game's variables: passing context, canvas, delta time, center point, usable height, mouse state
+    game.update(ctx, canvas, 0, center, activeHeight, mouseState, canvasState);
 }
 
 //listens for changes in size of window and adjusts variables accordingly
@@ -108,7 +117,7 @@ window.addEventListener("resize", function(e){
     scale = 1080.0/activeHeight;
     canvasState.update(ctx, center, canvas.offsetWidth, activeHeight, scale);
     
-    console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
+    //console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
 });
 
 
