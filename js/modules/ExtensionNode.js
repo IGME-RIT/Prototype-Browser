@@ -25,11 +25,11 @@ ExtensionNode.prototype.setStatus = function(pStatus){
     this.connectionForward[0].setStatus(pStatus)
 }
 
-ExtensionNode.prototype.draw = function(ctx){
-    ctx.save();
+ExtensionNode.prototype.draw = function(pCanvasState){
+    pCanvasState.ctx.save();
         if(this.highlighted){
-            ctx.shadowColor = '#0066ff';
-            ctx.shadowBlur = 7;
+            pCanvasState.ctx.shadowColor = '#0066ff';
+            pCanvasState.ctx.shadowBlur = 7;
             if(this.connectionForward[0].type === "extension"){
                 this.connectionForward[0].highlighted = true;
             }
@@ -41,10 +41,10 @@ ExtensionNode.prototype.draw = function(ctx){
     }
     
     if(this.connectionBackward[0].status === "2" || this.connectionBackward[0].status === "4"){
-        painter.line(ctx, this.position.x, this.position.y, this.connectionForward[0].position.x, this.connectionForward[0].position.y, 2, "black");
+        painter.line(pCanvasState.ctx, this.position.x, this.position.y, this.connectionForward[0].position.x, this.connectionForward[0].position.y, 2, "black");
     }
     
-    ctx.restore();
+    pCanvasState.ctx.restore();
 }
 
 module.exports = ExtensionNode;

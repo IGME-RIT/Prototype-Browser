@@ -20,35 +20,42 @@ var nodeArray;
 
 
 function BoardPhase(pTargetURL){
+    //
     boardLoaded = false;
     mouseTarget = 0;
     
+    //instantiate libraries
     painter = new DrawLib();
     utility = new Utilities();
+    
+    //reads data from target URL and connects callback
     parser = new Parser(pTargetURL, boardLoadedCallback);
     
+    //insert html
     populateDynamicContent();
-    
-    //assign a click event to the detail blinder element that is used to darken the screen when information is being displayed
-    document.getElementById("detailBlinder").onmousedown = function() { document.getElementById("detailLayer").className = "hiddenLayer"; }
 }
 
-function populateDynamicContent(){
-    document.getElementById("dynamicContent").innerHTML = "<div id=\"detailLayer\" class=\"hiddenLayer\"><div id=\"detailBlinder\"></div><div id=\"detailWindow\" class=\"hiddenWindow\"><div id=\"dwBanner\"><img id=\"dwBannerImage\" src=\"\"><div id=\"dwBannerDarker\"></div><p id=\"dwBannerTitle\">Test</p></div><div id=\"dwTags\"></div><div id=\"dwDescription\"><p id=\"dwDescriptionText\">Test</p></div><div id=\"dwResources\"></div><div id=\"dwLauncher\"></div><p id=\"detailX\">x</p></div><div id=\"lockWindow\" class=\"hiddenWindow\"><div id=\"lockDivTop\"><h2 id=\"lockTitle\"></h2><p id=\"lockX\">x</p></div><div id=\"lockDivBottom\"><p id=\"lockList\"></p></div></div></div>";
-}
-
+//sets activeBoard and gives the go ahead for the loop to execute
 function boardLoadedCallback(pJSONElements){
     activeBoard = new Board(new Point(0,0), pJSONElements);
     boardLoaded = true;
 }
 
+//populate the dynamic content div in index with this phase's specific html
+function populateDynamicContent(){
+    document.getElementById("dynamicContent").innerHTML = "<div id=\"detailLayer\" class=\"hiddenLayer\"><div id=\"detailBlinder\"></div><div id=\"detailWindow\" class=\"hiddenWindow\"><div id=\"dwBanner\"><img id=\"dwBannerImage\" src=\"\"><div id=\"dwBannerDarker\"></div><p id=\"dwBannerTitle\">Test</p></div><div id=\"dwTags\"></div><div id=\"dwDescription\"><p id=\"dwDescriptionText\">Test</p></div><div id=\"dwResources\"></div><div id=\"dwLauncher\"></div><p id=\"detailX\">x</p></div><div id=\"lockWindow\" class=\"hiddenWindow\"><div id=\"lockDivTop\"><h2 id=\"lockTitle\"></h2><p id=\"lockX\">x</p></div><div id=\"lockDivBottom\"><p id=\"lockList\"></p></div></div></div>";
+    
+    //assign a click event to the detail blinder element that is used to darken the screen when information is being displayed
+    document.getElementById("detailBlinder").onmousedown = function() { document.getElementById("detailLayer").className = "hiddenLayer"; }
+}
+
 //passing context, canvas, delta time, center point, usable height, mouse state
-BoardPhase.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState){
+BoardPhase.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState, pCanvasState){
     mouseState = pMouseState;
     if(boardLoaded){
         this.act();
         //context, center point, usable height
-        this.draw(ctx, center, activeHeight);
+        this.draw(ctx, center, activeHeight, pCanvasState);
     }
     else{
         ctx.save();
@@ -103,9 +110,9 @@ BoardPhase.prototype.act = function(){
     "<br>MouseTarget = " + mouseTarget;
 }
 
-BoardPhase.prototype.draw = function(ctx, center, activeHeight){
+BoardPhase.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
     //draw nodes
-    activeBoard.draw(ctx, center, activeHeight);
+    activeBoard.draw(ctx, center, activeHeight, pCanvasState);
 }
 
 module.exports = BoardPhase;

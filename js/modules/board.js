@@ -300,7 +300,7 @@ board.prototype.move = function(pX, pY){
 };
 
 //context, center point, usable height
-board.prototype.draw = function(ctx, center, activeHeight){
+board.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
     ctx.save();
     //translate to the center of the screen
     ctx.translate(center.x - this.position.x, center.y - this.position.y);
@@ -308,7 +308,7 @@ board.prototype.draw = function(ctx, center, activeHeight){
     for(var i = 0; i < this.nodeArray.length; i++){
         var subArray = this.nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
-            this.nodeArray[i][j].draw(ctx);
+            this.nodeArray[i][j].draw(pCanvasState);
         }
     }
     ctx.restore();

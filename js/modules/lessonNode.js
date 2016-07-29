@@ -170,10 +170,10 @@ var _handleStatus = function (e) {
 
 var flagLoaded = false;
 var flagImage;
-var _drawFlag = function (ctx, position, width, height, scale) {
+var _drawFlag = function (ctx, position, width, height, scale, pCanvasState) {
     if(flagLoaded){
         //draw flag in the upper right
-        ctx.drawImage(flagImage, position.x + width/2 - 3*flagImage.naturalWidth/4, position.y - height/2 - flagImage.naturalHeight/4, 30 * scale, 30 * scale)
+        pCanvasState.ctx.drawImage(flagImage, position.x + width/2 - 3*flagImage.naturalWidth/4, position.y - height/2 - flagImage.naturalHeight/4, 30 * scale, 30 * scale)
     }
     else{
         //loadImage
@@ -208,14 +208,14 @@ lessonNode.prototype.setStatus = function(pStatus){
     
 }
 
-lessonNode.prototype.draw = function(ctx){
+lessonNode.prototype.draw = function(pCanvasState){
     if(this.imageLoaded){
         
         if(this.status !== "0"){
-            ctx.save();
+            pCanvasState.ctx.save();
             if(this.highlighted){
-                ctx.shadowColor = '#0066ff';
-                ctx.shadowBlur = 7;
+                pCanvasState.ctx.shadowColor = '#0066ff';
+                pCanvasState.ctx.shadowBlur = 7;
             }
 
             //the node is completely solved, draw connection lines
@@ -223,7 +223,7 @@ lessonNode.prototype.draw = function(ctx){
                 //draw lines as part of the lessonNode
                 for(var i = 0; i < this.connectionForward.length; i++){
                     this.connectionForward[i].highlight = true;
-                    painter.line(ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
+                    painter.line(pCanvasState.ctx, this.position.x, this.position.y, this.connectionForward[i].position.x, this.connectionForward[i].position.y, 2, "black");
                 }
             }
             
@@ -231,35 +231,35 @@ lessonNode.prototype.draw = function(ctx){
             if(this.status === "1" || this.status === "2" || this.status === "4"){
                 
                 
-                ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
+                pCanvasState.ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
             }
             //draw locked image
             else if(this.status === "3"){
                 //!!!!!use painter to draw lock stuff, below is placeholder
-                ctx.save();
-                ctx.fillStyle = "gray";
-                ctx.strokeStyle = "gray";
-                ctx.lineWidth = 10;
-                ctx.beginPath();
-                ctx.arc(this.position.x,this.position.y - 10,20,Math.PI,0);
-                ctx.stroke();
-                ctx.fillRect(this.position.x - 30, this.position.y - 10, 60*this.scaleFactor, 40 * this.scaleFactor);
-                ctx.restore();
+                pCanvasState.ctxsave();
+                pCanvasState.ctxfillStyle = "gray";
+                pCanvasState.ctxstrokeStyle = "gray";
+                pCanvasState.ctxlineWidth = 10;
+                pCanvasState.ctxbeginPath();
+                pCanvasState.ctxarc(this.position.x,this.position.y - 10,20,Math.PI,0);
+                pCanvasState.ctxstroke();
+                pCanvasState.ctxfillRect(this.position.x - 30, this.position.y - 10, 60*this.scaleFactor, 40 * this.scaleFactor);
+                pCanvasState.ctxrestore();
                 
             }
             
-            ctx.font = "20px Arial";
-            ctx.textBaseline = "hanging";
-            ctx.textAlign = "center";
-            ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
+            pCanvasState.ctx.font = "20px Arial";
+            pCanvasState.ctx.textBaseline = "hanging";
+            pCanvasState.ctx.textAlign = "center";
+            pCanvasState.ctx.strokeText(this.data.title, this.position.x, this.position.y + 5 + this.height/2);
                 
             //draw completion flag
             if(this.status === "2"){
-                _drawFlag(ctx, this.position, this.width, this.height, this.scaleFactor);
+                _drawFlag(pCanvasState.ctx, this.position, this.width, this.height, this.scaleFactor, pCanvasState);
             }
             
             
-            ctx.restore();
+            pCanvasState.ctx.restore();
 
 
             //draw the image, shadow if hovered
