@@ -1,13 +1,13 @@
 "use strict";
-var DrawLib = require('./drawLib.js');
-var LessonNode = require('./lessonNode.js');
-var Point = require('./point.js');
+var DrawLib = require('../../libraries/Drawlib.js');
+var LessonNode = require('./LessonNode.js');
+var Point = require('../../common/Point.js');
 var ExtensionNode = require('./ExtensionNode.js');
 
 var painter;
 
 //parameter is a point that denotes starting position
-function board(pStartPosition, pJSONData){
+function Board(pStartPosition, pJSONData){
     this.position = pStartPosition;
     
     var stagingArray = [];
@@ -294,13 +294,13 @@ var _generateNodeArray = function (pStagingArray, pStartArray) {
     return nodeArrayExport;
 };
 
-board.prototype.move = function(pX, pY){
+Board.prototype.move = function(pX, pY){
     this.position.x += pX;
     this.position.y += pY;
 };
 
 //context, center point, usable height
-board.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
+Board.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
     ctx.save();
     //translate to the center of the screen
     ctx.translate(center.x - this.position.x, center.y - this.position.y);
@@ -314,4 +314,4 @@ board.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
     ctx.restore();
 };
 
-module.exports = board; 
+module.exports = Board; 

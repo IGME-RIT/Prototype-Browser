@@ -1,8 +1,8 @@
 "use strict";
 //imported objects
-var BoardPhase = require('./phases/BoardPhase.js');
-var DrawLib = require('./drawLib.js');
-var Utilities = require('./utilities.js');
+var BoardPhase = require('./phases/boardPhase/BoardPhase.js');
+var DrawLib = require('./libraries/Drawlib.js');
+var Utilities = require('./libraries/Utilities.js');
 
 var activePhase;
 var painter;

@@ -1,5 +1,5 @@
 "use strict";
-var DrawLib = require('./drawLib.js');
+var DrawLib = require('../../libraries/Drawlib.js');
 
 var painter;
 var sourceNode;

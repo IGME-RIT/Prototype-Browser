@@ -1,12 +1,12 @@
 "use strict";
-var DrawLib = require('./drawLib.js');
-var Utilities = require('./utilities.js');
+var DrawLib = require('../../libraries/Drawlib.js');
+var Utilities = require('../../libraries/Utilities.js');
 
 var painter;
 var utility;
 
 //parameter is a point that denotes starting position
-function lessonNode(startPosition, JSONChunk){    
+function LessonNode(startPosition, JSONChunk){    
     this.imageLoaded = false;
     painter = new DrawLib();
     utility = new Utilities();
@@ -403,4 +403,4 @@ lessonNode.prototype.click = function(){
     }
 };
 
-module.exports = lessonNode;
+module.exports = LessonNode;

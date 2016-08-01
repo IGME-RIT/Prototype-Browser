@@ -1,7 +1,7 @@
 "use strict";
 
 //parameter is a point that denotes starting position
-function parser(pTargetURL, callback){
+function Parser(pTargetURL, callback){
     var JSONObject;
     var lessonArray = [];
     var xhr = new XMLHttpRequest();
@@ -17,4 +17,4 @@ function parser(pTargetURL, callback){
     xhr.send();
 }
 
-module.exports = parser;
+module.exports = Parser;

@@ -1,11 +1,11 @@
 "use strict";
-var Point = require('./point.js');
+var Point = require('../common/Point.js');
 
-function utilities(){
+function Utilities(){
 }
 
-//set a status value of a node in localStorage based on ID
-utilities.prototype.setProgress = function(pObject){
+//BOARDPHASE - set a status value of a node in localStorage based on ID
+Utilities.prototype.setProgress = function(pObject){
     var progressString = localStorage.progress;
     
     var targetObject = pObject;
@@ -37,20 +37,22 @@ utilities.prototype.setProgress = function(pObject){
     localStorage.progress = progressString;
 }
 
-// returns mouse position in local coordinate system of element
-utilities.prototype.getMouse = function(e){
+//returns mouse position in local coordinate system of element
+Utilities.prototype.getMouse = function(e){
     return new Point((e.pageX - e.target.offsetLeft), (e.pageY - e.target.offsetTop));
 }
 
-utilities.prototype.map = function(value, min1, max1, min2, max2){
+Utilities.prototype.map = function(value, min1, max1, min2, max2){
     return min2 + (max2 - min2) * ((value - min1) / (max1 - min1));
 }
 
-utilities.prototype.clamp = function(value, min, max){
+//limits the upper and lower limits of the parameter value
+Utilities.prototype.clamp = function(value, min, max){
     return Math.max(min, Math.min(max, value));
 }
 
-utilities.prototype.mouseIntersect = function(pMouseState, pElement, pOffsetter, pScale){
+//checks mouse collision on canvas
+Utilities.prototype.mouseIntersect = function(pMouseState, pElement, pOffsetter, pScale){
     //if the x position collides
     if(pElement.status !== "0"){
         if(pMouseState.relativePosition.x + pOffsetter.x > (pElement.position.x - (pScale*pElement.width)/2) && pMouseState.relativePosition.x + pOffsetter.x < (pElement.position.x + (pScale*pElement.width)/2)){
@@ -68,4 +70,4 @@ utilities.prototype.mouseIntersect = function(pMouseState, pElement, pOffsetter,
     }
 }
 
-module.exports = utilities;
+module.exports = Utilities;

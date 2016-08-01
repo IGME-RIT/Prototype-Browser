@@ -1,10 +1,10 @@
 "use strict";
-var Board = require('../board.js');
-var Point = require('../point.js');
-var DrawLib = require('../drawLib.js');
-var LessonNode = require('../lessonNode.js');
-var Parser = require('../parser.js');
-var Utilities = require('../utilities.js');
+var Board = require('./Board.js');
+var Point = require('../../common/Point.js');
+var DrawLib = require('../../libraries/DrawLib.js');
+var LessonNode = require('./LessonNode.js');
+var Parser = require('./Parser.js');
+var Utilities = require('../../libraries/Utilities.js');
 
 var utility;
 var painter;
