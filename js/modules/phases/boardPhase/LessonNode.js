@@ -15,7 +15,7 @@ function LessonNode(startPosition, JSONChunk){
     this.mouseOver = false;
     this.highlighted = false;
     this.scaleFactor = 1;
-    this.type = "lessonNode";
+    this.type = "LessonNode";
     this.data = JSONChunk;
     
     this.placement = 1;
@@ -183,7 +183,7 @@ var _drawFlag = function (ctx, position, width, height, scale, pCanvasState) {
     }
 }
 
-lessonNode.prototype.setStatus = function(pStatus){
+LessonNode.prototype.setStatus = function(pStatus){
     //ensure that a lock is being instead of normal unveil if that's what is supposed to be there
     if(pStatus === "1" && this.status === "0"){
         var confirmedClear = true;
@@ -208,7 +208,7 @@ lessonNode.prototype.setStatus = function(pStatus){
     
 }
 
-lessonNode.prototype.draw = function(pCanvasState){
+LessonNode.prototype.draw = function(pCanvasState){
     if(this.imageLoaded){
         
         if(this.status !== "0"){
@@ -287,7 +287,7 @@ lessonNode.prototype.draw = function(pCanvasState){
 
 
 //populates the detailWindow based on the sender
-lessonNode.prototype.click = function(){
+LessonNode.prototype.click = function(){
     
     if(this.status === "3"){
         document.getElementById("detailLayer").className = "visible";
