@@ -21,6 +21,7 @@ var mousePosition;
 var relativeMousePosition;
 var mouseDown;
 var mouseIn;
+var wheelDelta;
 
 //passable states
 var mouseState;
@@ -79,9 +80,13 @@ function initializeVariables(){
         mouseIn = false;
         mouseDown = false;
     });
+    wheelDelta = 0;
+    canvas.addEventListener("mousewheel", function(e){
+        wheelDelta = e.wheelDelta;
+    });
     
     //state variable initialization
-    mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn);
+    mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
     canvasState = new CanvasState(ctx, center, canvas.offsetWidth, activeHeight, scale);
     
     //local storage handling for active node record and progress
@@ -102,7 +107,9 @@ function loop(){
     window.requestAnimationFrame(loop.bind(this));
     
     //feed current mouse variables back into mouse state
-    mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn);
+    mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
+    //resetting wheel delta
+    wheelDelta = 0;
     
     //update game's variables: passing context, canvas, delta time, center point, usable height, mouse state
     game.update(ctx, canvas, 0, center, activeHeight, mouseState, canvasState);
