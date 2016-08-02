@@ -30,6 +30,7 @@ function BoardPhase(pTargetURL){
     //reads data from target URL and connects callback
     parser = new Parser(pTargetURL, boardLoadedCallback);
     
+    
     //insert html
     populateDynamicContent();
 }
@@ -77,7 +78,7 @@ BoardPhase.prototype.act = function(mouseState){
         var subArray = activeBoard.nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
             var targetLessonNode = activeBoard.nodeArray[i][j];
-            utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, targetLessonNode.scaleFactor);
+            utility.mouseIntersect(mouseState, targetLessonNode, activeBoard.position, 0);
             if(targetLessonNode.mouseOver === true){
                 mouseTarget = targetLessonNode;
                 broken = true;
@@ -87,9 +88,6 @@ BoardPhase.prototype.act = function(mouseState){
                 mouseTarget = 0;
             } 
         }
-        
-        
-        
     }
     //mouse handling for board movement
     if(mouseState.mouseDown === true && mouseState.lastMouseDown === true){

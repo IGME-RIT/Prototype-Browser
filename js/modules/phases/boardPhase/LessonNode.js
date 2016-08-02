@@ -170,10 +170,10 @@ var _handleStatus = function (e) {
 
 var flagLoaded = false;
 var flagImage;
-var _drawFlag = function (ctx, position, width, height, scale, pCanvasState) {
+var _drawFlag = function (positionX, positionY, width, height, pCanvasState) {
     if(flagLoaded){
         //draw flag in the upper right
-        pCanvasState.ctx.drawImage(flagImage, position.x + width/2 - 3*flagImage.naturalWidth/4, position.y - height/2 - flagImage.naturalHeight/4, 30 * scale, 30 * scale)
+        pCanvasState.ctx.drawImage(flagImage, positionX + width/2 - 1*flagImage.naturalWidth/4, positionY - height/2 - flagImage.naturalHeight/6, 30, 30)
     }
     else{
         //loadImage
@@ -211,6 +211,7 @@ LessonNode.prototype.setStatus = function(pStatus){
 LessonNode.prototype.draw = function(pCanvasState){
     if(this.imageLoaded){
         
+        
         if(this.status !== "0"){
             pCanvasState.ctx.save();
             if(this.highlighted){
@@ -229,8 +230,6 @@ LessonNode.prototype.draw = function(pCanvasState){
             
             //is this node's image drawn normally?
             if(this.status === "1" || this.status === "2" || this.status === "4"){
-                
-                
                 pCanvasState.ctx.drawImage(this.image, this.position.x - (this.width*this.scaleFactor)/2, this.position.y - (this.height*this.scaleFactor)/2, this.width * this.scaleFactor, this.height * this.scaleFactor);
             }
             //draw locked image
@@ -255,9 +254,8 @@ LessonNode.prototype.draw = function(pCanvasState){
                 
             //draw completion flag
             if(this.status === "2"){
-                _drawFlag(pCanvasState.ctx, this.position, this.width, this.height, this.scaleFactor, pCanvasState);
+                _drawFlag(this.position.x, this.position.y, this.height, this.width, pCanvasState);
             }
-            
             
             pCanvasState.ctx.restore();
 
