@@ -68,7 +68,7 @@ var _loadAction = function (e) {
 var _errorAction = function(e){
     //alert("There was an error loading an image.");
     this.image = new Image();
-    this.image.src = "../assets/ui/missingThumbnail.gif";
+    this.image.src = "../content/ui/missingThumbnail.gif";
     this.width = 100;
     this.height = 100;
     this.imageLoaded = true;
@@ -178,7 +178,7 @@ var _drawFlag = function (ctx, position, width, height, scale, pCanvasState) {
     else{
         //loadImage
         flagImage = new Image();
-        flagImage.src = "../../assets/ui/iconCheck.png";
+        flagImage.src = "../../content/ui/iconCheck.png";
         flagLoaded = true;
     }
 }

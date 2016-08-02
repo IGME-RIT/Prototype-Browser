@@ -31,7 +31,7 @@ Game.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseSt
     this.draw(canvasState);
     
     //update key variables in the active phase
-    activePhase.update(ctx, canvas, dt, center, activeHeight, pMouseState, canvasState);
+    activePhase.update(pMouseState, canvasState);
 }
 
 Game.prototype.draw = function(canvasState){

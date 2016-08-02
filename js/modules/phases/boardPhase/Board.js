@@ -300,18 +300,18 @@ Board.prototype.move = function(pX, pY){
 };
 
 //context, center point, usable height
-Board.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
-    ctx.save();
+Board.prototype.draw = function(canvasState){
+    canvasState.ctx.save();
     //translate to the center of the screen
-    ctx.translate(center.x - this.position.x, center.y - this.position.y);
+    canvasState.ctx.translate(canvasState.center.x - this.position.x, canvasState.center.y - this.position.y);
     //draw nodes
     for(var i = 0; i < this.nodeArray.length; i++){
         var subArray = this.nodeArray[i];
         for(var j = 0; j < subArray.length; j++){
-            this.nodeArray[i][j].draw(pCanvasState);
+            this.nodeArray[i][j].draw(canvasState);
         }
     }
-    ctx.restore();
+    canvasState.ctx.restore();
 };
 
 module.exports = Board; 

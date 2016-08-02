@@ -13,7 +13,6 @@ var parser;
 var activeBoard;
 var boardLoaded;
 
-var mouseState;
 var mouseTarget;
 
 var nodeArray;
@@ -50,24 +49,23 @@ function populateDynamicContent(){
 }
 
 //passing context, canvas, delta time, center point, usable height, mouse state
-BoardPhase.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState, pCanvasState){
-    mouseState = pMouseState;
+BoardPhase.prototype.update = function(mouseState, canvasState){
     if(boardLoaded){
-        this.act();
+        this.act(mouseState);
         //context, center point, usable height
-        this.draw(ctx, center, activeHeight, pCanvasState);
+        this.draw(canvasState);
     }
     else{
-        ctx.save();
-        ctx.font = "40px Arial";
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-        ctx.fillText("Loading...", center.x, center.y);
-        ctx.restore();
+        canvasState.ctx.save();
+        canvasState.ctx.font = "40px Arial";
+        canvasState.ctx.textBaseline = "middle";
+        canvasState.ctx.textAlign = "center";
+        canvasState.ctx.fillText("Loading...", canvasState.center.x, canvasState.center.y);
+        canvasState.ctx.restore();
     }
 }
 
-BoardPhase.prototype.act = function(){
+BoardPhase.prototype.act = function(mouseState){
     var broken = false;
     //mouse handling for target calculation
     for(var i = 0; i < activeBoard.nodeArray.length; i++){
@@ -110,9 +108,9 @@ BoardPhase.prototype.act = function(){
     "<br>MouseTarget = " + mouseTarget;
 }
 
-BoardPhase.prototype.draw = function(ctx, center, activeHeight, pCanvasState){
+BoardPhase.prototype.draw = function(canvasState){
     //draw nodes
-    activeBoard.draw(ctx, center, activeHeight, pCanvasState);
+    activeBoard.draw(canvasState);
 }
 
 module.exports = BoardPhase;
