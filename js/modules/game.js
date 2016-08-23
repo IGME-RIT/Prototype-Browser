@@ -1,6 +1,7 @@
 "use strict";
 //imported objects
 var BoardPhase = require('./phases/boardPhase/BoardPhase.js');
+var GraphPhase = require('./phases/graphPhase/GraphPhase.js');
 var DrawLib = require('./libraries/Drawlib.js');
 var Utilities = require('./libraries/Utilities.js');
 
@@ -16,7 +17,8 @@ function Game(){
     utility = new Utilities();
     
     //instantiate a phase, phases have universal function calls and callable variables
-    activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
+    //activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
+    activePhase = new GraphPhase("https://atlas-backend.herokuapp.com/repos");
     
     //give mouseState a value from the start so it doesn't pass undefined to previous
     mouseState = 0;

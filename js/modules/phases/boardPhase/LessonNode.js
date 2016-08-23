@@ -82,6 +82,15 @@ var _handleStatus = function (e) {
     
     
     console.log("This is the status before change: " + this.status);
+    //Each status means something different
+    //0:not start node
+    //1:start node
+    //2:
+    //3:
+    //4:
+    
+    
+    
     //will never occur when 0
     if(this.status === "1"){
         //change to solved status
@@ -133,8 +142,10 @@ var _handleStatus = function (e) {
         
         //need to check completion here, loops through forward connections
         for(var i = 0; i < this.connectionForward.length; i++){
+            var next = this.connectionForward[i];
+            
             //if status is either hidden or locked, check to change status
-            if(this.connectionForward[i].status === 0 || this.connectionForward[i].status === 3){
+            if(next.status === 0 || next.status === 3){
                 var confirmedClear = true;
                 //if any backward connections are incomplete, set the confirmedClear flag to show that
                 for(var j = 0; j < this.connectionForward[i].connectionBackward.length; j++){
