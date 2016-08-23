@@ -39,10 +39,7 @@ Game.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseSt
 Game.prototype.draw = function(canvasState){
     //draw board
     canvasState.ctx.save();
-    painter.clear(canvasState.ctx, 0, 0, canvasState.activeWidth, canvasState.totalHeight);
-    painter.rect(canvasState.ctx, 0, 0, canvasState.activeWidth, canvasState.totalHeight, "white");
-    painter.line(canvasState.ctx, canvasState.activeWidth/2, canvasState.center.y - canvasState.activeHeight/2, canvasState.activeWidth/2, canvasState.totalHeight, 2, "lightgray");
-    painter.line(canvasState.ctx, 0, canvasState.center.y, canvasState.activeWidth, canvasState.center.y, 2, "lightGray");
+    painter.rect(canvasState.ctx, 0, 0, canvasState.activeWidth, canvasState.totalHeight, "#333");
     canvasState.ctx.restore();
 }
 
