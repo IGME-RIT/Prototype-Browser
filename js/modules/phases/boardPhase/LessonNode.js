@@ -235,15 +235,15 @@ LessonNode.prototype.draw = function(pCanvasState){
             //draw locked image
             else if(this.status === "3"){
                 //!!!!!use painter to draw lock stuff, below is placeholder
-                pCanvasState.ctxsave();
-                pCanvasState.ctxfillStyle = "gray";
-                pCanvasState.ctxstrokeStyle = "gray";
-                pCanvasState.ctxlineWidth = 10;
-                pCanvasState.ctxbeginPath();
-                pCanvasState.ctxarc(this.position.x,this.position.y - 10,20,Math.PI,0);
-                pCanvasState.ctxstroke();
-                pCanvasState.ctxfillRect(this.position.x - 30, this.position.y - 10, 60*this.scaleFactor, 40 * this.scaleFactor);
-                pCanvasState.ctxrestore();
+                pCanvasState.ctx.save();
+                pCanvasState.ctx.fillStyle = "gray";
+                pCanvasState.ctx.strokeStyle = "gray";
+                pCanvasState.ctx.lineWidth = 10;
+                pCanvasState.ctx.beginPath();
+                pCanvasState.ctx.arc(this.position.x,this.position.y - 10,20,Math.PI,0);
+                pCanvasState.ctx.stroke();
+                pCanvasState.ctx.fillRect(this.position.x - 30, this.position.y - 10, 60*this.scaleFactor, 40 * this.scaleFactor);
+                pCanvasState.ctx.restore();
                 
             }
             
