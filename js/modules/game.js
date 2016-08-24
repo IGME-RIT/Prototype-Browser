@@ -25,7 +25,8 @@ function Game(){
 }
 
 //passing context, canvas, delta time, center point, usable height, mouse state
-Game.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState, canvasState){
+Game.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState, canvasState) {
+    
     previousMouseState = mouseState;
     mouseState = pMouseState;
     
@@ -33,7 +34,7 @@ Game.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseSt
     this.draw(canvasState);
     
     //update key variables in the active phase
-    activePhase.update(pMouseState, canvasState);
+    activePhase.update(pMouseState, canvasState, dt);
 }
 
 Game.prototype.draw = function(canvasState){

@@ -2,6 +2,7 @@
 //imports
 var Game = require('./modules/Game.js');
 var Point = require('./modules/common/Point.js');
+var Time = require('./modules/containers/Time.js');
 var MouseState = require('./modules/containers/MouseState.js');
 var CanvasState = require('./modules/containers/CanvasState.js');
 
@@ -9,6 +10,7 @@ var CanvasState = require('./modules/containers/CanvasState.js');
 var game;
 var canvas;
 var ctx;
+var time;
 
 //responsiveness
 var header;
@@ -49,6 +51,8 @@ function initializeVariables(){
     canvas.height = canvas.offsetHeight;
     console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
     
+    time = new Time();
+    
     //header initialization
     header = document.querySelector('header');
     activeHeight = canvas.offsetHeight - header.offsetHeight;
@@ -60,7 +64,7 @@ function initializeVariables(){
     relativeMousePosition = new Point(0,0);
     
     //event listeners for mouse interactions with the canvas
-    canvas.addEventListener("mousemove", function(e){
+    canvas.addEventListener("mousemove", function(e) {
         var boundRect = canvas.getBoundingClientRect();
         mousePosition = new Point(e.clientX - boundRect.left, e.clientY - boundRect.top);
         relativeMousePosition = new Point(mousePosition.x - (canvas.offsetWidth/2.0), mousePosition.y - (header.offsetHeight + activeHeight/2.0));        
@@ -106,13 +110,15 @@ function loop(){
     //binds loop to frames
     window.requestAnimationFrame(loop.bind(this));
     
+    time.update(.0167);
+    
     //feed current mouse variables back into mouse state
     mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
     //resetting wheel delta
     wheelDelta = 0;
     
     //update game's variables: passing context, canvas, delta time, center point, usable height, mouse state
-    game.update(ctx, canvas, 0, center, activeHeight, mouseState, canvasState);
+    game.update(ctx, canvas, time, center, activeHeight, mouseState, canvasState);
 }
 
 //listens for changes in size of window and adjusts variables accordingly

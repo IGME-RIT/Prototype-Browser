@@ -20,8 +20,9 @@ function GraphPhase(pTargetURL){
     });
 }
 
-GraphPhase.prototype.update = function(mouseState, canvasState) {
+GraphPhase.prototype.update = function(mouseState, canvasState, time) {
     if(graphLoaded) {
+        graph.update(mouseState, time);
         graph.draw(canvasState);
     }
     else {

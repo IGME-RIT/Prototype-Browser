@@ -13,11 +13,8 @@ Drawlib.prototype.rect = function(ctx, x, y, w, h, col) {
     ctx.restore();
 };
 
-Drawlib.prototype.roundedRect = function(ctx, x, y, w, h, rad, thickness, fill, fillColor, outline, outlineColor) {
+Drawlib.prototype.roundedRect = function(ctx, x, y, w, h, rad, fill, fillColor, outline, outlineColor, outlineWidth) {
     ctx.save();
-    ctx.fillStyle = fillColor;
-    ctx.strokeStyle = outlineColor;
-    ctx.lineWidth = thickness;
     ctx.moveTo(x + rad, y); //11 o clock
     ctx.beginPath();
     ctx.lineTo(x + w - rad, y); //1 o clock
@@ -30,9 +27,12 @@ Drawlib.prototype.roundedRect = function(ctx, x, y, w, h, rad, thickness, fill, 
     ctx.arcTo(x, y, x + rad, y, rad) //11 o clock
     ctx.closePath();
     if(fill) {
+        ctx.fillStyle = fillColor;
         ctx.fill();
     }
     if(outline) {
+        ctx.strokeStyle = outlineColor;
+        ctx.lineWidth = outlineWidth;
         ctx.stroke();
     }
     ctx.restore();
@@ -49,17 +49,18 @@ Drawlib.prototype.line = function(ctx, x1, y1, x2, y2, thickness, color) {
     ctx.restore();
 };
 
-Drawlib.prototype.circle = function(ctx, x, y, radius, color, filled, lineWidth){
+Drawlib.prototype.circle = function(ctx, x, y, radius, fill, fillColor, outline, outlineColor, outlineWidth) {
     ctx.save();
     ctx.beginPath();
     ctx.arc(x,y, radius, 0, 2 * Math.PI, false);
-    if(filled){
-        ctx.fillStyle = color;
-        ctx.fill(); 
+    ctx.closePath();
+    if(fill) {
+        ctx.fillStyle = fillColor;
+        ctx.fill();
     }
-    else{
-        ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = color;
+    if(outline) {
+        ctx.strokeStyle = outlineColor;
+        ctx.lineWidth = outlineWidth;
         ctx.stroke();
     }
     ctx.restore();
