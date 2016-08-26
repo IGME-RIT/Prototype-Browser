@@ -1,10 +1,13 @@
 /*general styles to be applied to every page*/
+@import 'https://fonts.googleapis.com/css?family=Inconsolata';
+
+
 * {
 	margin: 0; 
 	padding: 0;
     border: 0
 }
-/*Fix for IE*/
+
 img {
 	border: 0;
 }
@@ -21,22 +24,71 @@ html, body {
     float: left;
     background-color: #888;
 }
+
 #middleBar {
     width: 100vw;
     height: 100vh;
     float: left;
 }
+
 #rightBar {
     width: 0vw;
     height: 100vh;
     float: left;
     background-color: #888;
+    overflow: hidden;
+}
+#rightBar h1 {
+    margin: 24px;
+    text-align: center;
+}
+
+#rightBar h1 a:link {
+    color: #000;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 48px;
+    font-family: Inconsolata;
+}
+
+#rightbar h1 a:visited {
+    color: #000;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 48px;
+    font-family: Inconsolata;
 }
 
 
+#rightBar img {
+    margin: auto auto;
+    display: block;
+    box-shadow: 10px 10px 20px #000;
+    max-height: 50%;
+    max-width: 90%;
+}
 
+#rightBar p {
+    font-size: 24px;
+    font-family: sans-serif;
+    text-align: left;
+    margin: 24px;
+}
 
-header {
+#rightBar h2 {
+    font-size: 30px;
+    font-family: Inconsolata;
+    text-align: left;
+    margin: 12px;
+}
+
+#rightBar ul {
+    font-size: 16px;
+    font-family: sans-serif;
+    list-style-type: none;
+}
+
+/*header {
     width: 100%;
     height: 20px;
     background-color: dodgerblue;
@@ -342,4 +394,4 @@ header {
         font-size: 23.2pt;
     }
     
-}
+}*/

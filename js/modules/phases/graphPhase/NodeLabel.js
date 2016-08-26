@@ -6,10 +6,10 @@ var TutorialNode = require('./TutorialNode.js');
 
 var labelCornerSize = 6;
 
-var titleFontSize = 14;
+var titleFontSize = 12;
 var titleFont = titleFontSize+"px Arial";
 
-var descriptorFontSize = 16;
+var descriptorFontSize = 12;
 var descriptorFont = descriptorFontSize+"px Arial";
 
 var lineBreak = 6;
@@ -35,9 +35,7 @@ NodeLabel.prototype.calculateTextFit = function(ctx, pPainter) {
     var titleSize = ctx.measureText(this.title);
     ctx.restore();
 
-    this.size = new Point(
-        titleSize.width,
-        titleFontSize);
+    this.size = new Point(titleSize.width, titleFontSize);
     
     
 

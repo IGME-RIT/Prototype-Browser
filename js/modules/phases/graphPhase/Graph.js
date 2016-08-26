@@ -42,7 +42,7 @@ function Graph(pJSONData) {
     }
     
     this.transitionTime = 0;
-    this.FocusNode(this.nodes[22]);
+    this.FocusNode(this.nodes[0]);
 };
 
 
@@ -133,15 +133,21 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         }
         //show details for node if button clicked
         if(this.focusedNode.detailsButton.mouseOver) {
-            this.detailsPanel.enable(this.focusedNode);
-        }
-        else {
-            this.detailsPanel.disable();
+            if(this.detailsPanel.node == null)  {
+                this.detailsPanel.enable(this.focusedNode);
+            }
+            else {
+                this.detailsPanel.disable();
+            }
         }
     }
     
     if(this.detailsPanel.node != null) {
-        this.detailsPanel.update(canvasState, time);
+        this.detailsPanel.update(canvasState, time, this.focusedNode);
+        this.focusedNode.detailsButton.text = "Less";
+    }
+    else {
+        this.focusedNode.detailsButton.text = "More";
     }
 };
 
@@ -160,8 +166,15 @@ Graph.prototype.draw = function(canvasState) {
     //console.log(canvasState);
     //draw nodes
     this.focusedNode.draw(canvasState, painter, null, 0, expand);
-    canvasState.ctx.restore();
     
+    
+    if(this.detailsPanel.node != null) {
+        
+    }
+    
+    
+    
+    canvasState.ctx.restore();
 };
 
 module.exports = Graph;

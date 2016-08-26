@@ -13,7 +13,7 @@ var TutorialState = {
 };
 
 var TutorialTags = {
-    "Core": "#fff",
+    "Core": "#000",
     "Math": "#080",
     "C++": "#800",
     "Graphics": "#808",
@@ -39,7 +39,7 @@ function TutorialNode(JSONChunk) {
     this.nextNodes = [];
     this.previousNodes = [];
     
-    this.detailsButton = new Button(new Point(0, 0), new Point(72, 36), "Details", this.color);
+    this.detailsButton = new Button(new Point(0, 0), new Point(72, 36), "More", this.color);
     
 };
 
@@ -197,7 +197,7 @@ TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
         }
     }
     else {
-        this.currentHeight = this.size * 5;
+        this.currentHeight = 24 * 5;
     }
     
     return this.currentHeight;

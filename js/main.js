@@ -31,10 +31,11 @@ var canvasState;
 //fires when the window loads
 window.onload = function(e){
     //debug button designed to clear progress data
+    /*
     var resetButton = document.querySelector("#resetButton");
     resetButton.addEventListener("click", function(e){
         localStorage.progress = "";
-    });
+    });*/
     
     //variable and loop initialization
     initializeVariables();
