@@ -1,5 +1,6 @@
 "use strict";
 var DrawLib = require('../../libraries/Drawlib.js');
+var DetailsPanel = require('./DetailsPanel.js');
 var TutorialNode = require('./TutorialNode.js');
 var Point = require('../../common/Point.js');
 
@@ -8,6 +9,8 @@ var painter;
 var expand = 3;
 
 function Graph(pJSONData) {
+    
+    this.detailsPanel = new DetailsPanel(this);
     painter = new DrawLib();
     
     this.nodes = [];
@@ -103,26 +106,42 @@ Graph.prototype.FocusNode = function(centerNode) {
     this.focusedNode.setTransition(expand, null, 0, new Point(0, 0));
 };
 
-
-
-
-Graph.prototype.update = function(mouseState, time) {
+Graph.prototype.update = function(mouseState, canvasState, time) {
+    
     if(this.transitionTime > 0) {
         this.transitionTime -= time.deltaTime;
     }
     else {
         this.transitionTime = 0;
     }
-    //this.focusedNode.recursiveUpdate(0, expand);
-    var clickedNode = null;
+    
+    var mouseOverNode = null;
     
     for(var i = 0; i < this.activeNodes.length; i++) {
-        var wasClicked = this.activeNodes[i].update(mouseState, time, this.transitionTime);
-        if(wasClicked)
-            clickedNode = this.activeNodes[i];
+        var isMain = (this.activeNodes[i] == this.focusedNode);
+        this.activeNodes[i].update(mouseState, time, this.transitionTime, isMain);
+        if(this.activeNodes[i].mouseOver) {
+            mouseOverNode = this.activeNodes[i];
+        }
     }
-    if(clickedNode){
-        this.FocusNode(clickedNode);
+    
+    //if cuser clicks
+    if(mouseState.mouseDown && !mouseState.lastMouseDown) {
+        //focus node if clicked
+        if(mouseOverNode) {
+            this.FocusNode(mouseOverNode);
+        }
+        //show details for node if button clicked
+        if(this.focusedNode.detailsButton.mouseOver) {
+            this.detailsPanel.enable(this.focusedNode);
+        }
+        else {
+            this.detailsPanel.disable();
+        }
+    }
+    
+    if(this.detailsPanel.node != null) {
+        this.detailsPanel.update(canvasState, time);
     }
 };
 
@@ -137,7 +156,8 @@ Graph.prototype.draw = function(canvasState) {
     
     //translate to the center of the screen
     canvasState.ctx.translate(canvasState.center.x, canvasState.center.y);
-    
+    //console.log(canvasState.center);
+    //console.log(canvasState);
     //draw nodes
     this.focusedNode.draw(canvasState, painter, null, 0, expand);
     canvasState.ctx.restore();

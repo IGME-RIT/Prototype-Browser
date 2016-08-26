@@ -1,31 +1,44 @@
 /*general styles to be applied to every page*/
 * {
-	margin:0px; 
-	padding:0px;
+	margin: 0; 
+	padding: 0;
+    border: 0
 }
 /*Fix for IE*/
 img {
-	border-width: 0;
+	border: 0;
 }
-body {
-	width: 100%;
-    height: 100%;
-	margin: 0;
-	padding: 0;
-    
+
+html, body {
+	width: 100vw;
+    height: 100vh;
     background-color: black;
 }
 
-canvas {
-    margin: 0px;
-    width: 100%;
+#leftBar {
+    width: 0vw;
     height: 100vh;
-    display: block;
+    float: left;
+    background-color: #888;
 }
+#middleBar {
+    width: 100vw;
+    height: 100vh;
+    float: left;
+}
+#rightBar {
+    width: 0vw;
+    height: 100vh;
+    float: left;
+    background-color: #888;
+}
+
+
+
 
 header {
     width: 100%;
-    height: 50px;
+    height: 20px;
     background-color: dodgerblue;
     position: absolute;
     top: 0px;

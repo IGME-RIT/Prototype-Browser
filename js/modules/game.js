@@ -9,8 +9,7 @@ var activePhase;
 var painter;
 var utility;
 
-var mouseState;
-var previousMouseState;
+var mouseState
 
 function Game(){    
     painter = new DrawLib();
@@ -24,24 +23,19 @@ function Game(){
     mouseState = 0;
 }
 
-//passing context, canvas, delta time, center point, usable height, mouse state
-Game.prototype.update = function(ctx, canvas, dt, center, activeHeight, pMouseState, canvasState) {
+//passing context, canvas, delta time, center point, mouse state
+Game.prototype.update = function(mouseState, canvasState, time) {
     
-    previousMouseState = mouseState;
-    mouseState = pMouseState;
-    
-    //game class specific draw calls
-    this.draw(canvasState);
     
     //update key variables in the active phase
-    activePhase.update(pMouseState, canvasState, dt);
-}
-
-Game.prototype.draw = function(canvasState){
-    //draw board
+    activePhase.update(mouseState, canvasState, time);
+    
+    //draw background and then active phase
     canvasState.ctx.save();
-    painter.rect(canvasState.ctx, 0, 0, canvasState.activeWidth, canvasState.totalHeight, "#333");
+    painter.rect(canvasState.ctx, 0, 0, canvasState.width, canvasState.height, "#222");
     canvasState.ctx.restore();
+    activePhase.draw(canvasState);
+    
 }
 
 module.exports = Game;

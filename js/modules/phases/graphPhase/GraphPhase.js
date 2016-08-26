@@ -22,7 +22,12 @@ function GraphPhase(pTargetURL){
 
 GraphPhase.prototype.update = function(mouseState, canvasState, time) {
     if(graphLoaded) {
-        graph.update(mouseState, time);
+        graph.update(mouseState, canvasState, time);
+    }
+}
+
+GraphPhase.prototype.draw = function(canvasState) {
+    if(graphLoaded) {
         graph.draw(canvasState);
     }
     else {
@@ -35,6 +40,6 @@ GraphPhase.prototype.update = function(mouseState, canvasState, time) {
         canvasState.ctx.fillText("Loading...", canvasState.center.x, canvasState.center.y);
         canvasState.ctx.restore();
     }
-}
+};
 
 module.exports = GraphPhase;

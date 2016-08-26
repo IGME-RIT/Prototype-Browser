@@ -4,17 +4,16 @@
 	<meta charset="utf-8" />
 	<title>IPAR</title>
 	<link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
     
 </head>
 <body>
-	<canvas>The browser you are using does not support modern web functionality</canvas>
-    <header><p id="debugLine">Test</p><button id="resetButton"><p>reset progress</p></button></header>
+	<div id="leftBar"></div>
+    <canvas id="middleBar">The browser you are using does not support modern web functionality</canvas>
+    <div id="rightBar"></div>
     
-    <div id="dynamicContent">
-        
-    </div>
+    <header><p id="debugLine">Test</p><button id="resetButton"><p>reset progress</p></button></header>
         
     <script src="bundle.js"></script>
 </body>

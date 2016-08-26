@@ -1,23 +1,18 @@
 //Contains canvas related variables in a single easy-to-pass object
 "use strict";
-function CanvasState(ctx, center, activeWidth, activeHeight, scaleFactor){
+var Point = require('../common/Point.js');
+
+
+function CanvasState(canvas, ctx) {
+    this.canvas = canvas;
     this.ctx = ctx;
-    this.center = center;
-    this.activeWidth = activeWidth;
-    this.activeHeight = activeHeight;
-    this.scaleFactor = scaleFactor;
-    
-    this.totalHeight = center.y + activeHeight/2;
+    this.update();
 }
 
-CanvasState.prototype.update = function(ctx, center, activeWidth, activeHeight, scaleFactor){
-    this.ctx = ctx;
-    this.center = center;
-    this.activeWidth = activeWidth;
-    this.activeHeight = activeHeight;
-    this.scaleFactor = scaleFactor;
-    
-    this.totalHeight = center.y + activeHeight/2;
+CanvasState.prototype.update = function() {
+    this.width = this.canvas.width = this.canvas.offsetWidth;
+    this.height = this.canvas.height = this.canvas.offsetHeight;
+    this.center = new Point(this.canvas.width / 2, this.canvas.height / 2);
 }
 
 module.exports = CanvasState;

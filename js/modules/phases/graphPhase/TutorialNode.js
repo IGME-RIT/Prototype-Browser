@@ -2,6 +2,9 @@
 
 var Point = require('../../common/Point.js');
 var NodeLabel = require('./NodeLabel.js');
+var Button = require('../../containers/Button.js');
+
+var horizontalSpacing = 200;
 
 var TutorialState = {
     Locked: 0,
@@ -23,17 +26,21 @@ function TutorialNode(JSONChunk) {
     this.primaryTag = this.data.tags[1];
     this.color = TutorialTags[this.primaryTag];
     this.state = TutorialState.Locked;
+    this.mouseOver = false;
     
-    this.wasPreviouslyOnScreen = false;
+    
     this.position = new Point(0, 0);
     this.previousPosition = new Point(0, 0);
     this.nextPosition = new Point(0, 0);
     
-    this.size = 25;
+    this.size = 24;
     this.label = new NodeLabel(this);
         
     this.nextNodes = [];
     this.previousNodes = [];
+    
+    this.detailsButton = new Button(new Point(0, 0), new Point(72, 36), "Details", this.color);
+    
 };
 
 //recursive function to get previous nodes
@@ -85,36 +92,42 @@ TutorialNode.prototype.recursiveUpdate = function(direction, depth) {
     }
 };
 
-//updates nodes recursively starting with the core node
+//updates a node
 //transition time is 1-0, with 0 being the final location
-TutorialNode.prototype.update = function(mouseState, time, transitionTime) {
-    //move the node
-    var iWasClicked = false;
+TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFocused) {
     
+    //move the node
     if(this.position != this.nextPosition) {
         this.position.x = (this.previousPosition.x * transitionTime) + (this.nextPosition.x * (1 - transitionTime));
         this.position.y = (this.previousPosition.y * transitionTime) + (this.nextPosition.y * (1 - transitionTime));
     }
     
-    //test if mouse is inside circle
-    var dx = mouseState.relativePosition.x - this.position.x;
-    var dy = mouseState.relativePosition.y - this.position.y;
-    if((dx * dx) + (dy * dy) < this.size * this.size) {
-        this.size = 30;
-        if(mouseState.mouseDown && !mouseState.lastMouseDown) {
-            iWasClicked = true;
-        }
+    if(isFocused) {
+        this.size = 36;
     }
     else {
-        this.size = 25;
+        //test if mouse is inside circle
+        var dx = mouseState.relativePosition.x - this.position.x;
+        var dy = mouseState.relativePosition.y - this.position.y;
+        if((dx * dx) + (dy * dy) < this.size * this.size) {
+            this.size = 30;
+            this.mouseOver = true;
+        }
+        else {
+            this.size = 24;
+            this.mouseOver = false;
+        }
     }
     
     
     
-    this.label.update(time);
+    this.label.update(mouseState, time, isFocused);
     
-    
-    return iWasClicked;
+    if(isFocused) {
+        this.detailsButton.position.x = this.position.x - this.detailsButton.size.x / 2 - 3;
+        this.detailsButton.position.y = this.position.y + this.size + 12;
+        this.detailsButton.update(mouseState);
+    }
 };
 
 
@@ -140,7 +153,8 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
         //left or middle
         if(direction < 1) {
             var totalLeftHeight = this.getPreviousHeight(layerDepth);
-            xPosition = targetPosition.x - 200;
+            xPosition = targetPosition.x - horizontalSpacing;
+            if(direction == 0) xPosition -= 100;
             yPosition = targetPosition.y - (totalLeftHeight / 2);
             
             for(var i = 0; i < this.previousNodes.length; i++) {
@@ -157,7 +171,8 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
         //right or middle
         if(direction > -1) {
             var totalRightHeight = this.getNextHeight(layerDepth);
-            xPosition = targetPosition.x + 200;
+            xPosition = targetPosition.x + horizontalSpacing;
+            if(direction == 0) xPosition += 100;
             yPosition = targetPosition.y - (totalRightHeight / 2);
 
             for(var i = 0; i < this.nextNodes.length; i++) {
@@ -237,9 +252,13 @@ TutorialNode.prototype.draw = function(pCanvasState, pPainter, parentCaller, dir
     
     //draw circle
     pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size, true, this.color, true, "#fff", 2);
+    
     this.label.draw(pCanvasState, pPainter);
+    if(direction == 0) {
+        this.detailsButton.draw(pCanvasState, pPainter);
+    }
 };
 
 
 
-module.exports  = TutorialNode;
+module.exports = TutorialNode;
