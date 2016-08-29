@@ -4,7 +4,7 @@ var Point = require('../../common/Point.js');
 var NodeLabel = require('./NodeLabel.js');
 var Button = require('../../containers/Button.js');
 
-var horizontalSpacing = 200;
+var horizontalSpacing = 180;
 
 var TutorialState = {
     Locked: 0,
@@ -154,7 +154,7 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
         if(direction < 1) {
             var totalLeftHeight = this.getPreviousHeight(layerDepth);
             xPosition = targetPosition.x - horizontalSpacing;
-            if(direction == 0) xPosition -= 100;
+            if(direction == 0) xPosition -= 60;
             yPosition = targetPosition.y - (totalLeftHeight / 2);
             
             for(var i = 0; i < this.previousNodes.length; i++) {
@@ -172,7 +172,7 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
         if(direction > -1) {
             var totalRightHeight = this.getNextHeight(layerDepth);
             xPosition = targetPosition.x + horizontalSpacing;
-            if(direction == 0) xPosition += 100;
+            if(direction == 0) xPosition += 60;
             yPosition = targetPosition.y - (totalRightHeight / 2);
 
             for(var i = 0; i < this.nextNodes.length; i++) {

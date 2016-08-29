@@ -47,7 +47,7 @@ function initializeVariables(){
     //camvas initialization
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
-    console.log("Canvas Dimensions: " + canvas.offsetWidth + ", " + canvas.offsetHeight);
+    //console.log("Canvas Dimensions: " + canvas.offsetWidth + ", " + canvas.offsetHeight);
     
     time = new Time();
     

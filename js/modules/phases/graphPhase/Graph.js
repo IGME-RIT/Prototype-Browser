@@ -1,5 +1,6 @@
 "use strict";
 var DrawLib = require('../../libraries/Drawlib.js');
+var SearchPanel = require('./SearchPanel.js');
 var DetailsPanel = require('./DetailsPanel.js');
 var TutorialNode = require('./TutorialNode.js');
 var Point = require('../../common/Point.js');
@@ -9,8 +10,13 @@ var painter;
 var expand = 3;
 
 function Graph(pJSONData) {
-    
+        
+    this.searchPanel = new SearchPanel(this);
     this.detailsPanel = new DetailsPanel(this);
+    this.searchPanelButton = document.getElementById("OptionsButton");
+    this.searchDiv = document.getElementById("leftBar");
+    this.dataDiv = document.getElementById("rightBar");
+    this.canvasDiv = document.getElementById("middleBar");
     painter = new DrawLib();
     
     this.nodes = [];
@@ -43,6 +49,19 @@ function Graph(pJSONData) {
     
     this.transitionTime = 0;
     this.FocusNode(this.nodes[0]);
+    
+    
+    function x (search) {
+        if(search.open == true) {
+            search.transitionOn = false;
+        }
+        else {
+            search.transitionOn = true;
+            search.open = true;
+        }
+    }
+    
+    this.searchPanelButton.addEventListener("click", x.bind(this.searchPanelButton, this.searchPanel));
 };
 
 
@@ -142,6 +161,11 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         }
     }
     
+    if(this.searchPanel.open == true) {
+        this.searchPanel.update(canvasState, time);
+    }
+    
+    
     if(this.detailsPanel.node != null) {
         this.detailsPanel.update(canvasState, time, this.focusedNode);
         this.focusedNode.detailsButton.text = "Less";
@@ -149,6 +173,18 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
     else {
         this.focusedNode.detailsButton.text = "More";
     }
+    
+    
+    var t1 = (1 - Math.cos(this.searchPanel.transitionTime * Math.PI))/2;
+    var t2 = (1 - Math.cos(this.detailsPanel.transitionTime * Math.PI))/2;
+    
+    this.searchDiv.style.width = 30 * t1 + "vw";
+    this.dataDiv.style.width = 30 * t2 + "vw";
+    this.canvasDiv.style.width = 100 - 30 * (t1 + t2) + "vw";    
+    
+    this.searchPanelButton.style.left = "calc(" + 30 * t1 + "vw + 12px)";
+    
+    canvasState.update();
 };
 
 
@@ -166,13 +202,6 @@ Graph.prototype.draw = function(canvasState) {
     //console.log(canvasState);
     //draw nodes
     this.focusedNode.draw(canvasState, painter, null, 0, expand);
-    
-    
-    if(this.detailsPanel.node != null) {
-        
-    }
-    
-    
     
     canvasState.ctx.restore();
 };

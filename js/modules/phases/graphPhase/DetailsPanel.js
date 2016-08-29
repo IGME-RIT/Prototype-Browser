@@ -5,10 +5,9 @@ function DetailsPanel(graph) {
     this.graph = graph;
     this.node = null;
     this.data = null;
-    this.dataDiv = document.getElementById("rightBar");
-    this.canvasDiv = document.getElementById("middleBar");
     this.transitionOn = false;
     this.transitionTime = 0;
+    this.dataDiv = document.getElementById("rightBar");
 };
 
 DetailsPanel.prototype.enable = function(node) {
@@ -55,25 +54,18 @@ DetailsPanel.prototype.update = function(canvasState, time, node) {
             }
         }
     }
-    
-    
-    //update position of windows
-    var t = (1 - Math.cos(this.transitionTime * Math.PI))/2;
-    this.dataDiv.style.width = 40 * t + "vw";
-    this.canvasDiv.style.width = 100 - 40 * t + "vw";    
-    canvasState.update();
 };
 
 DetailsPanel.prototype.GenerateDOM = function() {
     var html = "<h1><a href=" + this.data.link + ">"+this.data.title+"</a></h1>";
     html += "<a href=" + this.data.link + "><img src=" + this.data.image.icon + "></a>";
     html += "<p>" + this.data.description + "</p>";
-    console.log(this.data);
+    //console.log(this.data);
     if(this.data.extra_resources.length != 0) {
-        html += "<h2>Additional Resources:<h2>";
+        html += "<h2>Additional Resources:</h2>";
         html += "<ul>";
         for(var i = 0; i < this.data.extra_resources.length; i++) {
-            html += "<li><a href=" + this.data.extra_resources[i] + ">link</a></li>";
+            html += "<li><a href=" + this.data.extra_resources[i] + ">Risky Click</a></li>";
         }
         html += "</ul>";
     }
