@@ -70,8 +70,7 @@ function SearchPanel(graph) {
     this.searchButton = document.getElementById("searchbutton");
     
     
-    
-    function x (that) {
+    this.searchButton.addEventListener("click", function (that) {
         //parse data to find matching results
         var searchResults = that.search(queryData, that.graph.nodes);
         
@@ -84,19 +83,24 @@ function SearchPanel(graph) {
         
         div.innerHTML = "";
         
+        
         for(var i = 0; i < searchResults.length; i++) {
+            //create list tag
             var li = document.createElement("li");
+            //set title as text
             li.innerHTML = searchResults[i].data.title;
-            
-            
+            //add event to focus the node if its clicked
+            li.addEventListener("click", function(that, node) {
+                that.graph.FocusNode(node);
+            }.bind(li, that, searchResults[i]));
+            //add the tag to the page
             div.appendChild(li);
         }
-        
-        
-    }
-    
-    this.searchButton.addEventListener("click", x.bind(this.searchButton, this));
+    }.bind(this.searchButton, this));
 };
+
+
+
 
 SearchPanel.prototype.search = function(query, nodes) {
     var results = [];
@@ -107,7 +111,7 @@ SearchPanel.prototype.search = function(query, nodes) {
         var match = true;
         for(var j = 0; j < query.length; j++) {
             if(query[j].type === "Text") {
-                if(node.title.indexOf(query[j].value) === -1) {
+                if(node.title.toLowerCase().indexOf(query[j].value.toLowerCase()) === -1) {
                     match = false;
                     break;
                 }
