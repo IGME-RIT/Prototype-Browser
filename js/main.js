@@ -2,6 +2,7 @@
 //imports
 var Game = require('./modules/Game.js');
 var Point = require('./modules/common/Point.js');
+var Time = require('./modules/containers/Time.js');
 var MouseState = require('./modules/containers/MouseState.js');
 var CanvasState = require('./modules/containers/CanvasState.js');
 
@@ -9,10 +10,10 @@ var CanvasState = require('./modules/containers/CanvasState.js');
 var game;
 var canvas;
 var ctx;
+var time;
 
 //responsiveness
 var header;
-var activeHeight;
 var center;
 var scale;
 
@@ -30,10 +31,11 @@ var canvasState;
 //fires when the window loads
 window.onload = function(e){
     //debug button designed to clear progress data
+    /*
     var resetButton = document.querySelector("#resetButton");
     resetButton.addEventListener("click", function(e){
         localStorage.progress = "";
-    });
+    });*/
     
     //variable and loop initialization
     initializeVariables();
@@ -45,26 +47,26 @@ function initializeVariables(){
     //camvas initialization
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
+    //console.log("Canvas Dimensions: " + canvas.offsetWidth + ", " + canvas.offsetHeight);
     
-    //header initialization
-    header = document.querySelector('header');
-    activeHeight = canvas.offsetHeight - header.offsetHeight;
-    center = new Point(canvas.width/2, activeHeight/2 + header.offsetHeight);
-    scale = 1080.0/activeHeight;
+    time = new Time();
+    
     
     //mouse variable initialization
     mousePosition = new Point(0,0);
     relativeMousePosition = new Point(0,0);
     
+    
+    
+    
+    
     //event listeners for mouse interactions with the canvas
-    canvas.addEventListener("mousemove", function(e){
+    canvas.addEventListener("mousemove", function(e) {
         var boundRect = canvas.getBoundingClientRect();
         mousePosition = new Point(e.clientX - boundRect.left, e.clientY - boundRect.top);
-        relativeMousePosition = new Point(mousePosition.x - (canvas.offsetWidth/2.0), mousePosition.y - (header.offsetHeight + activeHeight/2.0));        
+        relativeMousePosition = new Point(mousePosition.x - canvas.offsetWidth / 2, mousePosition.y - canvas.offsetHeight / 2);
     });
+    
     mouseDown = false;
     canvas.addEventListener("mousedown", function(e){
         mouseDown = true;
@@ -85,9 +87,12 @@ function initializeVariables(){
         wheelDelta = e.wheelDelta;
     });
     
+    
+    
+    
     //state variable initialization
     mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
-    canvasState = new CanvasState(ctx, center, canvas.offsetWidth, activeHeight, scale);
+    canvasState = new CanvasState(canvas, ctx);
     
     //local storage handling for active node record and progress
     if(localStorage.activeNode === undefined){
@@ -102,30 +107,25 @@ function initializeVariables(){
 }
 
 //fires once per frame
-function loop(){
+function loop() {
     //binds loop to frames
     window.requestAnimationFrame(loop.bind(this));
+    
+    time.update(.0167);
     
     //feed current mouse variables back into mouse state
     mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
     //resetting wheel delta
     wheelDelta = 0;
     
-    //update game's variables: passing context, canvas, delta time, center point, usable height, mouse state
-    game.update(ctx, canvas, 0, center, activeHeight, mouseState, canvasState);
-}
+    //update game's variables: passing context, canvas, time, center point, usable height, mouse state
+    
+    game.update(mouseState, canvasState, time);
+};
 
 //listens for changes in size of window and adjusts variables accordingly
 window.addEventListener("resize", function(e){
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    activeHeight = canvas.height - header.offsetHeight;
-    center = new Point(canvas.width / 2, activeHeight / 2 + header.offsetHeight)
-    scale = 1080.0/activeHeight;
-    canvasState.update(ctx, center, canvas.offsetWidth, activeHeight, scale);
-    
-    //console.log("Canvas Dimensions: " + canvas.width + ", " + canvas.height);
+    canvasState.update();
 });
-
 
 

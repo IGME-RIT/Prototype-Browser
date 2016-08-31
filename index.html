@@ -2,19 +2,64 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>IPAR</title>
-	<link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
+	<title>Atlas</title>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     
 </head>
 <body>
-	<canvas>The browser you are using does not support modern web functionality</canvas>
-    <header><p id="debugLine">Test</p><button id="resetButton"><p>reset progress</p></button></header>
-    
-    <div id="dynamicContent">
+    <img src="content/ui/Search.png" id="OptionsButton">
+	<div id="leftBar">
+        <h1>Search</h1>
         
+        <div id="SearchSelectors">
+            
+            <h2>Text Search:</h2>
+            <input class="field" id="searchtextfield" type="text" placeholder="Search...">
+            <input class="addButton" id="searchtextbutton" type="button" value="Add">
+            <br>
+            
+            
+            <h2>Programming Language:</h2>
+            <select class="field" id="searchlanguagefield">
+                <option value="Any">Select Language (Any)</option>
+                <option value="C++">C++</option>
+            </select>
+            <input class="addButton" id="searchlanguagebutton" type="button" value="Add">
+            <br>
+            
+            <h2>Tags:</h2>
+            <select class="field" id="searchtagfield">
+                <option value="Any">Select Topic (Any)</option>
+                <option value="AI">AI</option>
+                <option value="Audio">Audio</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Core">Core</option>>
+                <option value="Graphics">Graphics</option>
+                <option value="Math">Math</option>
+                <option value="Networking">Networking</option>
+                <option value="Optimization">Optimization</option>
+                <option value="Physics">Physics</option>
+                <option value="Scripting">Scripting</option>
+                <option value="Software Engineering">Software Engineering</option>
+            </select>
+            <input class="addButton" id="searchtagbutton" type="button" value="Add">
+        </div>
+        
+        <div id="QueryList">
+            <h2>Search Parameters:</h2>
+            <ul id="QueryListData"></ul>
+            <input id="clearquerybutton" type="button" value="Clear Query">
+            <input id="searchbutton" type="button" value="Search">
+        </div>
+        
+        <div>
+            <h2>Results:</h2>
+            <ul id="searchresults">
+            </ul>
+        </div>
     </div>
+    <canvas id="middleBar">The browser you are using does not support modern web functionality</canvas>
+    <div id="rightBar"></div>
         
     <script src="bundle.js"></script>
 </body>

@@ -1,31 +1,207 @@
 /*general styles to be applied to every page*/
+@import 'https://fonts.googleapis.com/css?family=Inconsolata';
+
+
 * {
-	margin:0px; 
-	padding:0px;
-}
-/*Fix for IE*/
-img {
-	border-width: 0;
-}
-body {
-	width: 100%;
-    height: 100%;
-	margin: 0;
+	margin: 0; 
 	padding: 0;
-    
+    border: 0
+}
+
+img {
+	border: 0;
+}
+
+html, body {
+	width: 100vw;
+    height: 100vh;
     background-color: black;
 }
 
-canvas {
-    margin: 0px;
-    width: 100%;
-    height: 100vh;
-    display: block;
+#OptionsButton {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    cursor: pointer;
 }
 
-header {
+#leftBar {
+    width: 0vw;
+    height: 100vh;
+    float: left;
+    background-color: #888;
+    overflow-x: visible;
+    overflow-y: scroll;
+}
+
+#leftBar div{
+    margin-bottom: 24px;
+    margin: 24px auto;
+    padding: 12px;
+    min-height: 80px;
+    width: 320px;
+    background-color: #fff;
+}
+
+#leftBar h1 {
+    margin: 24px;
+    text-align: center;
+    font-size: 48px;
+    font-family: Inconsolata;
+}
+
+
+#SearchSelectorList {
+    float: left;
+    background-color: red;
+}
+
+#leftBar h2 {
+    margin: 6px;
+    font-size: 24px;
+    font-family: Inconsolata;
+}
+
+#leftBar .field {
+    font-size: 18px;
+    width: 240px;
+}
+
+#leftBar .addButton {
+    background-color: #ccc;
+    padding: 3px;
+    font-size: 18px;
+    float: right;
+}
+
+#QueryList {
+    min-height: 80px;
+}
+
+#QueryList ul {
+    list-style-type: none;
+}
+
+#QueryList li {
+    margin-bottom: 3px;
+    background-color: #eee;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+#clearquerybutton {
+    background-color: #ccc;
+    margin: 6px;
+    padding: 3px;
+    font-family: sans-serif;
+    font-size: 18px;
+    display: none;
+}
+
+#searchbutton {
+    float: right;
+    background-color: #ccc;
+    margin: 6px;
+    padding: 3px;
+    font-family: sans-serif;
+    font-size: 18px;
+}
+
+#searchresults {
+    list-style: none;
+}
+
+#searchresults li {
+    margin-bottom: 3px;
+    padding: 3px;
+    background-color: #ddd;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 16px;
+    height: 20px;
+}
+
+#searchresults li:hover {
+    background-color: #bbb;
+}
+
+#middleBar {
+    width: 100vw;
+    height: 100vh;
+    float: left;
+}
+
+#rightBar {
+    width: 0vw;
+    height: 100vh;
+    float: left;
+    background-color: #888;
+    overflow-x: visible;
+    overflow-y: scroll;
+}
+#rightBar h1 {
+    margin: 24px;
+    text-align: center;
+    font-size: 48px;
+    font-family: Inconsolata;
+}
+
+a:link {
+    color: black;
+    font-style: normal;
+    text-decoration: none;
+}
+
+a:visited {
+    color: black;
+    font-style: normal;
+    text-decoration: none;
+}
+
+
+#rightBar img {
+    margin: auto auto;
+    display: block;
+    box-shadow: 10px 10px 20px #000;
+    max-width: 80%;
+    min-width: 10%;
+}
+
+#rightBar p {
+    font-size: 24px;
+    font-family: sans-serif;
+    text-align: left;
+    background-color: #fff;
+    width: 80%;
+    margin: 24px auto;
+    padding: 12px;
+}
+
+#rightBar h2 {
+    font-size: 24px;
+    font-family: Inconsolata;
+    text-align: left;
+    margin: 6px;
+}
+
+#rightBar ul {
+    list-style-type: none;
+}
+
+#rightBar li {
+    width: 80%;
+    margin: 3px auto;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 16px;
+    padding: 6px 12px;
+    background-color: #fff;
+}
+
+/*header {
     width: 100%;
-    height: 50px;
+    height: 20px;
     background-color: dodgerblue;
     position: absolute;
     top: 0px;
@@ -329,4 +505,4 @@ header {
         font-size: 23.2pt;
     }
     
-}
+}*/
