@@ -24,8 +24,8 @@ function Graph(pJSONData) {
     
     //populate the array
     for(var i = 0; i < pJSONData.length; i++) {
-        //ensures that the chunk contains image data
-        if(pJSONData[i].image !== undefined) {
+        //ensures that the chunk contains a link
+        if(pJSONData[i].link !== undefined) {
             
             var node = new TutorialNode(pJSONData[i]);
             this.nodes.push(node);
@@ -39,7 +39,8 @@ function Graph(pJSONData) {
         for(var k = 0; k < this.nodes[i].data.connections.length; k++) {
             //search for similar nodes
             for(var j = 0; j < this.nodes.length; j++) {
-                if(this.nodes[j].data.name === this.nodes[i].data.connections[k]) {
+                if(this.nodes[j].data.series === this.nodes[i].data.connections[k].series &&
+                    this.nodes[j].data.title === this.nodes[i].data.connections[k].title) {
                     this.nodes[i].previousNodes.push(this.nodes[j]);
                     this.nodes[j].nextNodes.push(this.nodes[i]);
                 }

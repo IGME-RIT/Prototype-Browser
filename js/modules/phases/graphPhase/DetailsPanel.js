@@ -57,15 +57,16 @@ DetailsPanel.prototype.update = function(canvasState, time, node) {
 };
 
 DetailsPanel.prototype.GenerateDOM = function() {
-    var html = "<h1><a href=" + this.data.link + ">"+this.data.title+"</a></h1>";
-    html += "<a href=" + this.data.link + "><img src=" + this.data.image.icon + "></a>";
+    var html = "<h1>"+this.data.series+":</h1><h1><a href=" + this.data.link + ">"+this.data.title+"</a></h1>";
+    html += "<a href=" + this.data.link + "><img src=https://raw.githubusercontent.com/IGME-RIT/" + this.data.name +
+        "/master/igme_thumbnail.png alt=" + this.data.link + "></a>";
     html += "<p>" + this.data.description + "</p>";
     //console.log(this.data);
     if(this.data.extra_resources.length != 0) {
         html += "<h2>Additional Resources:</h2>";
         html += "<ul>";
         for(var i = 0; i < this.data.extra_resources.length; i++) {
-            html += "<li><a href=" + this.data.extra_resources[i] + ">Risky Click</a></li>";
+            html += "<li><a href=" + this.data.extra_resources[i].link + ">" + this.data.extra_resources[i].title + "</a></li>";
         }
         html += "</ul>";
     }

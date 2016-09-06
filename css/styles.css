@@ -44,9 +44,9 @@ html, body {
 }
 
 #leftBar h1 {
-    margin: 24px;
+    margin: 18px;
     text-align: center;
-    font-size: 48px;
+    font-size: 36px;
     font-family: Inconsolata;
 }
 
@@ -141,9 +141,9 @@ html, body {
     overflow-y: scroll;
 }
 #rightBar h1 {
-    margin: 24px;
+    margin: 18px;
     text-align: center;
-    font-size: 48px;
+    font-size: 36px;
     font-family: Inconsolata;
 }
 

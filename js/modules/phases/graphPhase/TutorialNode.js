@@ -15,12 +15,13 @@ var TutorialState = {
 var TutorialTags = {
     "AI": "#804",
     "Audio": "#048",
-    "Computer Science": "#000",
-    "Core": "#444",
+    "Computer Science": "#111",
+    "Core": "#333",
     "Graphics": "#c0c",
+    "Input": "#880",
     "Math": "#484",
     "Networking": "#c60",
-    "Optimization": "#084",
+    "Optimization": "#282",
     "Physics": "#048",
     "Scripting": "#088",
     "SoftwareEngineering": "#844"
@@ -30,7 +31,7 @@ var TutorialTags = {
 //make a node with some data
 function TutorialNode(JSONChunk) {
     this.data = JSONChunk;
-    this.primaryTag = this.data.tags[1];
+    this.primaryTag = this.data.tags[0];
     this.color = TutorialTags[this.primaryTag];
     
     this.state = TutorialState.Locked;

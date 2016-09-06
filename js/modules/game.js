@@ -15,9 +15,9 @@ function Game(){
     painter = new DrawLib();
     utility = new Utilities();
     
-    //instantiate a phase, phases have universal function calls and callable variables
-    //activePhase = new BoardPhase("https://atlas-backend.herokuapp.com/repos");
-    activePhase = new GraphPhase("https://atlas-backend.herokuapp.com/repos");
+    //instantiate the graph
+    activePhase = new GraphPhase("https://atlas-backend.herokuapp.com/repos"); //actual backend app
+    //activePhase = new GraphPhase("http://localhost:5000/repos"); //for testing
     
     //give mouseState a value from the start so it doesn't pass undefined to previous
     mouseState = 0;

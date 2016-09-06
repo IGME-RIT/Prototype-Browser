@@ -18,6 +18,7 @@ var lineBreak = 6;
 function NodeLabel(pTutorialNode) {
     this.node = pTutorialNode;
     
+    this.series = this.node.data.series;
     this.title = this.node.data.title;
     this.description = this.node.data.description;
     this.descriptionLines = null;
@@ -32,15 +33,16 @@ function NodeLabel(pTutorialNode) {
 NodeLabel.prototype.calculateTextFit = function(ctx, pPainter) {
     ctx.save();
     ctx.font = titleFont;
+    var seriesSize = ctx.measureText(this.series);
     var titleSize = ctx.measureText(this.title);
     ctx.restore();
 
-    this.size = new Point(titleSize.width, titleFontSize);
+    this.size = new Point(Math.max(seriesSize.width, titleSize.width), titleFontSize * 2);
     
     
 
     if(this.displayFullData) {
-        this.size.x = Math.max(240, titleSize.width);
+        this.size.x = Math.max(240, Math.max(seriesSize.width, titleSize.width));
         this.descriptionLines = pPainter.textToLines(ctx, this.description, descriptorFont, this.size.x);
         this.size.y += lineBreak + this.descriptionLines.length * descriptorFontSize;
     }
@@ -135,9 +137,13 @@ NodeLabel.prototype.draw = function(pCanvasState, pPainter) {
     pCanvasState.ctx.textBaseline = "top";
     pCanvasState.ctx.textAlign = "center";
     pCanvasState.ctx.fillText(
-        this.title,
+        this.series,
         this.position.x,
         this.position.y - this.size.y);
+    pCanvasState.ctx.fillText(
+        this.title,
+        this.position.x,
+        this.position.y - this.size.y + titleFontSize);
     pCanvasState.ctx.restore();
     
     
@@ -153,7 +159,7 @@ NodeLabel.prototype.draw = function(pCanvasState, pPainter) {
             pCanvasState.ctx.fillText(
                 this.descriptionLines[i],
                 this.position.x - this.size.x / 2,
-                this.position.y - this.size.y + titleFontSize + lineBreak + i * descriptorFontSize);
+                this.position.y - this.size.y + titleFontSize * 2 + lineBreak + i * descriptorFontSize);
         }
         pCanvasState.ctx.restore();
     }

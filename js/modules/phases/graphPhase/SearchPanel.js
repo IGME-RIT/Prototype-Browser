@@ -112,8 +112,12 @@ SearchPanel.prototype.search = function(query, nodes) {
         for(var j = 0; j < query.length; j++) {
             if(query[j].type === "Text") {
                 if(node.title.toLowerCase().indexOf(query[j].value.toLowerCase()) === -1) {
-                    match = false;
-                    break;
+                    if(node.series.toLowerCase().indexOf(query[j].value.toLowerCase()) === -1) {
+                        if(node.description.toLowerCase().indexOf(query[j].value.toLowerCase()) === -1) {
+                            match = false;
+                            break;
+                        }
+                    }
                 }
             }
             else if(query[j].type === "Language") {
