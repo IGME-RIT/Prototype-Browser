@@ -1,1 +1,1 @@
-#IGME Atlas
+#IGME Tutorial Project (working title)
