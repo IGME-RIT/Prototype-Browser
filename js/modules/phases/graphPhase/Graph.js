@@ -8,6 +8,7 @@ var Point = require('../../common/Point.js');
 
 var painter;
 var expand = 3;
+var debugMode = false;
 
 function Graph(pJSONData) {
         
@@ -24,10 +25,16 @@ function Graph(pJSONData) {
     
     //populate the array
     for(var i = 0; i < pJSONData.length; i++) {
+        var data = pJSONData[i];
         //ensures that the chunk contains a link
-        if(pJSONData[i].link !== undefined) {
-            
-            var node = new TutorialNode(pJSONData[i]);
+        if(data.tags.length === 0) {
+            if(debugMode) console.log("Repo not tagged: " + data.name);
+        }
+        else if(data.image !== undefined) {
+            if(debugMode) console.log("Repo yaml out of date: " + data.name);
+        }
+        else {
+            var node = new TutorialNode(data);
             this.nodes.push(node);
         }
     }
