@@ -1,5 +1,20 @@
 "use strict"
 
+var TutorialTags = {
+    "AI": "#804",
+    "Audio": "#048",
+    "Computer Science": "#111",
+    "Core": "#333",
+    "Graphics": "#c0c",
+    "Input": "#880",
+    "Math": "#484",
+    "Networking": "#c60",
+    "Optimization": "#282",
+    "Physics": "#048",
+    "Scripting": "#088",
+    "SoftwareEngineering": "#844"
+};
+
 
 function DetailsPanel(graph) {
     this.graph = graph;
@@ -60,6 +75,15 @@ DetailsPanel.prototype.GenerateDOM = function() {
     var html = "<h1>"+this.data.series+":</h1><h1><a href=" + this.data.link + ">"+this.data.title+"</a></h1>";
     html += "<a href=" + this.data.link + "><img src=https://raw.githubusercontent.com/IGME-RIT/" + this.data.name +
         "/master/igme_thumbnail.png alt=" + this.data.link + "></a>";
+    
+    html += "<ul id='tags'>";
+    if(this.data.tags.length != 0) {
+        for(var i = 0; i < this.data.tags.length; i++) {
+            html += "<li style='background-color:" + TutorialTags[this.data.tags[i]] + "'>" + this.data.tags[i] + "</li>";
+        }
+    }
+    html+= "</ul>"
+    
     html += "<p>" + this.data.description + "</p>";
     //console.log(this.data);
     if(this.data.extra_resources.length != 0) {
