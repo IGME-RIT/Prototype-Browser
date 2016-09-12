@@ -1,5 +1,5 @@
 "use strict";
-var Parser = require('../boardPhase/Parser.js');
+var Parser = require('../graphPhase/Parser.js');
 var Graph = require('./Graph.js');
 
 var graphLoaded;
