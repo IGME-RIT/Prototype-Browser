@@ -123,7 +123,7 @@ Graph.prototype.FocusNode = function(centerNode) {
     
     //clear their parent data for new node
     for(var i = 0; i < this.activeNodes.length; i++) {
-        this.activeNodes[i].usedInGraph = false;
+        this.activeNodes[i].currentLayerDepth = 0;
         this.activeNodes[i].parent = null;
     }
     

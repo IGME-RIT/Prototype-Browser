@@ -5,6 +5,7 @@ var NodeLabel = require('./NodeLabel.js');
 var Button = require('../../containers/Button.js');
 
 var horizontalSpacing = 180;
+var baseSize = 24;
 
 var TutorialState = {
     Locked: 0,
@@ -142,13 +143,13 @@ TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFoc
 
 TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, targetPosition) {
     
+    
     //dont mess with node position if it already exists in the graph
-    if(this.usedInGraph) {
+    if(this.currentLayerDepth > 0 && this.currentLayerDepth < layerDepth) {
         return;
     }
     
-    this.usedInGraph = true;
-    
+    this.currentLayerDepth = layerDepth;
     
     this.parent = parent;
     this.previousPosition = this.position;
@@ -206,7 +207,7 @@ TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
         }
     }
     else {
-        this.currentHeight = 24 * 5;
+        this.currentHeight = baseSize * 5;
     }
     
     return this.currentHeight;
@@ -220,7 +221,7 @@ TutorialNode.prototype.getNextHeight = function(layerDepth) {
         }
     }
     else {
-        this.currentHeight = this.size * 5;
+        this.currentHeight = baseSize * 5;
     }
     
     return this.currentHeight;
