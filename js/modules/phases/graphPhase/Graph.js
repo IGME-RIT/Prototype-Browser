@@ -130,6 +130,7 @@ Graph.prototype.FocusNode = function(centerNode) {
     
     this.transitionTime = 1;
     
+    this.focusedNode.calculateNodeTree(expand, null, 0);
     this.focusedNode.setTransition(expand, null, 0, new Point(0, 0));
 };
 

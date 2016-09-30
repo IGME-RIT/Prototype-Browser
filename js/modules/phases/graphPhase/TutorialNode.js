@@ -141,8 +141,7 @@ TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFoc
 };
 
 
-TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, targetPosition) {
-    
+TutorialNode.prototype.calculateNodeTree = function(layerDepth, parent, direction) {
     
     //dont mess with node position if it already exists in the graph
     if(this.currentLayerDepth > 0 && this.currentLayerDepth < layerDepth) {
@@ -150,8 +149,29 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
     }
     
     this.currentLayerDepth = layerDepth;
-    
     this.parent = parent;
+    
+    if(layerDepth > 0) {
+        //left or middle
+        if(direction < 1) {
+            for(var i = 0; i < this.previousNodes.length; i++) {
+                this.previousNodes[i].calculateNodeTree(layerDepth - 1, this, -1);
+            }
+        }
+        
+        //right or middle
+        if(direction > -1) {
+            for(var i = 0; i < this.nextNodes.length; i++) {
+                this.nextNodes[i].calculateNodeTree(layerDepth - 1, this, 1);
+            }
+        }
+    }
+    
+};
+
+TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, targetPosition) {
+    
+    
     this.previousPosition = this.position;
     this.nextPosition = targetPosition;
     
@@ -168,13 +188,15 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
             yPosition = targetPosition.y - (totalLeftHeight / 2);
             
             for(var i = 0; i < this.previousNodes.length; i++) {
-                var placement = new Point(xPosition, yPosition + this.previousNodes[i].currentHeight / 2);
-                this.previousNodes[i].setTransition(layerDepth - 1, this, -1, placement);
-                /*if(!this.wasPreviouslyOnScreen) {
-                    this.previousNodes[i].position = new Point(-1000, placement.y);
-                    this.previousNodes[i].previousPosition = new Point(-1000, placement.y);
-                }*/
-                yPosition += this.previousNodes[i].currentHeight;
+                if(this.previousNodes[i].parent == this) {
+                    var placement = new Point(xPosition, yPosition + this.previousNodes[i].currentHeight / 2);
+                    this.previousNodes[i].setTransition(layerDepth - 1, this, -1, placement);
+                    /*if(!this.wasPreviouslyOnScreen) {
+                        this.previousNodes[i].position = new Point(-1000, placement.y);
+                        this.previousNodes[i].previousPosition = new Point(-1000, placement.y);
+                    }*/
+                    yPosition += this.previousNodes[i].currentHeight;
+                }
             }
         }
         
@@ -186,14 +208,16 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
             yPosition = targetPosition.y - (totalRightHeight / 2);
 
             for(var i = 0; i < this.nextNodes.length; i++) {
-                var placement = new Point(xPosition, yPosition + this.nextNodes[i].currentHeight / 2);
-                this.nextNodes[i].setTransition(layerDepth - 1, this, 1, placement);
-                /*if(!this.wasPreviouslyOnScreen) {
-                    this.nextNodes[i].position = new Point(1000, placement.y);
-                    this.nextNodes[i].previousPosition = new Point(1000, placement.y);
-                    console.log("throw the switch!");
-                }*/
-                yPosition += this.nextNodes[i].currentHeight;
+                if(this.nextNodes[i].parent == this) {
+                    var placement = new Point(xPosition, yPosition + this.nextNodes[i].currentHeight / 2);
+                    this.nextNodes[i].setTransition(layerDepth - 1, this, 1, placement);
+                    /*if(!this.wasPreviouslyOnScreen) {
+                        this.nextNodes[i].position = new Point(1000, placement.y);
+                        this.nextNodes[i].previousPosition = new Point(1000, placement.y);
+                        console.log("throw the switch!");
+                    }*/
+                    yPosition += this.nextNodes[i].currentHeight;
+                }
             }
         }
     }
@@ -203,10 +227,12 @@ TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
     this.currentHeight = 0;
     if(layerDepth > 0 && this.previousNodes.length > 0) {
         for(var i = 0; i < this.previousNodes.length; i++) {
-            this.currentHeight += this.previousNodes[i].getPreviousHeight(layerDepth - 1);
+            if(this.previousNodes[i].parent == this) {
+                this.currentHeight += this.previousNodes[i].getPreviousHeight(layerDepth - 1);
+            }
         }
     }
-    else {
+    if (this.currentHeight == 0) {
         this.currentHeight = baseSize * 5;
     }
     
@@ -217,10 +243,12 @@ TutorialNode.prototype.getNextHeight = function(layerDepth) {
     this.currentHeight = 0;
     if(layerDepth > 0 && this.nextNodes.length > 0) {
         for(var i = 0; i < this.nextNodes.length; i++) {
-            this.currentHeight += this.nextNodes[i].getNextHeight(layerDepth - 1);
+            if(this.nextNodes[i].parent == this) {
+                this.currentHeight += this.nextNodes[i].getNextHeight(layerDepth - 1);
+            }
         }
     }
-    else {
+    if (this.currentHeight == 0) {
         this.currentHeight = baseSize * 5;
     }
     
