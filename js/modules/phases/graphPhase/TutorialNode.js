@@ -144,7 +144,7 @@ TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFoc
 TutorialNode.prototype.calculateNodeTree = function(layerDepth, parent, direction) {
     
     // If the node already exists in the graph in a better place than this one, dont use it
-    if(0 < this.currentLayerDepth && this.currentLayerDepth > layerDepth) {
+    if(this.currentLayerDepth > layerDepth) {
         return;
     }
     
