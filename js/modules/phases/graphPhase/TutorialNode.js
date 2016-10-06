@@ -143,8 +143,8 @@ TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFoc
 
 TutorialNode.prototype.calculateNodeTree = function(layerDepth, parent, direction) {
     
-    //dont mess with node position if it already exists in the graph
-    if(this.currentLayerDepth > 0 && this.currentLayerDepth < layerDepth) {
+    // If the node already exists in the graph in a better place than this one, dont use it
+    if(0 < this.currentLayerDepth && this.currentLayerDepth > layerDepth) {
         return;
     }
     
@@ -166,7 +166,6 @@ TutorialNode.prototype.calculateNodeTree = function(layerDepth, parent, directio
             }
         }
     }
-    
 };
 
 TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, targetPosition) {
