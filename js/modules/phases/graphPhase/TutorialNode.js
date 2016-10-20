@@ -6,6 +6,7 @@ var Button = require('../../containers/Button.js');
 
 var horizontalSpacing = 180;
 var baseSize = 24;
+var openingTutorialName = "Basic-OpenGL-with-GLFW-Drawing-a-Triangle";
 
 var TutorialState = {
     Locked: 0,
@@ -35,7 +36,15 @@ function TutorialNode(JSONChunk) {
     this.primaryTag = this.data.tags[0];
     this.color = TutorialTags[this.primaryTag];
     
-    this.state = TutorialState.Locked;
+    this.state = localStorage.getItem(this.data.name);
+    
+    if(this.state == null) {
+        this.changeState(TutorialState.Locked);
+        if(this.data.name == openingTutorialName) {
+            this.changeState(TutorialState.Unlocked);
+        }
+    }
+    
     this.mouseOver = false;
     
     
@@ -52,6 +61,41 @@ function TutorialNode(JSONChunk) {
     this.detailsButton = new Button(new Point(0, 0), new Point(72, 36), "More", this.color);
     
 };
+
+// Changes the state of this node
+TutorialNode.prototype.changeState = function(tutState) {
+    if(this.state != tutState)
+    {
+        this.state = tutState;
+        localStorage.setItem(this.data.name, this.state);
+        
+        console.log("Updated " + this.data.name + " to " + tutState);
+        
+        // also update the state of any later nodes to reflect the changes.
+        for(var i = 0; i < this.nextNodes.length; i++)
+        {
+            this.previousNodes[i].updateState();
+        }
+    }
+}
+
+TutorialNode.prototype.updateState = function()
+{
+    // Lock if any previous are uncompleted
+    var lock = false;
+    for(var i = 0; i < this.previousNodes.length; i++)
+    {
+        if(this.previousNodes[i].state =! TutorialState.Completed) {
+            lock = true;
+        }
+    }
+    if(lock == true) {
+        this.changeState(TutorialState.Locked);
+    }
+    else {
+        this.changeState(TutorialState.Unlocked);
+    }
+}
 
 //recursive function to get previous nodes
 TutorialNode.prototype.getPrevious = function(depth) {
@@ -285,6 +329,17 @@ TutorialNode.prototype.draw = function(pCanvasState, pPainter, parentCaller, dir
     
     //draw circle
     pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size, true, this.color, true, "#fff", 2);
+    
+    //draw a checkmark (temporarily a circle)
+    if(this.state == TutorialState.Completed)
+    {
+        pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size - 5, true, "#0f0", true, "#fff", 2);
+    }
+    //draw a lock (temporarily a circle)
+    if(this.state == TutorialState.Locked)
+    {
+        pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size - 5, true, "#f00", true, "#fff", 2);
+    }
     
     this.label.draw(pCanvasState, pPainter);
     if(direction == 0) {
