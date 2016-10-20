@@ -170,7 +170,10 @@ TutorialNode.prototype.calculateNodeTree = function(layerDepth, parent, directio
 
 TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, targetPosition) {
     
-    
+    if(!this.wasPreviouslyOnScreen && parent != null) {
+        this.position = new Point(targetPosition.x, targetPosition.y);
+        this.position.x *= 1.5;
+    }
     this.previousPosition = this.position;
     this.nextPosition = targetPosition;
     
@@ -188,12 +191,9 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
             
             for(var i = 0; i < this.previousNodes.length; i++) {
                 if(this.previousNodes[i].parent == this) {
+                    
                     var placement = new Point(xPosition, yPosition + this.previousNodes[i].currentHeight / 2);
                     this.previousNodes[i].setTransition(layerDepth - 1, this, -1, placement);
-                    /*if(!this.wasPreviouslyOnScreen) {
-                        this.previousNodes[i].position = new Point(-1000, placement.y);
-                        this.previousNodes[i].previousPosition = new Point(-1000, placement.y);
-                    }*/
                     yPosition += this.previousNodes[i].currentHeight;
                 }
             }
@@ -208,13 +208,9 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
 
             for(var i = 0; i < this.nextNodes.length; i++) {
                 if(this.nextNodes[i].parent == this) {
+                    
                     var placement = new Point(xPosition, yPosition + this.nextNodes[i].currentHeight / 2);
                     this.nextNodes[i].setTransition(layerDepth - 1, this, 1, placement);
-                    /*if(!this.wasPreviouslyOnScreen) {
-                        this.nextNodes[i].position = new Point(1000, placement.y);
-                        this.nextNodes[i].previousPosition = new Point(1000, placement.y);
-                        console.log("throw the switch!");
-                    }*/
                     yPosition += this.nextNodes[i].currentHeight;
                 }
             }

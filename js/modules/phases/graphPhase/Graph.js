@@ -7,7 +7,7 @@ var Point = require('../../common/Point.js');
 
 
 var painter;
-var expand = 3;
+var expand = 1;
 var debugMode = false;
 
 function Graph(pJSONData) {
