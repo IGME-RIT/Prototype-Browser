@@ -191,7 +191,10 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
                 this.focusedNode.changeState(TutorialState.Completed);
             }
             else if (this.focusedNode.state == TutorialState.Completed) {
-                this.focusedNode.changeState(TutorialState.Unlocked);
+                // If resetting, ask for confirmation.
+                if (confirm("This will reset your progress on all tutorials after this one. Are you sure you want to do this?")) {
+                    this.focusedNode.changeState(TutorialState.Unlocked);
+                }
             }
         }
     }
