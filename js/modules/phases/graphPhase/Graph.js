@@ -6,19 +6,34 @@ var TutorialNode = require('./TutorialNode.js');
 var Point = require('../../common/Point.js');
 
 
-var painter;
-var expand = 1;
+var expand = 2; // how many values to expand to
 var debugMode = false;
 
+
+var TutorialState = {
+    Locked: 0,
+    Unlocked: 1,
+    Completed: 2
+};
+
+
 function Graph(pJSONData) {
-        
+    
     this.searchPanel = new SearchPanel(this);
     this.detailsPanel = new DetailsPanel(this);
     this.searchPanelButton = document.getElementById("OptionsButton");
     this.searchDiv = document.getElementById("leftBar");
     this.dataDiv = document.getElementById("rightBar");
     this.canvasDiv = document.getElementById("middleBar");
-    painter = new DrawLib();
+    
+    // load lock image for locked nodes and completed nodes
+    this.lockImage = new Image();
+    this.lockImage.src = "content/ui/Lock.png";
+    this.checkImage = new Image();
+    this.checkImage.src = "content/ui/Check.png";
+    
+    //create painter object to help draw stuff
+    this.painter = new DrawLib();
     
     this.nodes = [];
     this.activeNodes = [];
@@ -153,19 +168,32 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         }
     }
     
-    //if cuser clicks
+    // if cuser clicks
     if(mouseState.mouseDown && !mouseState.lastMouseDown) {
-        //focus node if clicked
+        // focus node if clicked
         if(mouseOverNode) {
             this.FocusNode(mouseOverNode);
         }
-        //show details for node if button clicked
+        // show details for node if button clicked
         if(this.focusedNode.detailsButton.mouseOver) {
             if(this.detailsPanel.node == null)  {
                 this.detailsPanel.enable(this.focusedNode);
+                this.focusedNode.detailsButton.text = "Less";
             }
             else {
                 this.detailsPanel.disable();
+                this.focusedNode.detailsButton.text = "More";
+            }
+        }
+        // user clicks on completion button
+        if(this.focusedNode.completionButton.mouseOver) {
+            if(this.focusedNode.state == TutorialState.Unlocked) {
+                this.focusedNode.changeState(TutorialState.Completed);
+                this.focusedNode.completionButton.text = "Mark Uncomplete";
+            }
+            else if (this.focusedNode.state == TutorialState.Completed) {
+                this.focusedNode.changeState(TutorialState.Unlocked);
+                this.focusedNode.completionButton.text = "Mark Complete";
             }
         }
     }
@@ -177,13 +205,10 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
     
     if(this.detailsPanel.node != null) {
         this.detailsPanel.update(canvasState, time, this.focusedNode);
-        this.focusedNode.detailsButton.text = "Less";
-    }
-    else {
-        this.focusedNode.detailsButton.text = "More";
     }
     
     
+    // Transition the side bars on and off smoothly
     var t1 = (1 - Math.cos(this.searchPanel.transitionTime * Math.PI))/2;
     var t2 = (1 - Math.cos(this.detailsPanel.transitionTime * Math.PI))/2;
     
@@ -210,7 +235,7 @@ Graph.prototype.draw = function(canvasState) {
     //console.log(canvasState.center);
     //console.log(canvasState);
     //draw nodes
-    this.focusedNode.draw(canvasState, painter, null, 0, expand);
+    this.focusedNode.draw(canvasState, this.painter, this, null, 0, expand);
     
     canvasState.ctx.restore();
 };

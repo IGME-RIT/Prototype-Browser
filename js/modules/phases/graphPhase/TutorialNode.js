@@ -58,7 +58,14 @@ function TutorialNode(JSONChunk) {
     this.nextNodes = [];
     this.previousNodes = [];
     
-    this.detailsButton = new Button(new Point(0, 0), new Point(72, 36), "More", this.color);
+    this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
+    
+    if(this.state == TutorialState.Completed) {
+        this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
+    }
+    else {
+        this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Complete", this.color);
+    }
     
 };
 
@@ -69,12 +76,12 @@ TutorialNode.prototype.changeState = function(tutState) {
         this.state = tutState;
         localStorage.setItem(this.data.name, this.state);
         
-        console.log("Updated " + this.data.name + " to " + tutState);
+        // console.log("Updated " + this.data.name + " to " + tutState);
         
         // also update the state of any later nodes to reflect the changes.
         for(var i = 0; i < this.nextNodes.length; i++)
         {
-            this.previousNodes[i].updateState();
+            this.nextNodes[i].updateState();
         }
     }
 }
@@ -85,11 +92,11 @@ TutorialNode.prototype.updateState = function()
     var lock = false;
     for(var i = 0; i < this.previousNodes.length; i++)
     {
-        if(this.previousNodes[i].state =! TutorialState.Completed) {
+        if(this.previousNodes[i].state != TutorialState.Completed) {
             lock = true;
         }
     }
-    if(lock == true) {
+    if(lock) {
         this.changeState(TutorialState.Locked);
     }
     else {
@@ -181,6 +188,10 @@ TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFoc
         this.detailsButton.position.x = this.position.x - this.detailsButton.size.x / 2 - 3;
         this.detailsButton.position.y = this.position.y + this.size + 12;
         this.detailsButton.update(mouseState);
+        
+        this.completionButton.position.x = this.position.x - this.completionButton.size.x / 2 - 3;
+        this.completionButton.position.y = this.position.y + this.size + 48;
+        this.completionButton.update(mouseState);
     }
 };
 
@@ -295,7 +306,7 @@ TutorialNode.prototype.getNextHeight = function(layerDepth) {
 };
 
 
-TutorialNode.prototype.draw = function(pCanvasState, pPainter, parentCaller, direction, layerDepth) {
+TutorialNode.prototype.draw = function(pCanvasState, pPainter, graph, parentCaller, direction, layerDepth) {
     //draw line to parent if possible
     if(parentCaller && parentCaller == this.parent) {
         pCanvasState.ctx.save();
@@ -317,12 +328,12 @@ TutorialNode.prototype.draw = function(pCanvasState, pPainter, parentCaller, dir
     if(layerDepth > 0){
         if(direction < 1) {
             for(var i = 0; i < this.previousNodes.length; i++) {
-                this.previousNodes[i].draw(pCanvasState, pPainter, this, -1, layerDepth - 1);
+                this.previousNodes[i].draw(pCanvasState, pPainter, graph, this, -1, layerDepth - 1);
             }
         }
         if(direction > -1) {
             for(var i = 0; i < this.nextNodes.length; i++) {
-                this.nextNodes[i].draw(pCanvasState, pPainter, this, 1, layerDepth - 1);
+                this.nextNodes[i].draw(pCanvasState, pPainter, graph, this, 1, layerDepth - 1);
             }
         }
     }
@@ -330,20 +341,23 @@ TutorialNode.prototype.draw = function(pCanvasState, pPainter, parentCaller, dir
     //draw circle
     pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size, true, this.color, true, "#fff", 2);
     
-    //draw a checkmark (temporarily a circle)
+    //draw a checkmark
     if(this.state == TutorialState.Completed)
     {
-        pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size - 5, true, "#0f0", true, "#fff", 2);
+        pCanvasState.ctx.drawImage(graph.checkImage, this.position.x - 32, this.position.y - 32);
     }
-    //draw a lock (temporarily a circle)
+    //draw a lock
     if(this.state == TutorialState.Locked)
     {
-        pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size - 5, true, "#f00", true, "#fff", 2);
+        pCanvasState.ctx.drawImage(graph.lockImage, this.position.x - 32, this.position.y - 32);
     }
     
     this.label.draw(pCanvasState, pPainter);
     if(direction == 0) {
         this.detailsButton.draw(pCanvasState, pPainter);
+        if(this.state != TutorialState.Locked) {
+            this.completionButton.draw(pCanvasState, pPainter);
+        }
     }
 };
 

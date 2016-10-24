@@ -46,7 +46,7 @@ Button.prototype.draw = function(pCanvasState, pPainter) {
     
     //draw text of button
     pCanvasState.ctx.save();
-    pCanvasState.ctx.font = "16px Arial";
+    pCanvasState.ctx.font = "14px Arial";
     pCanvasState.ctx.fillStyle = "#fff";
     pCanvasState.ctx.textAlign = "center";
     pCanvasState.ctx.textBaseline = "middle";
