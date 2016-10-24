@@ -75,6 +75,12 @@ TutorialNode.prototype.changeState = function(tutState) {
     {
         this.state = tutState;
         localStorage.setItem(this.data.name, this.state);
+        if(this.state == TutorialState.Completed) {
+            this.completionButton.text = "Mark Uncomplete";
+        }
+        else {
+            this.completionButton.text = "Mark Complete";
+        }
         
         //console.log("Updated " + this.data.name + " to " + tutState);
         

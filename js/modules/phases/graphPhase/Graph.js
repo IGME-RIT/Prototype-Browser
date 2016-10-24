@@ -189,11 +189,9 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         if(this.focusedNode.completionButton.mouseOver) {
             if(this.focusedNode.state == TutorialState.Unlocked) {
                 this.focusedNode.changeState(TutorialState.Completed);
-                this.focusedNode.completionButton.text = "Mark Uncomplete";
             }
             else if (this.focusedNode.state == TutorialState.Completed) {
                 this.focusedNode.changeState(TutorialState.Unlocked);
-                this.focusedNode.completionButton.text = "Mark Complete";
             }
         }
     }
