@@ -53,7 +53,6 @@ function TutorialNode(JSONChunk) {
     this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
     
     this.state = localStorage.getItem(this.data.name);
-    console.log("Updated " + this.data.name + " to " + this.state);
     if(this.state == null || this.state == TutorialState.Locked) {
         this.changeState(TutorialState.Locked);
         if(this.data.name == openingTutorialName) {

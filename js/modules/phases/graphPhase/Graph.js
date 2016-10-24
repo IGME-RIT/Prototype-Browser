@@ -28,9 +28,9 @@ function Graph(pJSONData) {
     
     // load lock image for locked nodes and completed nodes
     this.lockImage = new Image();
-    this.lockImage.src = "../content/ui/Lock.png";
+    this.lockImage.src = "content/ui/Lock.png";
     this.checkImage = new Image();
-    this.checkImage.src = "../content/ui/Check.png";
+    this.checkImage.src = "content/ui/Check.png";
     
     //create painter object to help draw stuff
     this.painter = new DrawLib();
