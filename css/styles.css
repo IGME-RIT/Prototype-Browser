@@ -63,47 +63,19 @@ html, body {
 }
 
 #leftBar .field {
+    margin: 6px 12px;
+    width: 296px;
+    height: 32px;
+    border: 1px solid #ccc;
     font-size: 18px;
-    width: 240px;
-}
-
-#leftBar .addButton {
-    background-color: #ccc;
-    padding: 3px;
-    font-size: 18px;
-    float: right;
-}
-
-#QueryList {
-    min-height: 80px;
-}
-
-#QueryList ul {
-    list-style-type: none;
-}
-
-#QueryList li {
-    margin-bottom: 3px;
-    background-color: #eee;
-    text-align: left;
-    font-family: sans-serif;
-    font-size: 16px;
-}
-
-#clearquerybutton {
-    background-color: #ccc;
-    margin: 6px;
-    padding: 3px;
-    font-family: sans-serif;
-    font-size: 18px;
-    display: none;
 }
 
 #searchbutton {
-    float: right;
+    margin: 12px;
+    width: 296px;
+    height: 36px;
     background-color: #ccc;
-    margin: 6px;
-    padding: 3px;
+    padding: 6px;
     font-family: sans-serif;
     font-size: 18px;
 }
