@@ -36,14 +36,6 @@ function TutorialNode(JSONChunk) {
     this.primaryTag = this.data.tags[0];
     this.color = TutorialTags[this.primaryTag];
     
-    this.state = localStorage.getItem(this.data.name);
-    
-    if(this.state == null) {
-        this.changeState(TutorialState.Locked);
-        if(this.data.name == openingTutorialName) {
-            this.changeState(TutorialState.Unlocked);
-        }
-    }
     
     this.mouseOver = false;
     
@@ -59,6 +51,15 @@ function TutorialNode(JSONChunk) {
     this.previousNodes = [];
     
     this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
+    
+    this.state = localStorage.getItem(this.data.name);
+    console.log("Updated " + this.data.name + " to " + this.state);
+    if(this.state == null || this.state == TutorialState.Locked) {
+        this.changeState(TutorialState.Locked);
+        if(this.data.name == openingTutorialName) {
+            this.changeState(TutorialState.Unlocked);
+        }
+    }
     
     if(this.state == TutorialState.Completed) {
         this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
@@ -76,7 +77,7 @@ TutorialNode.prototype.changeState = function(tutState) {
         this.state = tutState;
         localStorage.setItem(this.data.name, this.state);
         
-        // console.log("Updated " + this.data.name + " to " + tutState);
+        //console.log("Updated " + this.data.name + " to " + tutState);
         
         // also update the state of any later nodes to reflect the changes.
         for(var i = 0; i < this.nextNodes.length; i++)
