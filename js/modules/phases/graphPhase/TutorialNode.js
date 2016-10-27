@@ -51,6 +51,7 @@ function TutorialNode(JSONChunk) {
     this.previousNodes = [];
     
     this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
+    this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
     
     this.state = localStorage.getItem(this.data.name);
     if(this.state == null || this.state == TutorialState.Locked) {
@@ -61,10 +62,10 @@ function TutorialNode(JSONChunk) {
     }
     
     if(this.state == TutorialState.Completed) {
-        this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
+        this.completionButton.text = "Mark Unomplete";
     }
     else {
-        this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Complete", this.color);
+        this.completionButton.text = "Mark Complete";
     }
     
 };
