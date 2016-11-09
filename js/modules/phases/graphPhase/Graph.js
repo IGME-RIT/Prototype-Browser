@@ -81,6 +81,7 @@ function Graph(pJSONData) {
         else {
             search.transitionOn = true;
             search.open = true;
+            document.getElementById("searchtextfield").select();
         }
     }
     
@@ -218,6 +219,10 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
     this.canvasDiv.style.width = 100 - 30 * (t1 + t2) + "vw";    
     
     this.searchPanelButton.style.left = "calc(" + 30 * t1 + "vw + 12px)";
+    
+    
+    this.searchDiv.style.display = (t1 == 0) ? "none" : "block";
+    this.dataDiv.style.display = (t2 == 0) ? "none" : "block";
     
     canvasState.update();
 };
