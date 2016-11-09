@@ -1114,7 +1114,7 @@ function SearchPanel(graph) {
         //display results
         var listElement = document.getElementById("searchresults");
         if(searchResults.length == 0) {
-            div.innerHTML = "No Matching Results Found.";
+            listElement.innerHTML = "No Matching Results Found.";
             return;
         }
         
