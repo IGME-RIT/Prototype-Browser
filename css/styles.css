@@ -31,7 +31,7 @@ html, body {
     float: left;
     background-color: #888;
     overflow-x: visible;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #leftBar div{
@@ -109,7 +109,7 @@ html, body {
     float: left;
     background-color: #888;
     overflow-x: visible;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 #rightBar h1 {
     margin: 18px;
