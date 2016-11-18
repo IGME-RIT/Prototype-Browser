@@ -50,9 +50,12 @@ function TutorialNode(JSONChunk) {
     this.nextNodes = [];
     this.previousNodes = [];
     
+    // Create sub buttons.
     this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
     this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
     
+    
+    // Set up the status of the node to match that saved in browser memory.
     this.state = localStorage.getItem(this.data.name);
     if(this.state == null || this.state == TutorialState.Locked) {
         this.changeState(TutorialState.Locked);
@@ -96,32 +99,24 @@ TutorialNode.prototype.changeState = function(tutState) {
 TutorialNode.prototype.updateState = function()
 {
     // Lock if any previous are uncompleted
-    var lock = false;
-    for(var i = 0; i < this.previousNodes.length; i++)
-    {
-        if(this.previousNodes[i].state != TutorialState.Completed) {
-            lock = true;
-        }
-    }
+    var lock = this.previousNodes.some((node)=>{
+        return (node.state != TutorialState.Completed);
+    });
+    
     if(lock) {
         this.changeState(TutorialState.Locked);
-    }
-    else {
+    } else {
         this.changeState(TutorialState.Unlocked);
     }
 }
 
 //recursive function to get previous nodes
 TutorialNode.prototype.getPrevious = function(depth) {
-    var result = [];
-    result.push(this);
+    var result = [this];
     if(depth > 0) {
-        for(var i = 0; i < this.previousNodes.length; i++) {
-            var previous = this.previousNodes[i].getPrevious(depth-1);
-            for(var j = 0; j < previous.length; j++) {
-                result.push(previous[j]);
-            }
-        }
+        this.previousNodes.forEach((node)=>{
+            result = result.concat(node.getPrevious(depth-1));
+        });
     }
     return result;
 };
@@ -130,32 +125,32 @@ TutorialNode.prototype.getPrevious = function(depth) {
 
 //recursive function to get next nodes
 TutorialNode.prototype.getNext = function(depth) {
-    var result = [];
-    result.push(this);
+    var result = [this];
     if(depth > 0) {
-        for(var i = 0; i < this.nextNodes.length; i++) {
-            var next = this.nextNodes[i].getNext(depth-1);
-            for(var j = 0; j < next.length; j++) {
-                result.push(next[j]);
-            }
-        }
+        this.nextNodes.forEach((node)=>{
+            result = result.concat(node.getNext(depth-1));
+        });
     }
     return result;
 };
 
-//direction is the side of the parent this node exists on
-//layer depth is how many layers to render out
+
+// Updates all nodes starting with one, and extending outward.
+// direction is the side of the parent this node exists on (-1, 0, 1) 0 is both.
+// layer depth is how many layers to render out
 TutorialNode.prototype.recursiveUpdate = function(direction, depth) {
     if(depth > 0) {
+        // left or middle
         if(direction < 1) {
-            for(var i = 0; i < this.previousNodes.length; i++) {
-                this.previousNodes[i].recursiveUpdate(-1, depth - 1);
-            }
+            this.previousNodes.forEach((node)=>{
+                node.recursiveUpdate(-1, depth - 1);
+            });
         }
+        // right or middle
         if(direction > -1) {
-            for(var i = 0; i < this.nextNodes.length; i++) {
-                this.nextNodes[i].recursiveUpdate(1, depth - 1);
-            }
+            this.nextNodes.forEach((node)=>{
+                node.recursiveUpdate(1, depth - 1);
+            });
         }
     }
 };
@@ -214,18 +209,18 @@ TutorialNode.prototype.calculateNodeTree = function(layerDepth, parent, directio
     this.parent = parent;
     
     if(layerDepth > 0) {
-        //left or middle
+        // left or middle
         if(direction < 1) {
-            for(var i = 0; i < this.previousNodes.length; i++) {
-                this.previousNodes[i].calculateNodeTree(layerDepth - 1, this, -1);
-            }
+            this.previousNodes.forEach((node)=>{
+                node.calculateNodeTree(layerDepth - 1, this, -1);
+            });
         }
         
-        //right or middle
+        // right or middle
         if(direction > -1) {
-            for(var i = 0; i < this.nextNodes.length; i++) {
-                this.nextNodes[i].calculateNodeTree(layerDepth - 1, this, 1);
-            }
+            this.nextNodes.forEach((node)=>{
+                node.calculateNodeTree(layerDepth - 1, this, 1);
+            });
         }
     }
 };
@@ -248,34 +243,32 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
         if(direction < 1) {
             var totalLeftHeight = this.getPreviousHeight(layerDepth);
             xPosition = targetPosition.x - horizontalSpacing;
-            if(direction == 0) xPosition -= 60;
-            yPosition = targetPosition.y - (totalLeftHeight / 2);
+            if(direction == 0) xPosition -= 60; // first space is larger than the others.
+            yPosition = targetPosition.y - (totalLeftHeight / 2);   // center node vertically
             
-            for(var i = 0; i < this.previousNodes.length; i++) {
-                if(this.previousNodes[i].parent == this) {
-                    
-                    var placement = new Point(xPosition, yPosition + this.previousNodes[i].currentHeight / 2);
-                    this.previousNodes[i].setTransition(layerDepth - 1, this, -1, placement);
-                    yPosition += this.previousNodes[i].currentHeight;
+            this.previousNodes.forEach((node)=>{
+                if(node.parent == this) {
+                    var placement = new Point(xPosition, yPosition + node.currentHeight / 2);
+                    node.setTransition(layerDepth - 1, this, -1, placement);
+                    yPosition += node.currentHeight;
                 }
-            }
+            });
         }
         
         //right or middle
         if(direction > -1) {
             var totalRightHeight = this.getNextHeight(layerDepth);
             xPosition = targetPosition.x + horizontalSpacing;
-            if(direction == 0) xPosition += 60;
-            yPosition = targetPosition.y - (totalRightHeight / 2);
+            if(direction == 0) xPosition += 60; // first space is larger than the others.
+            yPosition = targetPosition.y - (totalRightHeight / 2);  // center node vertically.
 
-            for(var i = 0; i < this.nextNodes.length; i++) {
-                if(this.nextNodes[i].parent == this) {
-                    
-                    var placement = new Point(xPosition, yPosition + this.nextNodes[i].currentHeight / 2);
-                    this.nextNodes[i].setTransition(layerDepth - 1, this, 1, placement);
-                    yPosition += this.nextNodes[i].currentHeight;
+            this.nextNodes.forEach((node)=>{
+                if(node.parent == this) {
+                    var placement = new Point(xPosition, yPosition + node.currentHeight / 2);
+                    node.setTransition(layerDepth - 1, this, 1, placement);
+                    yPosition += node.currentHeight;
                 }
-            }
+            });
         }
     }
 };
@@ -283,11 +276,11 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
 TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
     this.currentHeight = 0;
     if(layerDepth > 0 && this.previousNodes.length > 0) {
-        for(var i = 0; i < this.previousNodes.length; i++) {
-            if(this.previousNodes[i].parent == this) {
-                this.currentHeight += this.previousNodes[i].getPreviousHeight(layerDepth - 1);
+        this.previousNodes.forEach((node)=>{
+            if(node.parent == this) {
+                this.currentHeight += node.getPreviousHeight(layerDepth - 1);
             }
-        }
+        });
     }
     if (this.currentHeight == 0) {
         this.currentHeight = baseSize * 5;
@@ -299,11 +292,11 @@ TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
 TutorialNode.prototype.getNextHeight = function(layerDepth) {
     this.currentHeight = 0;
     if(layerDepth > 0 && this.nextNodes.length > 0) {
-        for(var i = 0; i < this.nextNodes.length; i++) {
-            if(this.nextNodes[i].parent == this) {
-                this.currentHeight += this.nextNodes[i].getNextHeight(layerDepth - 1);
+        this.nextNodes.forEach((node)=>{
+            if(node.parent == this) {
+                this.currentHeight += node.getNextHeight(layerDepth - 1);
             }
-        }
+        });
     }
     if (this.currentHeight == 0) {
         this.currentHeight = baseSize * 5;
@@ -331,34 +324,35 @@ TutorialNode.prototype.draw = function(pCanvasState, pPainter, graph, parentCall
         pCanvasState.ctx.restore();
     }
     
-    //draw child nodes
+    // draw child nodes
     if(layerDepth > 0){
+        // left and middle
         if(direction < 1) {
-            for(var i = 0; i < this.previousNodes.length; i++) {
-                this.previousNodes[i].draw(pCanvasState, pPainter, graph, this, -1, layerDepth - 1);
-            }
+            this.previousNodes.forEach((node)=>{
+                node.draw(pCanvasState, pPainter, graph, this, -1, layerDepth - 1);
+            });
         }
+        // right and middle
         if(direction > -1) {
-            for(var i = 0; i < this.nextNodes.length; i++) {
-                this.nextNodes[i].draw(pCanvasState, pPainter, graph, this, 1, layerDepth - 1);
-            }
+            this.nextNodes.forEach((node)=>{
+                node.draw(pCanvasState, pPainter, graph, this, 1, layerDepth - 1);
+            });
         }
     }
     
-    //draw circle
+    // draw circle
     pPainter.circle(pCanvasState.ctx, this.position.x, this.position.y, this.size, true, this.color, true, "#fff", 2);
     
-    //draw a checkmark
-    if(this.state == TutorialState.Completed)
-    {
+    // draw a checkmark
+    if(this.state == TutorialState.Completed) {
         pCanvasState.ctx.drawImage(graph.checkImage, this.position.x - 32, this.position.y - 32);
     }
-    //draw a lock
-    if(this.state == TutorialState.Locked)
-    {
+    // draw a lock
+    if(this.state == TutorialState.Locked) {
         pCanvasState.ctx.drawImage(graph.lockImage, this.position.x - 32, this.position.y - 32);
     }
     
+    // draw the label
     this.label.draw(pCanvasState, pPainter);
     if(direction == 0) {
         this.detailsButton.draw(pCanvasState, pPainter);
