@@ -134,9 +134,9 @@ TutorialNode.prototype.getNext = function(depth) {
     result.push(this);
     if(depth > 0) {
         for(var i = 0; i < this.nextNodes.length; i++) {
-            var previous = this.nextNodes[i].getNext(depth-1);
-            for(var j = 0; j < previous.length; j++) {
-                result.push(previous[j]);
+            var next = this.nextNodes[i].getNext(depth-1);
+            for(var j = 0; j < next.length; j++) {
+                result.push(next[j]);
             }
         }
     }
