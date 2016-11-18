@@ -54,21 +54,18 @@ function Graph(pJSONData) {
         }
     }
     
-    //set direct object connections to related nodes for referencing
-    //parse entire list
-    for(var i = 0; i < this.nodes.length; i++) {
-        //loop over listed connections
-        for(var k = 0; k < this.nodes[i].data.connections.length; k++) {
-            //search for similar nodes
-            for(var j = 0; j < this.nodes.length; j++) {
-                if(this.nodes[j].data.series === this.nodes[i].data.connections[k].series &&
-                    this.nodes[j].data.title === this.nodes[i].data.connections[k].title) {
-                    this.nodes[i].previousNodes.push(this.nodes[j]);
-                    this.nodes[j].nextNodes.push(this.nodes[i]);
+    // loop through nodes and connect them together.
+    this.nodes.forEach((node)=>{
+        node.data.connections.forEach((connection)=>{
+            this.nodes.forEach((otherNode)=>{
+                if(otherNode.data.series === connection.series && otherNode.data.title === connection.title) {
+                    node.previousNodes.push(otherNode);
+                    otherNode.nextNodes.push(node);
                 }
-            }
-        }
-    }
+            });
+        });
+    });
+    
     
     this.transitionTime = 0;
     this.FocusNode(this.nodes[0]);
@@ -96,81 +93,73 @@ Graph.prototype.FocusNode = function(centerNode) {
     
     var newNodes = [];
     
-    //get nodes to depth
-    
+    //get nodes to depth in both directions, and add them to the new nodes array
     var previousNodes = this.focusedNode.getPrevious(expand);
-    for(var i = 0; i < previousNodes.length; i++) {
-        newNodes.push(previousNodes[i]);
-    }
+    newNodes = newNodes.concat(previousNodes);
     
     var nextNodes = this.focusedNode.getNext(expand);
-    for(var i = 0; i < nextNodes.length; i++) {
-        newNodes.push(nextNodes[i]);
-    }
+    newNodes = newNodes.concat(nextNodes);
     
+    
+    //find redundancies from the newNodes, and make a new array without those redundancies.
     var temp = [];
-    
-    //remove redundancies
-    for(var i = 0; i < newNodes.length; i++) {
-        var alreadyExists = false;
-        for(var j = 0; j < temp.length; j++) {
-            if(newNodes[i] == temp[j]) {
-                alreadyExists = true;
-            }
+    newNodes.forEach((nodeToCheck)=> {
+        if(temp.every((alreadyAddedNode)=>{
+            return nodeToCheck != alreadyAddedNode;
+        })) {
+            temp.push(nodeToCheck);
         }
-        if(!alreadyExists) {
-            temp.push(newNodes[i]);
-        }
-    }
-    
+    });
     newNodes = temp;
     
-    //check if any of the nodes were previously on screen
-    for(var i = 0; i < this.activeNodes.length; i++) {
-        this.activeNodes[i].wasPreviouslyOnScreen = false;
-        for(var j = 0; j < newNodes.length; j++) {
-            if(this.activeNodes[i] == newNodes[j]) {
-                this.activeNodes[i].wasPreviouslyOnScreen = true;
-            }
-        }
-    }
+    
+    
+    // check if any of the nodes were previously on screen
+    // (this is used to determine where they should appear during the transition animation)
+    this.activeNodes.forEach((node)=>{
+        node.wasPreviouslyOnScreen = newNodes.some((newNode)=>{
+            return node == newNode;
+        });
+    });
     
     this.activeNodes = newNodes;
     
     //clear their parent data for new node
-    for(var i = 0; i < this.activeNodes.length; i++) {
-        this.activeNodes[i].currentLayerDepth = 0;
-        this.activeNodes[i].parent = null;
-    }
+    this.activeNodes.forEach((node)=>{
+        node.currentLayerDepth = 0;
+        node.parent = null;
+    });
     
-    
+    // Start animation.
     this.transitionTime = 1;
-    
+    // Figure out where everything needs to be.
     this.focusedNode.calculateNodeTree(expand, null, 0);
     this.focusedNode.setTransition(expand, null, 0, new Point(0, 0));
 };
 
 Graph.prototype.update = function(mouseState, canvasState, time) {
     
+    // update transition time if it needs to be updated.
     if(this.transitionTime > 0) {
         this.transitionTime -= time.deltaTime;
-    }
-    else {
+    } else {
         this.transitionTime = 0;
     }
     
+    // Find if the mouse is over any nodes.
     var mouseOverNode = null;
-    
-    for(var i = 0; i < this.activeNodes.length; i++) {
-        var isMain = (this.activeNodes[i] == this.focusedNode);
-        this.activeNodes[i].update(mouseState, time, this.transitionTime, isMain);
-        if(this.activeNodes[i].mouseOver) {
-            mouseOverNode = this.activeNodes[i];
+    this.activeNodes.forEach((node)=>{
+        var isMain = (node == this.focusedNode);
+        node.update(mouseState, time, this.transitionTime, isMain);
+        if(node.mouseOver) {
+            mouseOverNode = node;
         }
-    }
+    });
     
-    // if cuser clicks
+    
+    // If user clicks
     if(mouseState.mouseDown && !mouseState.lastMouseDown) {
+        
         // focus node if clicked
         if(mouseOverNode) {
             this.FocusNode(mouseOverNode);
@@ -200,11 +189,12 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         }
     }
     
+    // Update the search panel if it's open.
     if(this.searchPanel.open == true) {
         this.searchPanel.update(canvasState, time);
     }
     
-    
+    // Update the details panel if it's open.
     if(this.detailsPanel.node != null) {
         this.detailsPanel.update(canvasState, time, this.focusedNode);
     }
@@ -214,6 +204,7 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
     var t1 = (1 - Math.cos(this.searchPanel.transitionTime * Math.PI))/2;
     var t2 = (1 - Math.cos(this.detailsPanel.transitionTime * Math.PI))/2;
     
+    // Change styling to change size of divs
     this.searchDiv.style.width = 30 * t1 + "vw";
     this.dataDiv.style.width = 30 * t2 + "vw";
     this.canvasDiv.style.width = 100 - 30 * (t1 + t2) + "vw";    
