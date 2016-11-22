@@ -1,6 +1,6 @@
 //Contains canvas related variables in a single easy-to-pass object
 "use strict";
-var Point = require('../common/Point.js');
+var Point = require('./Point.js');
 
 
 function CanvasState(canvas, ctx) {

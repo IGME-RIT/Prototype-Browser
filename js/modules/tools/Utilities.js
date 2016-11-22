@@ -1,5 +1,5 @@
 "use strict";
-var Point = require('../common/Point.js');
+var Point = require('../containers/Point.js');
 
 function Utilities(){
 }

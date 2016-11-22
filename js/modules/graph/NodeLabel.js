@@ -1,7 +1,7 @@
 "use strict";
 
-var Point = require('../../common/Point.js');
-var Button = require("../../containers/Button.js");
+var Point = require('../containers/Point.js');
+var Button = require("../containers/Button.js");
 var TutorialNode = require('./TutorialNode.js');
 
 var labelCornerSize = 6;

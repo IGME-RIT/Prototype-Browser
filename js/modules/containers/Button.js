@@ -1,6 +1,6 @@
 "use strict";
 
-var Point = require('../common/Point.js');
+var Point = require('./Point.js');
 
 function Button(position, size, text, color) {
     this.position = new Point(position.x, position.y);

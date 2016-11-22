@@ -1,8 +1,8 @@
 "use strict";
 
-var Point = require('../../common/Point.js');
+var Point = require('../containers/Point.js');
 var NodeLabel = require('./NodeLabel.js');
-var Button = require('../../containers/Button.js');
+var Button = require('../containers/Button.js');
 
 var horizontalSpacing = 180;
 var baseSize = 24;
@@ -241,38 +241,47 @@ TutorialNode.prototype.setTransition = function(layerDepth, parent, direction, t
         
         //left or middle
         if(direction < 1) {
-            var totalLeftHeight = this.getPreviousHeight(layerDepth);
-            xPosition = targetPosition.x - horizontalSpacing;
-            if(direction == 0) xPosition -= 60; // first space is larger than the others.
-            yPosition = targetPosition.y - (totalLeftHeight / 2);   // center node vertically
+            xPosition = targetPosition.x - horizontalSpacing;   // calculate the x position for next nodes
+            if(direction == 0) xPosition -= 60;                 // based on offset from parent node.
+                                                                // first space is larger than the others.
             
+            // determine height of this and all child nodes
+            var totalLeftHeight = this.getPreviousHeight(layerDepth);
+            yPosition = targetPosition.y - (totalLeftHeight / 2);   // center vertically
+            
+            // Loop over children and set them up as well. (if they are children of this node)
             this.previousNodes.forEach((node)=>{
                 if(node.parent == this) {
                     var placement = new Point(xPosition, yPosition + node.currentHeight / 2);
                     node.setTransition(layerDepth - 1, this, -1, placement);
-                    yPosition += node.currentHeight;
+                    yPosition += node.currentHeight;    // Increment y position of node each time to space them out correctly.
                 }
             });
         }
         
         //right or middle
         if(direction > -1) {
+            xPosition = targetPosition.x + horizontalSpacing;   // calculate the x position for next nodes
+            if(direction == 0) xPosition += 60;                 // based on offset from parent node.
+                                                                // first space is larger than the others.
+            
+            // Determine height of this and all child nodes.
             var totalRightHeight = this.getNextHeight(layerDepth);
-            xPosition = targetPosition.x + horizontalSpacing;
-            if(direction == 0) xPosition += 60; // first space is larger than the others.
-            yPosition = targetPosition.y - (totalRightHeight / 2);  // center node vertically.
+            yPosition = targetPosition.y - (totalRightHeight / 2);  // center vertically.
 
+            // Loop over children and set them up as well. (if they are children of this node)
             this.nextNodes.forEach((node)=>{
                 if(node.parent == this) {
                     var placement = new Point(xPosition, yPosition + node.currentHeight / 2);
                     node.setTransition(layerDepth - 1, this, 1, placement);
-                    yPosition += node.currentHeight;
+                    yPosition += node.currentHeight;    // Increment y position of node each time to space them out correctly.
                 }
             });
         }
     }
 };
 
+// Calculates the total height of this node and all child nodes to the left recursively
 TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
     this.currentHeight = 0;
     if(layerDepth > 0 && this.previousNodes.length > 0) {
@@ -282,14 +291,17 @@ TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
             }
         });
     }
-    if (this.currentHeight == 0) {
-        this.currentHeight = baseSize * 5;
+    else {
+        this.currentHeight = baseSize * 5;  // end case for single nodes
     }
     
     return this.currentHeight;
 };
 
+// Calculates the total height of this node and all child nodes to the right recursively
 TutorialNode.prototype.getNextHeight = function(layerDepth) {
+    
+    // Count up size of all child nodes
     this.currentHeight = 0;
     if(layerDepth > 0 && this.nextNodes.length > 0) {
         this.nextNodes.forEach((node)=>{
@@ -298,8 +310,8 @@ TutorialNode.prototype.getNextHeight = function(layerDepth) {
             }
         });
     }
-    if (this.currentHeight == 0) {
-        this.currentHeight = baseSize * 5;
+    else {
+        this.currentHeight = baseSize * 5;  // end case for single nodes
     }
     
     return this.currentHeight;

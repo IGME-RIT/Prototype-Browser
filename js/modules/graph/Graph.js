@@ -1,9 +1,9 @@
 "use strict";
-var DrawLib = require('../../libraries/Drawlib.js');
+var DrawLib = require('../tools/Drawlib.js');
 var SearchPanel = require('./SearchPanel.js');
 var DetailsPanel = require('./DetailsPanel.js');
 var TutorialNode = require('./TutorialNode.js');
-var Point = require('../../common/Point.js');
+var Point = require('../containers/Point.js');
 
 
 var expand = 2; // how many values to expand to
@@ -146,11 +146,13 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         this.transitionTime = 0;
     }
     
-    // Find if the mouse is over any nodes.
+    // Loop over and update active nodes
     var mouseOverNode = null;
     this.activeNodes.forEach((node)=>{
         var isMain = (node == this.focusedNode);
         node.update(mouseState, time, this.transitionTime, isMain);
+        
+        // Also check if the mouse is over that node.
         if(node.mouseOver) {
             mouseOverNode = node;
         }
@@ -164,6 +166,7 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         if(mouseOverNode) {
             this.FocusNode(mouseOverNode);
         }
+        
         // show details for node if button clicked
         if(this.focusedNode.detailsButton.mouseOver) {
             if(this.detailsPanel.node == null)  {

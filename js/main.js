@@ -1,7 +1,7 @@
 "use strict";
 //imports
 var Game = require('./modules/Game.js');
-var Point = require('./modules/common/Point.js');
+var Point = require('./modules/containers/Point.js');
 var Time = require('./modules/containers/Time.js');
 var MouseState = require('./modules/containers/MouseState.js');
 var CanvasState = require('./modules/containers/CanvasState.js');
