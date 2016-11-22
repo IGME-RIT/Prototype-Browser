@@ -5,8 +5,11 @@ var DetailsPanel = require('./DetailsPanel.js');
 var TutorialNode = require('./TutorialNode.js');
 var Point = require('../containers/Point.js');
 
+var graphLoaded;
+var mouseTarget;
 
-var expand = 2; // how many values to expand to
+
+var graphDepthLimit = 2; // how many values to expand to
 var debugMode = false;
 
 
@@ -25,19 +28,19 @@ function Graph(pJSONData) {
     this.searchDiv = document.getElementById("leftBar");
     this.dataDiv = document.getElementById("rightBar");
     this.canvasDiv = document.getElementById("middleBar");
-    
+
     // load lock image for locked nodes and completed nodes
     this.lockImage = new Image();
     this.lockImage.src = "content/ui/Lock.png";
     this.checkImage = new Image();
     this.checkImage.src = "content/ui/Check.png";
-    
+
     //create painter object to help draw stuff
     this.painter = new DrawLib();
-    
+
     this.nodes = [];
     this.activeNodes = [];
-    
+
     //populate the array
     for(var i = 0; i < pJSONData.length; i++) {
         var data = pJSONData[i];
@@ -53,7 +56,7 @@ function Graph(pJSONData) {
             this.nodes.push(node);
         }
     }
-    
+
     // loop through nodes and connect them together.
     this.nodes.forEach((node)=>{
         node.data.connections.forEach((connection)=>{
@@ -65,12 +68,12 @@ function Graph(pJSONData) {
             });
         });
     });
-    
-    
+
+
     this.transitionTime = 0;
     this.FocusNode(this.nodes[0]);
-    
-    
+
+
     function x (search) {
         if(search.open == true) {
             search.transitionOn = false;
@@ -81,8 +84,9 @@ function Graph(pJSONData) {
             document.getElementById("searchtextfield").select();
         }
     }
-    
+
     this.searchPanelButton.addEventListener("click", x.bind(this.searchPanelButton, this.searchPanel));
+
 };
 
 
@@ -94,10 +98,10 @@ Graph.prototype.FocusNode = function(centerNode) {
     var newNodes = [];
     
     //get nodes to depth in both directions, and add them to the new nodes array
-    var previousNodes = this.focusedNode.getPrevious(expand);
+    var previousNodes = this.focusedNode.getPrevious(graphDepthLimit);
     newNodes = newNodes.concat(previousNodes);
     
-    var nextNodes = this.focusedNode.getNext(expand);
+    var nextNodes = this.focusedNode.getNext(graphDepthLimit);
     newNodes = newNodes.concat(nextNodes);
     
     
@@ -133,8 +137,8 @@ Graph.prototype.FocusNode = function(centerNode) {
     // Start animation.
     this.transitionTime = 1;
     // Figure out where everything needs to be.
-    this.focusedNode.calculateNodeTree(expand, null, 0);
-    this.focusedNode.setTransition(expand, null, 0, new Point(0, 0));
+    this.focusedNode.calculateNodeTree(graphDepthLimit, null, 0);
+    this.focusedNode.setTransition(graphDepthLimit, null, 0, new Point(0, 0));
 };
 
 Graph.prototype.update = function(mouseState, canvasState, time) {
@@ -228,15 +232,15 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
 
 
 Graph.prototype.draw = function(canvasState) {
-    canvasState.ctx.save();
     
+    canvasState.ctx.save();
+
     //translate to the center of the screen
     canvasState.ctx.translate(canvasState.center.x, canvasState.center.y);
-    //console.log(canvasState.center);
-    //console.log(canvasState);
-    //draw nodes
-    this.focusedNode.draw(canvasState, this.painter, this, null, 0, expand);
     
+    //draw nodes
+    this.focusedNode.draw(canvasState, this.painter, this, null, 0, graphDepthLimit);
+
     canvasState.ctx.restore();
 };
 

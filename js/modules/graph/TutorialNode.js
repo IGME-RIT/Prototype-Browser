@@ -291,7 +291,7 @@ TutorialNode.prototype.getPreviousHeight = function(layerDepth) {
             }
         });
     }
-    else {
+    if(this.currentHeight == 0) {
         this.currentHeight = baseSize * 5;  // end case for single nodes
     }
     
@@ -310,7 +310,7 @@ TutorialNode.prototype.getNextHeight = function(layerDepth) {
             }
         });
     }
-    else {
+    if(this.currentHeight == 0) {
         this.currentHeight = baseSize * 5;  // end case for single nodes
     }
     
