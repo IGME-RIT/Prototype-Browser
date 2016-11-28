@@ -67,6 +67,7 @@ function Graph(pJSONData) {
                 }
             });
         });
+        node.fetchState();
     });
 
 

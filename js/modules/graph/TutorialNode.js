@@ -6,7 +6,6 @@ var Button = require('../containers/Button.js');
 
 var horizontalSpacing = 180;
 var baseSize = 24;
-var openingTutorialName = "Basic-OpenGL-with-GLFW-Drawing-a-Triangle";
 
 var TutorialState = {
     Locked: 0,
@@ -53,13 +52,17 @@ function TutorialNode(JSONChunk) {
     // Create sub buttons.
     this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
     this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
-    
-    
-    // Set up the status of the node to match that saved in browser memory.
+};
+
+
+// Set up the status of the node to match that saved in browser memory.
+TutorialNode.prototype.fetchState = function() {
     this.state = localStorage.getItem(this.data.name);
     if(this.state == null || this.state == TutorialState.Locked) {
         this.changeState(TutorialState.Locked);
-        if(this.data.name == openingTutorialName) {
+        
+        // Default to unlocked if there are no previous nodes.
+        if(this.previousNodes.length == 0) {
             this.changeState(TutorialState.Unlocked);
         }
     }
@@ -70,8 +73,7 @@ function TutorialNode(JSONChunk) {
     else {
         this.completionButton.text = "Mark Complete";
     }
-    
-};
+}
 
 // Changes the state of this node
 TutorialNode.prototype.changeState = function(tutState) {
