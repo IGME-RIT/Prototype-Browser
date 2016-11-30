@@ -77,38 +77,74 @@ TutorialNode.prototype.fetchState = function() {
 
 // Changes the state of this node
 TutorialNode.prototype.changeState = function(tutState) {
-    if(this.state != tutState)
-    {
-        this.state = tutState;
-        localStorage.setItem(this.data.name, this.state);
-        if(this.state == TutorialState.Completed) {
-            this.completionButton.text = "Mark Uncomplete";
+    if(this.state == TutorialState.Locked) {
+        if(tutState == TutorialState.Unlocked) {
+            this.state = tutState;
+            localStorage.setItem(this.data.name, this.state);
+            // Unlock from a locked position doesn't need to change any other nodes.
         }
-        else {
-            this.completionButton.text = "Mark Complete";
-        }
-        
-        //console.log("Updated " + this.data.name + " to " + tutState);
-        
-        // also update the state of any later nodes to reflect the changes.
-        for(var i = 0; i < this.nextNodes.length; i++)
-        {
-            this.nextNodes[i].updateState();
+        else if(tutState == TutorialState.Completed) {
+            this.state = tutState;
+            localStorage.setItem(this.data.name, this.state);
+            
+            // Complete from a locked position needs to attempt to unlock later things.
+            this.nextNodes.forEach((child)=>{
+                var shouldBeLocked = child.previousNodes.some((prereq)=>{
+                    return (prereq.state != TutorialState.Completed);
+                });
+                if(!shouldBeLocked) {
+                    child.changeState(TutorialState.Unlocked);
+                }
+            });
         }
     }
-}
-
-TutorialNode.prototype.updateState = function()
-{
-    // Lock if any previous are uncompleted
-    var lock = this.previousNodes.some((node)=>{
-        return (node.state != TutorialState.Completed);
-    });
-    
-    if(lock) {
-        this.changeState(TutorialState.Locked);
-    } else {
-        this.changeState(TutorialState.Unlocked);
+    else if(this.state == TutorialState.Unlocked) {
+        if(tutState == TutorialState.Locked) {
+            this.state = tutState;
+            localStorage.setItem(this.data.name, this.state);
+            // Locked from unlocked position doesn't affect anything
+        }
+        else if(tutState == TutorialState.Completed) {
+            this.state = tutState;
+            localStorage.setItem(this.data.name, this.state);
+            
+            // completed from unlocked should unlock next things.
+            this.nextNodes.forEach((child)=>{
+                var shouldBeLocked = child.previousNodes.some((prereq)=>{
+                    return (prereq.state != TutorialState.Completed);
+                });
+                if(!shouldBeLocked) {
+                    child.changeState(TutorialState.Unlocked);
+                }
+            });
+        }
+    }
+    else if (this.state == TutorialState.Completed) {
+        if(tutState == TutorialState.Locked) {
+            this.state = tutState;
+            localStorage.setItem(this.data.name, this.state);
+            
+            // locking something that was completed should lock later things.
+            this.nextNodes.forEach((child)=>{
+                child.changeState(TutorialState.Locked);
+            });
+        }
+        else if(tutState == TutorialState.Unlocked) {
+            this.state = tutState;
+            localStorage.setItem(this.data.name, this.state);
+            // unlocking something that was completed should lock later things.
+            this.nextNodes.forEach((child)=>{
+                child.changeState(TutorialState.Locked);
+            });
+            // also if this thing doesn't have it's prereqs met, it should go straight to being locked
+            var shouldBeLocked = this.previousNodes.some((prereq)=>{
+                return (prereq.state != TutorialState.Completed);
+            });
+            if(shouldBeLocked) {
+                this.state = TutorialState.Locked;
+                localStorage.setItem(this.data.name, this.state);
+            }
+        }
     }
 }
 
@@ -370,9 +406,7 @@ TutorialNode.prototype.draw = function(pCanvasState, pPainter, graph, parentCall
     this.label.draw(pCanvasState, pPainter);
     if(direction == 0) {
         this.detailsButton.draw(pCanvasState, pPainter);
-        if(this.state != TutorialState.Locked) {
-            this.completionButton.draw(pCanvasState, pPainter);
-        }
+        this.completionButton.draw(pCanvasState, pPainter);
     }
 };
 
