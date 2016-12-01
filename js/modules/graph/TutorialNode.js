@@ -51,7 +51,7 @@ function TutorialNode(JSONChunk) {
     
     // Create sub buttons.
     this.detailsButton = new Button(new Point(0, 0), new Point(120, 24), "More", this.color);
-    this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "Mark Uncomplete", this.color);
+    this.completionButton = new Button(new Point(0, 0), new Point(120, 24), "", this.color);
 };
 
 
@@ -66,13 +66,6 @@ TutorialNode.prototype.fetchState = function() {
         if(this.previousNodes.length == 0) {
             this.state = TutorialState.Unlocked;
         }
-    }
-    
-    if(this.state == TutorialState.Completed) {
-        this.completionButton.text = "Mark Unomplete";
-    }
-    else {
-        this.completionButton.text = "Mark Complete";
     }
 }
 
@@ -114,7 +107,7 @@ TutorialNode.prototype.changeState = function(tutState) {
                 var shouldBeLocked = child.previousNodes.some((prereq)=>{
                     return (prereq.state != TutorialState.Completed);
                 });
-                if(!shouldBeLocked) {
+                if(!shouldBeLocked && child.state == TutorialState.Locked) {
                     child.changeState(TutorialState.Unlocked);
                 }
             });
@@ -206,6 +199,13 @@ TutorialNode.prototype.update = function(mouseState, time, transitionTime, isFoc
     
     if(isFocused) {
         this.size = 36;
+    
+        if(this.state == TutorialState.Completed) {
+            this.completionButton.text = "Mark Uncomplete";
+        }
+        else {
+            this.completionButton.text = "Mark Complete";
+        }
     }
     else {
         //test if mouse is inside circle
