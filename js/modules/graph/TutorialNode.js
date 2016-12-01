@@ -57,13 +57,14 @@ function TutorialNode(JSONChunk) {
 
 // Set up the status of the node to match that saved in browser memory.
 TutorialNode.prototype.fetchState = function() {
+    
     this.state = localStorage.getItem(this.data.name);
     if(this.state == null || this.state == TutorialState.Locked) {
-        this.changeState(TutorialState.Locked);
+        this.state = TutorialState.Locked;
         
         // Default to unlocked if there are no previous nodes.
         if(this.previousNodes.length == 0) {
-            this.changeState(TutorialState.Unlocked);
+            this.state = TutorialState.Unlocked;
         }
     }
     
