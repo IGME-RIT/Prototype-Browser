@@ -70,9 +70,14 @@ function Graph(pJSONData) {
         node.fetchState();
     });
 
-
+    
+    
+    // Start by focusing the intro node:
     this.transitionTime = 0;
-    this.FocusNode(this.nodes[0]);
+    var first = this.nodes.find((currentNode)=>{
+        return currentNode.data.link == "https://github.com/IGME-RIT/Welcome-to-Atlas";
+    });
+    this.FocusNode(first);
 
 
     function x (search) {

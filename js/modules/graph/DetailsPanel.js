@@ -73,7 +73,7 @@ DetailsPanel.prototype.update = function(canvasState, time, node) {
 
 DetailsPanel.prototype.GenerateDOM = function() {
     var html = "<h1>"+this.data.series+":</h1><h1><a href=" + this.data.link + ">"+this.data.title+"</a></h1>";
-    html += "<a href=" + this.data.link + "><img src=https://raw.githubusercontent.com/IGME-RIT/" + this.data.name +
+    html += "<a href=" + this.data.link + " target='_blank' ><img src=https://raw.githubusercontent.com/IGME-RIT/" + this.data.name +
         "/master/igme_thumbnail.png alt=" + this.data.link + "></a>";
     
     html += "<ul id='tags'>";
