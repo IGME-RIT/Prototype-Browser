@@ -80,21 +80,58 @@ html, body {
     font-size: 18px;
 }
 
-#searchresults {
+#searchresultsUnlocked {
     list-style: none;
 }
 
-#searchresults li {
+#searchresultsLocked {
+    list-style: none;
+}
+
+#searchresultsCompleted {
+    list-style: none;
+}
+
+#searchresultsUnlocked li {
     margin-bottom: 3px;
     padding: 3px;
-    background-color: #ddd;
+    background-color: #cfc;
     text-align: left;
     font-family: sans-serif;
     font-size: 16px;
 }
 
-#searchresults li:hover {
-    background-color: #bbb;
+#searchresultsLocked li {
+    margin-bottom: 3px;
+    padding: 3px;
+    background-color: #fcc;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+#searchresultsCompleted li {
+    margin-bottom: 3px;
+    padding: 3px;
+    background-color: #ccc;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+#searchresultsUnlocked li:hover {
+    background-color: #afa;
+    cursor: pointer;
+}
+
+#searchresultsLocked li:hover {
+    background-color: #faa;
+    cursor: pointer;
+}
+
+#searchresultsCompleted li:hover {
+    background-color: #aaa;
+    cursor: pointer;
 }
 
 #middleBar {

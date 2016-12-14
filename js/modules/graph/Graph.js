@@ -48,7 +48,7 @@ function Graph(pJSONData) {
         if(data.tags.length === 0) {
             if(debugMode) console.log("Repo not tagged: " + data.name);
         }
-        else if(data.image !== undefined) {
+        else if(data.name == data.series) {
             if(debugMode) console.log("Repo yaml out of date: " + data.name);
         }
         else {

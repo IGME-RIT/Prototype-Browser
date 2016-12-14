@@ -1,5 +1,26 @@
 "use strict"
 
+var TutorialState = {
+    Locked: 0,
+    Unlocked: 1,
+    Completed: 2
+};
+
+var TutorialTags = {
+    "AI": "#804",
+    "Audio": "#048",
+    "Computer Science": "#111",
+    "Core": "#333",
+    "Graphics": "#c0c",
+    "Input": "#880",
+    "Math": "#484",
+    "Networking": "#c60",
+    "Optimization": "#282",
+    "Physics": "#048",
+    "Scripting": "#088",
+    "SoftwareEngineering": "#844"
+};
+
 function SearchPanel(graph) {
     this.graph = graph;
     this.open = false;
@@ -8,7 +29,7 @@ function SearchPanel(graph) {
     this.optionsDiv = document.getElementById("leftBar");
     this.searchButton = document.getElementById("searchbutton");
     
-    
+    // create a search event to be triggered by clicking the search button
     this.searchButton.addEventListener("click", function (that) {
         
         // Collect all information for the query
@@ -46,15 +67,19 @@ function SearchPanel(graph) {
         var searchResults = that.search(query, that.graph.nodes);
         
         
-        
         //display results
-        var listElement = document.getElementById("searchresults");
+        var listElementUnlocked = document.getElementById("searchresultsUnlocked");
+        var listElementLocked = document.getElementById("searchresultsLocked");
+        var listElementCompleted = document.getElementById("searchresultsCompleted");
+        
+        listElementUnlocked.innerHTML = "";
+        listElementLocked.innerHTML = "";
+        listElementCompleted.innerHTML = "";
+        
         if(searchResults.length == 0) {
-            listElement.innerHTML = "No Matching Results Found.";
+            listElementLocked.innerHTML = "No Matching Results Found.";
             return;
         }
-        
-        listElement.innerHTML = "";
         
         
         for(var i = 0; i < searchResults.length; i++) {
@@ -62,12 +87,23 @@ function SearchPanel(graph) {
             var li = document.createElement("li");
             //set title as text
             li.innerHTML = searchResults[i].data.title;
+                
+                
             //add event to focus the node if its clicked
             li.addEventListener("click", function(that, node) {
                 that.graph.FocusNode(node);
             }.bind(li, that, searchResults[i]));
+            
+            
             //add the tag to the page
-            listElement.appendChild(li);
+            if(searchResults[i].state == TutorialState.Unlocked) {
+                listElementUnlocked.appendChild(li);
+            } else if (searchResults[i].state == TutorialState.Locked){
+                listElementLocked.appendChild(li);
+            } else {
+                li.innerHTML += " (complete)";
+                listElementCompleted.appendChild(li);
+            }
         }
     }.bind(this.searchButton, this));
 };
