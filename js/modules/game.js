@@ -12,37 +12,38 @@ var mouseState;
 var mouseTarget;
 var graphLoaded;
 
-function Game(){    
+function Game(){
     painter = new DrawLib();
     utility = new Utilities();
-    
+
     graphLoaded = false;
     mouseTarget = 0;
-    
+
     //instantiate the graph
     Parser("https://atlas-backend.herokuapp.com/repos", (pJSONData)=> {
+        //console.log(pJSONData);
         graph = new Graph(pJSONData);
         graphLoaded = true;
     });
-    
+
     //give mouseState a value from the start so it doesn't pass undefined to previous
     mouseState = 0;
 }
 
 //passing context, canvas, delta time, center point, mouse state
 Game.prototype.update = function(mouseState, canvasState, time) {
-    
+
     if(graphLoaded) {
         //update key variables in the active phase
         graph.update(mouseState, canvasState, time);
     }
-    
+
     //draw background and then graph
     canvasState.ctx.save();
     painter.rect(canvasState.ctx, 0, 0, canvasState.width, canvasState.height, "#222");
     canvasState.ctx.restore();
-    
-    
+
+
     if(graphLoaded) {
         graph.draw(canvasState);
     }
@@ -56,7 +57,7 @@ Game.prototype.update = function(mouseState, canvasState, time) {
         canvasState.ctx.fillText("Loading...", canvasState.center.x, canvasState.center.y);
         canvasState.ctx.restore();
     }
-    
+
 }
 
 module.exports = Game;
