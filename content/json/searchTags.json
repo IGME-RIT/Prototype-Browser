@@ -1,0 +1,44 @@
+{
+  "tagArray": [
+    {
+      "tag": "Any",
+      "label": "Select Topic (Any)"
+    },
+    {
+      "tag": "AI"
+    },
+    {
+      "tag": "Audio"
+    },
+    {
+      "tag": "Computer Science"
+    },
+    {
+      "tag": "Core"
+    },
+    {
+      "tag": "Graphics"
+    },
+    {
+      "tag": "Input"
+    },
+    {
+      "tag": "Math"
+    },
+    {
+      "tag": "Networking"
+    },
+    {
+      "tag": "Optimization"
+    },
+    {
+      "tag": "Physics"
+    },
+    {
+      "tag": "Scripting"
+    },
+    {
+      "tag": "Software Engineering"
+    }
+  ]
+}

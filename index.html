@@ -4,48 +4,73 @@
 	<meta charset="utf-8" />
 	<title>Atlas</title>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
-    
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 </head>
 <body>
     <img src="content/ui/Search.png" id="OptionsButton">
 	<div id="leftBar">
         <h1>Search</h1>
-        
+
         <div id="SearchSelectors">
-            
+
             <h2>Text Search:</h2>
             <input class="field" id="searchtextfield" type="text" placeholder="Search...">
             <br>
-            
-            
+
+
             <h2>Programming Language:</h2>
             <select class="field" id="searchlanguagefield">
                 <option value="Any">Select Language (Any)</option>
                 <option value="C++">C++</option>
             </select>
             <br>
-            
+						<script>
+							// dynamically generate language options from JSON
+							var ajaxResponse;
+							$.getJSON("content/json/languageOptions.json", function(result){
+								var options = [];
+								$.each(result.languageArray, function(index, value){
+									options.push("<option value='" + value.tag + "'>");
+									if (value.hasOwnProperty("label")) {
+										options.push(value.label);
+									}
+									else {
+										options.push(value.tag);
+									}
+									options.push("</option>");
+								});
+
+								$("#searchLanguageField").html( options.join("") );
+							});
+						</script>
+
             <h2>Tags:</h2>
-            <select class="field" id="searchtagfield">
-                <option value="Any">Select Topic (Any)</option>
-                <option value="AI">AI</option>
-                <option value="Audio">Audio</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Core">Core</option>>
-                <option value="Graphics">Graphics</option>
-                <option value="Input">Input</option>
-                <option value="Math">Math</option>
-                <option value="Networking">Networking</option>
-                <option value="Optimization">Optimization</option>
-                <option value="Physics">Physics</option>
-                <option value="Scripting">Scripting</option>
-                <option value="Software Engineering">Software Engineering</option>
-            </select>
+            <select class="field" id="searchtagfield"></select>
             <br>
-            
+						<script>
+							// dynamically generate search tags from JSON
+							var ajaxResponse;
+							$.getJSON("content/json/searchTags.json", function(result){
+								var options = [];
+								$.each(result.tagArray, function(index, value) {
+									options.push("<option value='" + value.tag + "'>");
+									if (value.hasOwnProperty("label")) {
+										options.push(value.label);
+									}
+									else {
+										options.push(value.tag);
+									}
+									options.push("</option>");
+								});
+
+								$("#searchtagfield").html( options.join("") );
+							});
+						</script>
+
             <input id="searchbutton" type="button" value="Search">
         </div>
-        
+
         <div>
             <h2>Results:</h2>
             <ul id="searchresultsUnlocked">
@@ -58,7 +83,7 @@
     </div>
     <canvas id="middleBar">The browser you are using does not support modern web functionality</canvas>
     <div id="rightBar"></div>
-        
+
     <script src="bundle.js"></script>
 </body>
 </html>
