@@ -20,10 +20,7 @@
 
 
             <h2>Programming Language:</h2>
-            <select class="field" id="searchlanguagefield">
-                <option value="Any">Select Language (Any)</option>
-                <option value="C++">C++</option>
-            </select>
+            <select class="field" id="searchlanguagefield"></select>
             <br>
 						<script>
 							// dynamically generate language options from JSON
@@ -41,7 +38,7 @@
 									options.push("</option>");
 								});
 
-								$("#searchLanguageField").html( options.join("") );
+								$("#searchlanguagefield").html( options.join("") );
 							});
 						</script>
 
