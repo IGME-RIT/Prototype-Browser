@@ -12,6 +12,8 @@ var mouseTarget;
 var graphDepthLimit = 2; // how many values to expand to
 var debugMode = false;
 
+var divWidth = 25; // what percent of the viewport is taken up by each sidebar
+
 
 var TutorialState = {
     Locked: 0,
@@ -21,7 +23,7 @@ var TutorialState = {
 
 
 function Graph(pJSONData) {
-    
+
     this.searchPanel = new SearchPanel(this);
     this.detailsPanel = new DetailsPanel(this);
     this.searchPanelButton = document.getElementById("OptionsButton");
@@ -70,8 +72,8 @@ function Graph(pJSONData) {
         node.fetchState();
     });
 
-    
-    
+
+
     // Start by focusing the intro node:
     this.transitionTime = 0;
     var first = this.nodes.find((currentNode)=>{
@@ -100,17 +102,17 @@ function Graph(pJSONData) {
 
 Graph.prototype.FocusNode = function(centerNode) {
     this.focusedNode = centerNode;
-    
+
     var newNodes = [];
-    
+
     //get nodes to depth in both directions, and add them to the new nodes array
     var previousNodes = this.focusedNode.getPrevious(graphDepthLimit);
     newNodes = newNodes.concat(previousNodes);
-    
+
     var nextNodes = this.focusedNode.getNext(graphDepthLimit);
     newNodes = newNodes.concat(nextNodes);
-    
-    
+
+
     //find redundancies from the newNodes, and make a new array without those redundancies.
     var temp = [];
     newNodes.forEach((nodeToCheck)=> {
@@ -121,9 +123,9 @@ Graph.prototype.FocusNode = function(centerNode) {
         }
     });
     newNodes = temp;
-    
-    
-    
+
+
+
     // check if any of the nodes were previously on screen
     // (this is used to determine where they should appear during the transition animation)
     this.activeNodes.forEach((node)=>{
@@ -131,15 +133,15 @@ Graph.prototype.FocusNode = function(centerNode) {
             return node == newNode;
         });
     });
-    
+
     this.activeNodes = newNodes;
-    
+
     //clear their parent data for new node
     this.activeNodes.forEach((node)=>{
         node.currentLayerDepth = 0;
         node.parent = null;
     });
-    
+
     // Start animation.
     this.transitionTime = 1;
     // Figure out where everything needs to be.
@@ -148,35 +150,35 @@ Graph.prototype.FocusNode = function(centerNode) {
 };
 
 Graph.prototype.update = function(mouseState, canvasState, time) {
-    
+
     // update transition time if it needs to be updated.
     if(this.transitionTime > 0) {
         this.transitionTime -= time.deltaTime;
     } else {
         this.transitionTime = 0;
     }
-    
+
     // Loop over and update active nodes
     var mouseOverNode = null;
     this.activeNodes.forEach((node)=>{
         var isMain = (node == this.focusedNode);
         node.update(mouseState, time, this.transitionTime, isMain);
-        
+
         // Also check if the mouse is over that node.
         if(node.mouseOver) {
             mouseOverNode = node;
         }
     });
-    
-    
+
+
     // If user clicks
     if(mouseState.mouseDown && !mouseState.lastMouseDown) {
-        
+
         // focus node if clicked
         if(mouseOverNode) {
             this.FocusNode(mouseOverNode);
         }
-        
+
         // show details for node if button clicked
         if(this.focusedNode.detailsButton.mouseOver) {
             if(this.detailsPanel.node == null)  {
@@ -206,33 +208,33 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
             }
         }
     }
-    
+
     // Update the search panel if it's open.
     if(this.searchPanel.open == true) {
         this.searchPanel.update(canvasState, time);
     }
-    
+
     // Update the details panel if it's open.
     if(this.detailsPanel.node != null) {
         this.detailsPanel.update(canvasState, time, this.focusedNode);
     }
-    
-    
+
+
     // Transition the side bars on and off smoothly
     var t1 = (1 - Math.cos(this.searchPanel.transitionTime * Math.PI))/2;
     var t2 = (1 - Math.cos(this.detailsPanel.transitionTime * Math.PI))/2;
-    
+
     // Change styling to change size of divs
-    this.searchDiv.style.width = 30 * t1 + "vw";
-    this.dataDiv.style.width = 30 * t2 + "vw";
-    this.canvasDiv.style.width = 100 - 30 * (t1 + t2) + "vw";    
-    
-    this.searchPanelButton.style.left = "calc(" + 30 * t1 + "vw + 12px)";
-    
-    
+    this.searchDiv.style.width = divWidth * t1 + "vw";
+    this.dataDiv.style.width = divWidth * t2 + "vw";
+    this.canvasDiv.style.width = 100 - divWidth * (t1 + t2) + "vw";
+
+    this.searchPanelButton.style.left = "calc(" + divWidth * t1 + "vw + 12px)";
+
+
     this.searchDiv.style.display = (t1 == 0) ? "none" : "block";
     this.dataDiv.style.display = (t2 == 0) ? "none" : "block";
-    
+
     canvasState.update();
 };
 
@@ -243,12 +245,12 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
 
 
 Graph.prototype.draw = function(canvasState) {
-    
+
     canvasState.ctx.save();
 
     //translate to the center of the screen
     canvasState.ctx.translate(canvasState.center.x, canvasState.center.y);
-    
+
     //draw nodes
     this.focusedNode.draw(canvasState, this.painter, this, null, 0, graphDepthLimit);
 
