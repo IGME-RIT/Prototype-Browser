@@ -21,7 +21,7 @@ function Game(){
 
     //instantiate the graph
     Parser("https://atlas-backend.herokuapp.com/repos", (pJSONData)=> {
-        //console.log(pJSONData);
+        console.log(pJSONData);
         graph = new Graph(pJSONData);
         graphLoaded = true;
     });
