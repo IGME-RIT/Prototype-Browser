@@ -6,6 +6,7 @@ function Parser(pTargetURL, callback){
     var lessonArray = [];
     var xhr = new XMLHttpRequest();
     xhr.onload = function(){
+        console.log(xhr.responseText);
         JSONObject = JSON.parse(xhr.responseText);
 
         //pass lesson data back
