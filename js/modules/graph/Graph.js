@@ -183,12 +183,11 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
         if(this.focusedNode.detailsButton.mouseOver) {
             if(this.detailsPanel.node == null)  {
                 this.detailsPanel.enable(this.focusedNode);
-                this.focusedNode.detailsButton.text = "Less";
             }
             else {
                 this.detailsPanel.disable();
-                this.focusedNode.detailsButton.text = "More";
             }
+
         }
         // user clicks on completion button
         if(this.focusedNode.completionButton.mouseOver) {
@@ -217,6 +216,15 @@ Graph.prototype.update = function(mouseState, canvasState, time) {
     // Update the details panel if it's open.
     if(this.detailsPanel.node != null) {
         this.detailsPanel.update(canvasState, time, this.focusedNode);
+    }
+
+    if(this.focusedNode != null) {
+      if(this.detailsPanel.enabled) {
+        this.focusedNode.detailsButton.text = "Less";
+      }
+      else {
+        this.focusedNode.detailsButton.text = "More";
+      }
     }
 
 
