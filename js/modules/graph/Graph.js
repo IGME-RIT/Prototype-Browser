@@ -59,6 +59,8 @@ function Graph(pJSONData) {
         }
     }
 
+    // console.log(this.nodes);
+
     // loop through nodes and connect them together.
     this.nodes.forEach((node)=>{
         node.data.connections.forEach((connection)=>{
@@ -79,6 +81,12 @@ function Graph(pJSONData) {
     var first = this.nodes.find((currentNode)=>{
         return currentNode.data.link == "https://github.com/IGME-RIT/Welcome-to-Atlas";
     });
+
+    // In case the Welcome to Atlas node isn't in the list of nodes (due
+    // to a sync issue or something), give a node so it won't be loading forever
+    if (first == undefined)
+      first = this.nodes[0];
+
     this.FocusNode(first);
 
 
