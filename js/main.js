@@ -31,7 +31,7 @@ var canvasState;
 //fires when the window loads
 window.onload = function(e){
     //debug button designed to clear progress data
-    
+
     //variable and loop initialization
     initializeVariables();
     loop();
@@ -42,25 +42,25 @@ function initializeVariables(){
     //camvas initialization
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
-    
+
     time = new Time();
-    
-    
+
+
     //mouse variable initialization
     mousePosition = new Point(0,0);
     relativeMousePosition = new Point(0,0);
-    
-    
-    
-    
-    
+
+
+
+
+
     //event listeners for mouse interactions with the canvas
     canvas.addEventListener("mousemove", function(e) {
         var boundRect = canvas.getBoundingClientRect();
         mousePosition = new Point(e.clientX - boundRect.left, e.clientY - boundRect.top);
         relativeMousePosition = new Point(mousePosition.x - canvas.offsetWidth / 2, mousePosition.y - canvas.offsetHeight / 2);
     });
-    
+
     mouseDown = false;
     canvas.addEventListener("mousedown", function(e){
         mouseDown = true;
@@ -80,14 +80,14 @@ function initializeVariables(){
     canvas.addEventListener("mousewheel", function(e){
         wheelDelta = e.wheelDelta;
     });
-    
-    
-    
-    
+
+
+
+
     //state variable initialization
     mouseState = new MouseState(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
     canvasState = new CanvasState(canvas, ctx);
-    
+
     //local storage handling for active node record and progress
     if(localStorage.activeNode === undefined){
         localStorage.activeNode = 0;
@@ -95,7 +95,7 @@ function initializeVariables(){
     if(localStorage.progress === undefined){
         localStorage.progress = "";
     }
-    
+
     //creates the game object from which most interaction is managed
     game = new Game();
 }
@@ -104,16 +104,16 @@ function initializeVariables(){
 function loop() {
     //binds loop to frames
     window.requestAnimationFrame(loop.bind(this));
-    
+
     time.update(.0167);
-    
+
     //feed current mouse variables back into mouse state
     mouseState.update(mousePosition, relativeMousePosition, mouseDown, mouseIn, wheelDelta);
     //resetting wheel delta
     wheelDelta = 0;
-    
+
     //update game's variables: passing context, canvas, time, center point, usable height, mouse state
-    
+
     game.update(mouseState, canvasState, time);
 };
 
@@ -121,5 +121,3 @@ function loop() {
 window.addEventListener("resize", function(e){
     canvasState.update();
 });
-
-

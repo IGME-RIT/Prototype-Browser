@@ -27,9 +27,9 @@ function Graph(pJSONData) {
     this.searchPanel = new SearchPanel(this);
     this.detailsPanel = new DetailsPanel(this);
     this.searchPanelButton = document.getElementById("OptionsButton");
-    this.searchDiv = document.getElementById("leftBar");
-    this.dataDiv = document.getElementById("rightBar");
-    this.canvasDiv = document.getElementById("middleBar");
+    this.searchDiv = $("#leftBar")[0];
+    this.dataDiv = $("#rightBar")[0];
+    this.canvasDiv = $("#middleBar")[0];
 
     // load lock image for locked nodes and completed nodes
     this.lockImage = new Image();
@@ -97,12 +97,12 @@ function Graph(pJSONData) {
         else {
             search.transitionOn = true;
             search.open = true;
-            document.getElementById("searchtextfield").select();
+            $("#searchtextfield")[0].select();
         }
     }
 
-    this.searchPanelButton.addEventListener("click", x.bind(this.searchPanelButton, this.searchPanel));
-
+    console.log(this.searchPanelButton);
+    this.searchPanelButton.addEventListener( "click", x.bind(this.searchPanelButton, this.searchPanel));
 };
 
 
