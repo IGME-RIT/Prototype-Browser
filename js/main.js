@@ -40,7 +40,7 @@ window.onload = function(e){
 //initialization for variables, mouse events, and game "class"
 function initializeVariables(){
     //camvas initialization
-    canvas = document.querySelector('canvas');
+    canvas = $('canvas')[0];
     ctx = canvas.getContext('2d');
 
     time = new Time();

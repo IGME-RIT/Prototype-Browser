@@ -9,7 +9,7 @@ var graphLoaded;
 var mouseTarget;
 
 
-var graphDepthLimit = 2; // how many values to expand to
+var graphDepthLimit = 5; // how many values to expand to
 var debugMode = false;
 
 var divWidth = 25; // what percent of the viewport is taken up by each sidebar
